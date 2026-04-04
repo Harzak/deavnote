@@ -20,7 +20,7 @@ namespace deavnote.model.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.3");
 
-            modelBuilder.Entity("deavnote.model.Entities.Task", b =>
+            modelBuilder.Entity("deavnote.model.Entities.DevTask", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -31,7 +31,7 @@ namespace deavnote.model.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime>("CreatedAt")
+                    b.Property<DateTime>("CreatedAtUtc")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Description")
@@ -52,7 +52,7 @@ namespace deavnote.model.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime>("UpdatedAt")
+                    b.Property<DateTime>("UpdatedAtUtc")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -71,7 +71,7 @@ namespace deavnote.model.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime>("CreatedAt")
+                    b.Property<DateTime>("CreatedAtUtc")
                         .HasColumnType("TEXT");
 
                     b.Property<long>("Duration")
@@ -82,13 +82,13 @@ namespace deavnote.model.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime>("StartedAt")
+                    b.Property<DateTime>("StartedAtUtc")
                         .HasColumnType("TEXT");
 
                     b.Property<int>("TaskId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTime>("UpdatedAt")
+                    b.Property<DateTime>("UpdatedAtUtc")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("WorkDone")
@@ -113,7 +113,7 @@ namespace deavnote.model.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime>("CreatedAt")
+                    b.Property<DateTime>("CreatedAtUtc")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Description")
@@ -129,7 +129,7 @@ namespace deavnote.model.Migrations
                         .HasMaxLength(4000)
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime>("UpdatedAt")
+                    b.Property<DateTime>("UpdatedAtUtc")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -139,7 +139,7 @@ namespace deavnote.model.Migrations
 
             modelBuilder.Entity("deavnote.model.Entities.TimeEntry", b =>
                 {
-                    b.HasOne("deavnote.model.Entities.Task", "Task")
+                    b.HasOne("deavnote.model.Entities.DevTask", "DevTask")
                         .WithMany("TimeEntries")
                         .HasForeignKey("TaskId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -148,7 +148,7 @@ namespace deavnote.model.Migrations
                     b.Navigation("Task");
                 });
 
-            modelBuilder.Entity("deavnote.model.Entities.Task", b =>
+            modelBuilder.Entity("deavnote.model.Entities.DevTask", b =>
                 {
                     b.Navigation("TimeEntries");
                 });

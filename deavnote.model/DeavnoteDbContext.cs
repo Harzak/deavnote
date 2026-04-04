@@ -1,10 +1,4 @@
-using deavnote.model.Enums;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-
-using Task = deavnote.model.Entities.Task;
-using TimeEntry = deavnote.model.Entities.TimeEntry;
-using Todo = deavnote.model.Entities.Todo;
 
 namespace deavnote.model;
 
@@ -15,7 +9,7 @@ public sealed class DeavnoteDbContext : DbContext
         ArgumentNullException.ThrowIfNull(options);
     }
 
-    public DbSet<Task> Tasks { get; set; } = null!;
+    public DbSet<DevTask> Tasks { get; set; } = null!;
     public DbSet<TimeEntry> TimeEntries { get; set; } = null!;
     public DbSet<Todo> Todos { get; set; } = null!;
 
@@ -30,7 +24,7 @@ public sealed class DeavnoteDbContext : DbContext
 
     private static void ConfigureTask(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Task>(entity =>
+        modelBuilder.Entity<DevTask>(entity =>
         {
             entity.ToTable("Tasks");
             entity.HasKey(e => e.Id);

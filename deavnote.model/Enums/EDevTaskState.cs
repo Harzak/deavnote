@@ -1,6 +1,9 @@
 ﻿namespace deavnote.model.Enums;
 
-public enum ETaskState
+/// <summary>
+/// Specifies the possible states of a development task.
+/// </summary>
+public enum EDevTaskState
 {
     Unknown = 0,
     NotStarted = 1,

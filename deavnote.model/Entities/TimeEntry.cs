@@ -1,5 +1,8 @@
 ﻿namespace deavnote.model.Entities;
 
+/// <summary>
+/// Represents a record of time spent on a specific task, including details such as duration, description, and timestamps.
+/// </summary>
 public partial class TimeEntry
 {
     public int Id { get; set; }
@@ -7,11 +10,11 @@ public partial class TimeEntry
     public required string Name { get; set; }
     public string? WorkDone { get; set; }
     public TimeSpan Duration { get; set; }
-    public DateTime StartedAt { get; set; }
-    public DateTime CreatedAt { get; set; }
-    public DateTime UpdatedAt { get; set; }
+    public DateTime StartedAtUtc { get; set; }
+    public DateTime CreatedAtUtc { get; set; }
+    public DateTime UpdatedAtUtc { get; set; }
 
     public int TaskId { get; set; }
-    public virtual Task Task { get; set; } = null!;
+    public virtual DevTask Task { get; set; } = null!;
 }
 
