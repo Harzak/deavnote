@@ -5,10 +5,12 @@ namespace deavnote.repository.Interfaces;
 /// </summary>
 public interface ITimeEntryRepository
 {
+
     /// <summary>
-    /// Asynchronously retrieves time entries for the specified UTC date.
+    /// Retrieves time entries occurring between the specified start and end dates.
     /// </summary>
-    /// <param name="dateUtc">The date in UTC for which to retrieve time entries.</param>
-    /// <returns>The task result contains a read-only list of time entries for the specified date.</returns>
-    Task<IReadOnlyList<TimeEntry>> GetEntriesForDayAsync(DateTime dateUtc, CancellationToken cancellationToken = default);
+    /// <param name="startDate">The start date of the range to retrieve entries for.</param>
+    /// <param name="endDate">The end date of the range to retrieve entries for.</param>
+    /// <returns>contains a read-only list of time entries within the specified date range.</returns>
+    Task<IReadOnlyList<TimeEntry>> GetEntriesBetween(DateTime startDate, DateTime endDate, CancellationToken cancellationToken = default);
 }

@@ -1,6 +1,6 @@
 ﻿namespace deavnote.app.ViewModels;
 
-internal abstract class ViewModelBase : ObservableObject
+internal abstract class ViewModelBase : ObservableValidator
 {
 
 }

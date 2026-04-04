@@ -15,14 +15,18 @@ internal sealed class TimeEntryRepository : ITimeEntryRepository
         _context = context;
     }
 
+
     /// <inheritdoc/>
-    public async Task<IReadOnlyList<TimeEntry>> GetEntriesForDayAsync(DateTime dateUtc, CancellationToken cancellationToken = default)
+
+    public async Task<IReadOnlyList<TimeEntry>> GetEntriesBetween(DateTime startDateUtc, DateTime endDateUtc, CancellationToken cancellationToken = default)
     {
-        DateTime startOfDay = dateUtc.Date;
-        DateTime endOfDay = dateUtc.Date.AddDays(1);
+        if(startDateUtc > endDateUtc)
+        {
+            throw new ArgumentException("Start date must be less than or equal to end date.");
+        }
 
         List<TimeEntry> entries = await _context.TimeEntries
-            .Where(e => e.StartedAtUtc >= startOfDay && e.StartedAtUtc < endOfDay)
+            .Where(e => e.StartedAtUtc >= startDateUtc && e.StartedAtUtc < endDateUtc)
             .Include(e => e.Task)
             .AsNoTracking()
             .ToListAsync(cancellationToken)

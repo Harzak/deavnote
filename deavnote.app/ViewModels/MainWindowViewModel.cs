@@ -1,16 +1,18 @@
-﻿using deavnote.repository.Interfaces;
+﻿using deavnote.core.Interfaces;
+
 namespace deavnote.app.ViewModels;
 
 internal sealed partial class MainWindowViewModel : ViewModelBase
 {
-    private readonly ITimeEntryRepository _timeEntryRepository;
-
     [ObservableProperty]
     private string _greeting = "Welcome to Avalonia!";
 
-    public MainWindowViewModel(ITimeEntryRepository timeEntryRepository)
-    {
-        _timeEntryRepository = timeEntryRepository;
-    }
+    public JournalViewModel Journal { get; }
 
+    public MainWindowViewModel(IJournal journal)
+    {
+        ArgumentNullException.ThrowIfNull(journal);
+
+        this.Journal = new JournalViewModel(journal);
+    }
 }

@@ -1,4 +1,3 @@
-using Avalonia.Data.Core.Plugins;
 using Avalonia.Markup.Xaml;
 using deavnote.app.Configuration;
 using deavnote.model.Configuration;
@@ -43,6 +42,7 @@ internal sealed partial class App : Application, IDisposable
 
         services.AddModelServiceDependencies(connectionString);
         services.AddRepositoryServiceDependencies();
+        services.AddCoreServiceDependencies();
         services.AddAppServiceDependencies();
     }
 

@@ -1,16 +1,18 @@
 <Window xmlns="https://github.com/avaloniaui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:vm="using:deavnote.app.ViewModels"
-        xmlns:dd="using:deavnote.app.DesignData"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-        x:Class="deavnote.app.Views.MainWindow"
-        x:DataType="vm:MainWindowViewModel"
-        d:DataContext="{x:Static dd:DesignData.MainWindowViewModel}"
-        Icon="/Assets/avalonia-logo.ico"
-        Title="deavnote.app">
+		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		xmlns:vm="using:deavnote.app.ViewModels"
+		xmlns:dd="using:deavnote.app.DesignData"
+		xmlns:views="using:deavnote.app.Views"
+		xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+		x:Class="deavnote.app.Views.MainWindow"
+		x:DataType="vm:MainWindowViewModel"
+		Icon="/Assets/avalonia-logo.ico"
+		Title="deavnote.app">
 
-    <TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+	<Grid ColumnDefinitions="Auto, *" RowDefinitions="*">
+		<views:JournalView DataContext="{Binding Journal}" Grid.Column="0" Grid.Row="0" />
+	</Grid>
 
 </Window>
