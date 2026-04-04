@@ -1,8 +1,6 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿namespace deavnote.app.ViewModels;
 
-namespace deavnote.app.ViewModels
+internal abstract class ViewModelBase : ObservableObject
 {
-    internal abstract class ViewModelBase : ObservableObject
-    {
-    }
+
 }

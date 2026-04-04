@@ -1,12 +1,9 @@
-using Avalonia.Controls;
+namespace deavnote.app.Views;
 
-namespace deavnote.app.Views
+internal sealed partial class MainWindow : Window
 {
-    internal sealed partial class MainWindow : Window
+    public MainWindow()
     {
-        public MainWindow()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

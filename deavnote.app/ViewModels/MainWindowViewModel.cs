@@ -1,7 +1,6 @@
-﻿namespace deavnote.app.ViewModels
+﻿namespace deavnote.app.ViewModels;
+
+internal sealed partial class MainWindowViewModel : ViewModelBase
 {
-    internal sealed partial class MainWindowViewModel : ViewModelBase
-    {
-        public string Greeting { get; } = "Welcome to Avalonia!";
-    }
+    public string Greeting { get; } = "Welcome to Avalonia!";
 }
