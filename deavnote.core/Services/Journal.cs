@@ -1,4 +1,6 @@
-﻿namespace deavnote.core.Services;
+﻿[assembly: InternalsVisibleTo("deavnote.core.tests")]
+
+namespace deavnote.core.Services;
 
 /// <summary>
 /// Manages time entry data, providing cursor-based access and change notifications for time entries within a specified
@@ -20,6 +22,8 @@ internal sealed class Journal : IJournal
     public TimeSpan TimeCursor { get; private set; }
     /// <inheritdoc/>
     public IReadOnlyCollection<TimeEntry> TimeEntries => _entriesInCursor.AsReadOnly();
+    /// <inheritdoc/>
+    public JournalCursorsConfiguration DefaultConfiguration { get; }
 
     /// <inheritdoc/>
     public event EventHandler<TimeEntriesChangedEventArgs>? TimeEntriesChanged;
@@ -32,42 +36,67 @@ internal sealed class Journal : IJournal
         _pool = [];
         _entriesInCursor = [];
         _poolIds = [];
+
+        this.DefaultConfiguration = new JournalCursorsConfiguration
+        {
+            DateCursor = DateTime.Now.Date,
+            TimeCursor = TimeSpan.FromDays(1)
+        };
     }
 
     /// <inheritdoc/>
     public async Task LoadDefaultCursorAsync()
     {
-        this.DateCursor = DateTime.Now.Date;
-        this.TimeCursor = TimeSpan.FromDays(1);
-        await this.OnCursorChangedAsync().ConfigureAwait(false);
+        await this.SetCursorsAsync(this.DefaultConfiguration).ConfigureAwait(false);
     }
 
     /// <inheritdoc/>
-    public async Task SetCursorsAsync(DateTime date, TimeSpan time)
+    public async Task SetCursorsAsync(JournalCursorsConfiguration configuration)
     {
-        this.DateCursor = date;
-        this.TimeCursor = time;
-        await this.OnCursorChangedAsync().ConfigureAwait(false);
+        ArgumentNullException.ThrowIfNull(configuration);
+
+        if (this.TrySetDateCursor(configuration.DateCursor) | this.TrySetTimeCursor(configuration.TimeCursor))
+        {
+            await this.OnCursorChangedAsync().ConfigureAwait(false);
+        }
     }
 
     /// <inheritdoc/>
-    public async Task SetDateCursorAsync(DateTime date)
+    public async Task ShiftDateCursorAsync(int days)
     {
-        if (this.DateCursor != date)
+        if (this.TrySetDateCursor(this.DateCursor.AddDays(days)))
+        {
+            await this.OnCursorChangedAsync().ConfigureAwait(false);
+        }
+    }
+
+    /// <inheritdoc/>
+    public async Task ResetDateCursorAsync()
+    {
+        if (this.TrySetDateCursor(this.DefaultConfiguration.DateCursor))
+        {
+            await this.OnCursorChangedAsync().ConfigureAwait(false);
+        }
+    }
+
+    private bool TrySetDateCursor(DateTime date)
+    {
+        bool hasChanged = this.DateCursor != date;
+        if (hasChanged)
         {
             this.DateCursor = date;
-            await OnCursorChangedAsync().ConfigureAwait(false);
         }
+        return hasChanged;
     }
 
-    /// <inheritdoc/>
-    public async Task SetTimeCursorAsync(TimeSpan time)
+    private bool TrySetTimeCursor(TimeSpan time)
     {
-        if (this.TimeCursor != time)
+        bool hasChanged = this.TimeCursor != time;
+        if (hasChanged)
         {
             this.TimeCursor = time;
-            await OnCursorChangedAsync().ConfigureAwait(false);
         }
+        return hasChanged;
     }
 
     private async Task OnCursorChangedAsync()

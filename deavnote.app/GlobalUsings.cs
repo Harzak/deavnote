@@ -15,6 +15,7 @@ global using deavnote.repository.Interfaces;
 /// .NET
 global using System.Linq;
 global using System.Collections.ObjectModel;
+global using System.Runtime.CompilerServices;
 
 
 /// Avalonia

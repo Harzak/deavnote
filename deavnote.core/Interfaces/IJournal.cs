@@ -1,4 +1,6 @@
-﻿namespace deavnote.core.Interfaces;
+﻿using deavnote.core.Services;
+
+namespace deavnote.core.Interfaces;
 
 /// <summary>
 /// Defines functionality for managing and tracking time entries with date and time cursors.
@@ -17,24 +19,28 @@ public interface IJournal
     /// Gets the collection of time entries corresponding to the current date and time cursors.
     /// </summary>
     IReadOnlyCollection<TimeEntry> TimeEntries { get; }
+    /// <summary>
+    /// Gets the default configuration for journal cursors.
+    /// </summary>
+    JournalCursorsConfiguration DefaultConfiguration { get; }
 
     /// <summary>
     /// Asynchronously loads the default cursor.
     /// </summary>
     Task LoadDefaultCursorAsync();
     /// <summary>
-    /// Asynchronously sets the cursors to the specified date and time.
-    /// Allows for simultaneous updating of both the date and time cursors, which may trigger a refresh of the time entries collection based on the new cursor positions.
+    /// Asynchronously sets journal cursors based on the specified configuration.
     /// </summary>
-    Task SetCursorsAsync(DateTime date, TimeSpan time);
+    Task SetCursorsAsync(JournalCursorsConfiguration configuration);
     /// <summary>
-    /// Asynchronously sets the date cursor to the specified date.
+    /// Asynchronously shifts the date cursor by the specified number of days.
     /// </summary>
-    Task SetDateCursorAsync(DateTime date);
+    /// <param name="days">The number of days to shift the date cursor. Positive values move forward; negative values move backward.</param>
+    Task ShiftDateCursorAsync(int days);
     /// <summary>
-    /// Asynchronously sets the time cursor to the specified position.
+    /// Resets the date cursor to its initial state asynchronously.
     /// </summary>
-    Task SetTimeCursorAsync(TimeSpan time);
+    Task ResetDateCursorAsync();
 
     /// <summary>
     /// Occurs when the collection of time entries is modified.

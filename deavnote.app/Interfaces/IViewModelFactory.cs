@@ -1,4 +1,7 @@
-﻿namespace deavnote.app.Interfaces;
+﻿[assembly: InternalsVisibleTo("deavnote.app.tests")]
+[assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]
+
+namespace deavnote.app.Interfaces;
 
 /// <summary>
 /// Defines a factory for creating view model instances used in the application.

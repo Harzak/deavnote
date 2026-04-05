@@ -1,4 +1,4 @@
-﻿using deavnote.app.ViewModels.Base;
+﻿[assembly: InternalsVisibleTo("deavnote.app.tests")]
 
 namespace deavnote.app.ViewModels;
 
@@ -56,47 +56,44 @@ internal sealed partial class JournalViewModel : BaseViewModel
     [RelayCommand]
     private async Task MoveDateCursorToNowAsync()
     {
-        _dateCursor = DateTime.Now.Date;
-        await _journal.SetDateCursorAsync(_dateCursor).ConfigureAwait(false);
+        await _journal.ResetDateCursorAsync().ConfigureAwait(false);
     }
 
     [RelayCommand]
     private async Task MoveDateCursorToPreviousDayAsync()
     {
-        _dateCursor = _dateCursor.AddDays(-1);
-        await _journal.SetDateCursorAsync(_dateCursor).ConfigureAwait(false);
+        await _journal.ShiftDateCursorAsync(-1).ConfigureAwait(false);
     }
 
     [RelayCommand]
     private async Task MoveDateCursorToNextDayAsync()
     {
-        _dateCursor = _dateCursor.AddDays(1);
-        await _journal.SetDateCursorAsync(_dateCursor).ConfigureAwait(false);
+        await _journal.ShiftDateCursorAsync(1).ConfigureAwait(false);
     }
 
     [RelayCommand]
     private async Task ChangeAgendaMode(EAgendaMode mode)
     {
-        switch (mode)
+        JournalCursorsConfiguration configuration = mode switch
         {
-            case EAgendaMode.Day:
-                DateTime date = DateTime.Now.AddDays(1); //normalize
-                TimeSpan time = TimeSpan.FromDays(1);
-                await _journal.SetCursorsAsync(date, time).ConfigureAwait(false);
-                break;
-            case EAgendaMode.Week:
-                date = DateTime.Now.AddDays(1); //normalize
-                time = TimeSpan.FromDays(7);
-                await _journal.SetCursorsAsync(date, time).ConfigureAwait(false);
-                break;
-            case EAgendaMode.Month:
-                date = DateTime.Now.AddDays(1); //normalize
-                time = TimeSpan.FromDays(30);
-                await _journal.SetCursorsAsync(date, time).ConfigureAwait(false);
-                break;
-            default:
-                break;
-        }
+            EAgendaMode.Day => new JournalCursorsConfiguration()
+            {
+                DateCursor = DateTime.Now.AddDays(1), //normalize
+                TimeCursor = TimeSpan.FromDays(1)
+            },
+            EAgendaMode.Week => new JournalCursorsConfiguration()
+            {
+                DateCursor = DateTime.Now.AddDays(1), //normalize
+                TimeCursor = TimeSpan.FromDays(7)
+            },
+            EAgendaMode.Month => new JournalCursorsConfiguration()
+            {
+                DateCursor = DateTime.Now.AddDays(1), //normalize
+                TimeCursor = TimeSpan.FromDays(30)
+            },
+            _ => _journal.DefaultConfiguration,
+        };
+        await _journal.SetCursorsAsync(configuration).ConfigureAwait(false);
     }
 
     [RelayCommand]
