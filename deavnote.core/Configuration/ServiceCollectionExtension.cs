@@ -3,6 +3,9 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace deavnote.core.Configuration;
 
+/// <summary>
+/// Provides extension methods for registering core-layer service dependencies with the dependency injection container.
+/// </summary>
 public static class ServiceCollectionExtension
 {
     /// <summary>
@@ -12,7 +15,7 @@ public static class ServiceCollectionExtension
     {
         ArgumentNullException.ThrowIfNull(services);
 
-        services.AddTransient<IJournal, Journal>();
+        services.AddSingleton<IJournal, Journal>();
 
         return services;
     }

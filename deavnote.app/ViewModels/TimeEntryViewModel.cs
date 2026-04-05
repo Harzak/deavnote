@@ -1,6 +1,8 @@
-﻿namespace deavnote.app.ViewModels;
+﻿using deavnote.app.ViewModels.Base;
 
-internal sealed partial class TimeEntryViewModel : ViewModelBase
+namespace deavnote.app.ViewModels;
+
+internal sealed partial class TimeEntryViewModel : BaseViewModel
 {
     [ObservableProperty]
     private string _code = string.Empty;

@@ -14,7 +14,8 @@ internal static class ServiceCollectionExtension
     {
         ArgumentNullException.ThrowIfNull(services);
 
-        services.AddTransient<MainWindowViewModel>();
+        services.AddSingleton<MainViewModel>();
+        services.AddSingleton<IViewModelFactory, ViewModelFactory>();
 
         return services;
     }

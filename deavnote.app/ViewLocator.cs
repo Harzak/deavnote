@@ -1,5 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
 using Avalonia.Controls.Templates;
+using deavnote.app.ViewModels.Base;
 
 namespace deavnote.app;
 
@@ -29,7 +30,7 @@ internal sealed class ViewLocator : IDataTemplate
 
     public bool Match(object? data)
     {
-        return data is ViewModelBase;
+        return data is BaseViewModel;
     }
 }
 

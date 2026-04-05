@@ -1,7 +1,9 @@
 using Avalonia.Markup.Xaml;
 using deavnote.app.Configuration;
 using deavnote.model.Configuration;
+using deavnote.repository;
 using deavnote.repository.Configuration;
+using deavnote.repository.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace deavnote.app;
@@ -25,9 +27,11 @@ internal sealed partial class App : Application, IDisposable
             ConfigureServices(services);
             _serviceProvider = services.BuildServiceProvider();
 
-            desktop.MainWindow = new MainWindow
+            _serviceProvider.GetRequiredService<IDatabaseInitializer>().Initialize();
+
+            desktop.MainWindow = new MainView
             {
-                DataContext = _serviceProvider.GetRequiredService<MainWindowViewModel>(),
+                DataContext = _serviceProvider.GetRequiredService<MainViewModel>(),
             };
 
             desktop.ShutdownRequested += this.OnShutdownRequested;
@@ -38,7 +42,7 @@ internal sealed partial class App : Application, IDisposable
 
     private static void ConfigureServices(IServiceCollection services)
     {
-        string connectionString = "Data Source=deavnote.db";
+        string connectionString = DatabasePathResolver.Resolve();
 
         services.AddModelServiceDependencies(connectionString);
         services.AddRepositoryServiceDependencies();

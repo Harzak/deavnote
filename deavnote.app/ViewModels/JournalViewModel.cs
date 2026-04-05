@@ -1,7 +1,10 @@
-﻿namespace deavnote.app.ViewModels;
+﻿using deavnote.app.ViewModels.Base;
 
-internal sealed partial class JournalViewModel : ViewModelBase
+namespace deavnote.app.ViewModels;
+
+internal sealed partial class JournalViewModel : BaseViewModel
 {
+    private readonly IViewModelFactory _viewModelFactory;
     private readonly IJournal _journal;
     private DateTime _dateCursor;
 
@@ -11,13 +14,14 @@ internal sealed partial class JournalViewModel : ViewModelBase
     [ObservableProperty]
     private ObservableCollection<TimeEntryViewModel> _timeEntries;
 
-    public string Greeting { get; set; } = "yoo";
-
-    public JournalViewModel(IJournal journal)
+    public JournalViewModel(IJournal journal, IViewModelFactory viewModelFactory)
     {
         ArgumentNullException.ThrowIfNull(journal);
+        ArgumentNullException.ThrowIfNull(viewModelFactory);
 
         _journal = journal;
+        _viewModelFactory = viewModelFactory;
+
         _journal.TimeEntriesChanged += OnJournalTimeEntriesChanged;
         _dateCursor = DateTime.Now.Date;
         _timeEntries = [];
@@ -32,11 +36,13 @@ internal sealed partial class JournalViewModel : ViewModelBase
 
     private void OnJournalTimeEntriesChanged(object? sender, TimeEntriesChangedEventArgs e)
     {
+        this.TimeEntries.Clear();
+
         if (_journal.TimeEntries.Count == 0) return;
 
         foreach (TimeEntry entry in _journal.TimeEntries)
         {
-            TimeEntryViewModel timeEntryViewModel = new(entry);
+            TimeEntryViewModel timeEntryViewModel = _viewModelFactory.CreateTimeEntryViewModel(entry);
             this.TimeEntries.Add(timeEntryViewModel);
         }
     }

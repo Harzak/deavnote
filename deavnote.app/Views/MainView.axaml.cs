@@ -1,8 +1,8 @@
 namespace deavnote.app.Views;
 
-internal sealed partial class MainWindow : Window
+internal sealed partial class MainView : Window
 {
-    public MainWindow()
+    public MainView()
     {
         InitializeComponent();
     }

@@ -6,6 +6,8 @@ global using deavnote.core.EvenArgs;
 global using deavnote.core.Interfaces;
 global using deavnote.model.Entities;
 global using deavnote.core.Configuration;
+global using deavnote.app.ViewModels.Base;
+global using deavnote.app.Interfaces;
 
 /// Repository
 global using deavnote.repository.Interfaces;
