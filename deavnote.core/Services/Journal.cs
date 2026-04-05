@@ -12,9 +12,9 @@ internal sealed class Journal : IJournal
 {
     private readonly ITimeEntryRepository _repository;
 
-    private readonly HashSet<int> _poolIds;
-    private readonly List<TimeEntry> _pool;
+    private readonly Dictionary<int, TimeEntry> _pool;
     private readonly List<TimeEntry> _entriesInCursor;
+    private readonly HashSet<DateTime> _fetchedDates;
 
     /// <inheritdoc/>
     public DateTime DateCursor { get; private set; }
@@ -35,7 +35,7 @@ internal sealed class Journal : IJournal
         _repository = repository;
         _pool = [];
         _entriesInCursor = [];
-        _poolIds = [];
+        _fetchedDates = [];
 
         this.DefaultConfiguration = new JournalCursorsConfiguration
         {
@@ -45,37 +45,39 @@ internal sealed class Journal : IJournal
     }
 
     /// <inheritdoc/>
-    public async Task LoadDefaultCursorAsync()
+    public async Task LoadDefaultCursorAsync(CancellationToken cancellationToken = default)
     {
-        await this.SetCursorsAsync(this.DefaultConfiguration).ConfigureAwait(false);
+        await this.SetCursorsAsync(this.DefaultConfiguration, cancellationToken).ConfigureAwait(false);
     }
 
     /// <inheritdoc/>
-    public async Task SetCursorsAsync(JournalCursorsConfiguration configuration)
+    public async Task SetCursorsAsync(JournalCursorsConfiguration configuration, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(configuration);
 
         if (this.TrySetDateCursor(configuration.DateCursor) | this.TrySetTimeCursor(configuration.TimeCursor))
         {
-            await this.OnCursorChangedAsync().ConfigureAwait(false);
+            await this.OnCursorChangedAsync(cancellationToken).ConfigureAwait(false);
         }
     }
 
     /// <inheritdoc/>
-    public async Task ShiftDateCursorAsync(int days)
+    public async Task ShiftDateCursorAsync(int days, CancellationToken cancellationToken = default)
     {
-        if (this.TrySetDateCursor(this.DateCursor.AddDays(days)))
-        {
-            await this.OnCursorChangedAsync().ConfigureAwait(false);
-        }
+        await this.MoveDateCursorAsync(this.DateCursor.AddDays(days), cancellationToken).ConfigureAwait(false);
     }
 
     /// <inheritdoc/>
-    public async Task ResetDateCursorAsync()
+    public async Task ResetDateCursorAsync(CancellationToken cancellationToken = default)
     {
-        if (this.TrySetDateCursor(this.DefaultConfiguration.DateCursor))
+        await this.MoveDateCursorAsync(this.DefaultConfiguration.DateCursor, cancellationToken).ConfigureAwait(false);
+    }
+
+    private async Task MoveDateCursorAsync(DateTime to, CancellationToken cancellationToken = default)
+    {
+        if (this.TrySetDateCursor(to))
         {
-            await this.OnCursorChangedAsync().ConfigureAwait(false);
+            await this.OnCursorChangedAsync(cancellationToken).ConfigureAwait(false);
         }
     }
 
@@ -99,37 +101,69 @@ internal sealed class Journal : IJournal
         return hasChanged;
     }
 
-    private async Task OnCursorChangedAsync()
+    private async Task OnCursorChangedAsync(CancellationToken cancellationToken = default)
     {
-        await this.LoadEntriesInCursorAsync().ConfigureAwait(false);
+        await this.LoadEntriesInCursorAsync(cancellationToken).ConfigureAwait(false);
 
         _entriesInCursor.Clear();
-        IEnumerable<TimeEntry> entries = _pool.Where(e => e.StartedAtUtc >= this.DateCursor
-                                                     && e.StartedAtUtc < this.DateCursor.Add(this.TimeCursor));
-        _entriesInCursor.AddRange(entries);
+        IEnumerable<TimeEntry> entries = _pool.Values.Where(e => e.StartedAtUtc >= this.DateCursor
+                                                            && e.StartedAtUtc < this.DateCursor.Add(this.TimeCursor));
 
-        TimeEntriesChanged?.Invoke(this, new TimeEntriesChangedEventArgs(this.DateCursor, this.TimeCursor));
+        if (entries.Any())
+        {
+            _entriesInCursor.AddRange(entries);
+
+            TimeEntriesChanged?.Invoke(this, new TimeEntriesChangedEventArgs(this.DateCursor, this.TimeCursor));
+        }
+
+        _ = this.LoadAdjacentEntriesAsync(this.DateCursor, this.TimeCursor, cancellationToken);
     }
 
-    private async Task LoadEntriesInCursorAsync()
+    private async Task LoadEntriesInCursorAsync(CancellationToken cancellationToken = default)
     {
         DateTime from = this.DateCursor;
-        DateTime to = this.DateCursor.Add(TimeCursor);
+        DateTime to = this.DateCursor.Add(this.TimeCursor);
 
-        await this.LoadEntriesBetweenAsync(from, to).ConfigureAwait(false);
+        if (_fetchedDates.Contains(from))
+        {
+            return;
+        }
+
+        await this.LoadEntriesBetweenASync(from, to, cancellationToken).ConfigureAwait(false);
     }
 
-    private async Task LoadEntriesBetweenAsync(DateTime fromUtc, DateTime toUtc)
+    private async Task LoadAdjacentEntriesAsync(DateTime cursor, TimeSpan timeCursor, CancellationToken cancellationToken = default)
     {
-        IReadOnlyList<TimeEntry> entries = await _repository.GetEntriesBetween(fromUtc, toUtc).ConfigureAwait(false);
+        DateTime prevFrom = cursor.Add(-timeCursor);
+        DateTime nextFrom = cursor.Add(timeCursor);
+
+        List<Task> prefetchTasks = [];
+
+        if (!_fetchedDates.Contains(prevFrom))
+        {
+            DateTime to = prevFrom.Add(timeCursor);
+            prefetchTasks.Add(this.LoadEntriesBetweenASync(prevFrom, to, cancellationToken));
+        }
+
+        if (!_fetchedDates.Contains(nextFrom))
+        {
+            DateTime to = nextFrom.Add(timeCursor);
+            prefetchTasks.Add(this.LoadEntriesBetweenASync(nextFrom, to, cancellationToken));
+        }
+
+        await Task.WhenAll(prefetchTasks).ConfigureAwait(false);
+    }
+
+    private async Task LoadEntriesBetweenASync(DateTime from, DateTime to, CancellationToken cancellationToken = default)
+    {
+        IReadOnlyList<TimeEntry> entries = await _repository.GetEntriesBetween(from, to, cancellationToken).ConfigureAwait(false);
 
         foreach (TimeEntry entry in entries)
         {
-            if (_poolIds.Add(entry.Id))
-            {
-                _pool.Add(entry);
-            }
+            _pool[entry.Id] = entry;
         }
+
+        _fetchedDates.Add(from);
     }
 }
 

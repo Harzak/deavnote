@@ -1,21 +1,25 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net9.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<AnalysisMode>AllEnabledByDefault</AnalysisMode>
+		<EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
+		<EnableNETAnalyzers>True</EnableNETAnalyzers>
+		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\deavnote.repository\deavnote.repository.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\deavnote.repository\deavnote.repository.csproj" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <EditorConfigFiles Remove="C:\Workspaces\deavnote\deavnote.core\.editorconfig" />
-  </ItemGroup>
+	<ItemGroup>
+		<EditorConfigFiles Remove="C:\Workspaces\deavnote\deavnote.core\.editorconfig" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <None Include="C:\Workspaces\deavnote\deavnote.core\.editorconfig" />
-  </ItemGroup>
+	<ItemGroup>
+		<None Include="C:\Workspaces\deavnote\deavnote.core\.editorconfig" />
+	</ItemGroup>
 
 </Project>

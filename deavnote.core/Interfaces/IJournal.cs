@@ -27,20 +27,20 @@ public interface IJournal
     /// <summary>
     /// Asynchronously loads the default cursor.
     /// </summary>
-    Task LoadDefaultCursorAsync();
+    Task LoadDefaultCursorAsync(CancellationToken cancellationToken = default);
     /// <summary>
     /// Asynchronously sets journal cursors based on the specified configuration.
     /// </summary>
-    Task SetCursorsAsync(JournalCursorsConfiguration configuration);
+    Task SetCursorsAsync(JournalCursorsConfiguration configuration, CancellationToken cancellationToken = default);
     /// <summary>
     /// Asynchronously shifts the date cursor by the specified number of days.
     /// </summary>
     /// <param name="days">The number of days to shift the date cursor. Positive values move forward; negative values move backward.</param>
-    Task ShiftDateCursorAsync(int days);
+    Task ShiftDateCursorAsync(int days, CancellationToken cancellationToken = default);
     /// <summary>
     /// Resets the date cursor to its initial state asynchronously.
     /// </summary>
-    Task ResetDateCursorAsync();
+    Task ResetDateCursorAsync(CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Occurs when the collection of time entries is modified.
