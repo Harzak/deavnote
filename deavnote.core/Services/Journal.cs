@@ -6,7 +6,7 @@ namespace deavnote.core.Services;
 /// Manages time entry data, providing cursor-based access and change notifications for time entries within a specified
 /// date and time range.
 /// </summary>
-/// <remarks>Use the DateCursor and TimeCursor properties to control the current view window. Subscribe to the
+/// <remarks>Use the DateCursor and DayOffset properties to control the current view window. Subscribe to the
 /// TimeEntriesChanged event to be notified when the set of visible time entries changes.</remarks>
 internal sealed class Journal : IJournal
 {
@@ -14,16 +14,16 @@ internal sealed class Journal : IJournal
 
     private readonly Dictionary<int, TimeEntry> _pool;
     private readonly List<TimeEntry> _entriesInCursor;
-    private readonly HashSet<DateTime> _fetchedDates;
+    private readonly HashSet<DateOnly> _fetchedDates;
 
     /// <inheritdoc/>
-    public DateTime DateCursor { get; private set; }
+    public DateOnly DateCursor { get; private set; }
     /// <inheritdoc/>
-    public TimeSpan TimeCursor { get; private set; }
+    public int DayOffset { get; private set; }
     /// <inheritdoc/>
     public IReadOnlyCollection<TimeEntry> TimeEntries => _entriesInCursor.AsReadOnly();
     /// <inheritdoc/>
-    public JournalCursorsConfiguration DefaultConfiguration { get; }
+    public JournalConfiguration DefaultConfiguration { get; }
 
     /// <inheritdoc/>
     public event EventHandler<TimeEntriesChangedEventArgs>? TimeEntriesChanged;
@@ -37,10 +37,10 @@ internal sealed class Journal : IJournal
         _entriesInCursor = [];
         _fetchedDates = [];
 
-        this.DefaultConfiguration = new JournalCursorsConfiguration
+        this.DefaultConfiguration = new JournalConfiguration
         {
-            DateCursor = DateTime.Now.Date,
-            TimeCursor = TimeSpan.FromDays(1)
+            DateCursor = DateOnly.FromDateTime(DateTime.Today),
+            DayOffset = 1
         };
     }
 
@@ -51,11 +51,11 @@ internal sealed class Journal : IJournal
     }
 
     /// <inheritdoc/>
-    public async Task SetCursorsAsync(JournalCursorsConfiguration configuration, CancellationToken cancellationToken = default)
+    public async Task SetCursorsAsync(JournalConfiguration configuration, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(configuration);
 
-        if (this.TrySetDateCursor(configuration.DateCursor) | this.TrySetTimeCursor(configuration.TimeCursor))
+        if (this.TrySetDateCursor(configuration.DateCursor) | this.TrySetDayOffsetCursor(configuration.DayOffset))
         {
             await this.OnCursorChangedAsync(cancellationToken).ConfigureAwait(false);
         }
@@ -64,16 +64,16 @@ internal sealed class Journal : IJournal
     /// <inheritdoc/>
     public async Task ShiftDateCursorAsync(int days, CancellationToken cancellationToken = default)
     {
-        await this.MoveDateCursorAsync(this.DateCursor.AddDays(days), cancellationToken).ConfigureAwait(false);
+        await this.MoveDateCursorAsync(to: this.DateCursor.AddDays(days), cancellationToken).ConfigureAwait(false);
     }
 
     /// <inheritdoc/>
     public async Task ResetDateCursorAsync(CancellationToken cancellationToken = default)
     {
-        await this.MoveDateCursorAsync(this.DefaultConfiguration.DateCursor, cancellationToken).ConfigureAwait(false);
+        await this.MoveDateCursorAsync(to: this.DefaultConfiguration.DateCursor, cancellationToken).ConfigureAwait(false);
     }
 
-    private async Task MoveDateCursorAsync(DateTime to, CancellationToken cancellationToken = default)
+    private async Task MoveDateCursorAsync(DateOnly to, CancellationToken cancellationToken = default)
     {
         if (this.TrySetDateCursor(to))
         {
@@ -81,7 +81,7 @@ internal sealed class Journal : IJournal
         }
     }
 
-    private bool TrySetDateCursor(DateTime date)
+    private bool TrySetDateCursor(DateOnly date)
     {
         bool hasChanged = this.DateCursor != date;
         if (hasChanged)
@@ -91,12 +91,12 @@ internal sealed class Journal : IJournal
         return hasChanged;
     }
 
-    private bool TrySetTimeCursor(TimeSpan time)
+    private bool TrySetDayOffsetCursor(int time)
     {
-        bool hasChanged = this.TimeCursor != time;
+        bool hasChanged = this.DayOffset != time;
         if (hasChanged)
         {
-            this.TimeCursor = time;
+            this.DayOffset = time;
         }
         return hasChanged;
     }
@@ -106,23 +106,18 @@ internal sealed class Journal : IJournal
         await this.LoadEntriesInCursorAsync(cancellationToken).ConfigureAwait(false);
 
         _entriesInCursor.Clear();
-        IEnumerable<TimeEntry> entries = _pool.Values.Where(e => e.StartedAtUtc >= this.DateCursor
-                                                            && e.StartedAtUtc < this.DateCursor.Add(this.TimeCursor));
+        IEnumerable<TimeEntry> entries = _pool.Values.Where(e => e.StartedAtUtc.IsInRange(this.DateCursor, this.DateCursor.AddDays(this.DayOffset)));
 
-        if (entries.Any())
-        {
-            _entriesInCursor.AddRange(entries);
+        _entriesInCursor.AddRange(entries);
+        TimeEntriesChanged?.Invoke(this, new TimeEntriesChangedEventArgs(this.DateCursor, this.DayOffset));
 
-            TimeEntriesChanged?.Invoke(this, new TimeEntriesChangedEventArgs(this.DateCursor, this.TimeCursor));
-        }
-
-        _ = this.LoadAdjacentEntriesAsync(this.DateCursor, this.TimeCursor, cancellationToken);
+        _ = this.LoadAdjacentEntriesAsync(this.DateCursor, this.DayOffset, cancellationToken);
     }
 
     private async Task LoadEntriesInCursorAsync(CancellationToken cancellationToken = default)
     {
-        DateTime from = this.DateCursor;
-        DateTime to = this.DateCursor.Add(this.TimeCursor);
+        DateOnly from = this.DateCursor;
+        DateOnly to = this.DateCursor.AddDays(this.DayOffset);
 
         if (_fetchedDates.Contains(from))
         {
@@ -132,29 +127,29 @@ internal sealed class Journal : IJournal
         await this.LoadEntriesBetweenASync(from, to, cancellationToken).ConfigureAwait(false);
     }
 
-    private async Task LoadAdjacentEntriesAsync(DateTime cursor, TimeSpan timeCursor, CancellationToken cancellationToken = default)
+    private async Task LoadAdjacentEntriesAsync(DateOnly cursor, int dayOffset, CancellationToken cancellationToken = default)
     {
-        DateTime prevFrom = cursor.Add(-timeCursor);
-        DateTime nextFrom = cursor.Add(timeCursor);
+        DateOnly prevFrom = cursor.AddDays(-dayOffset);
+        DateOnly nextFrom = cursor.AddDays(dayOffset);
 
         List<Task> prefetchTasks = [];
 
         if (!_fetchedDates.Contains(prevFrom))
         {
-            DateTime to = prevFrom.Add(timeCursor);
+            DateOnly to = prevFrom.AddDays(dayOffset);
             prefetchTasks.Add(this.LoadEntriesBetweenASync(prevFrom, to, cancellationToken));
         }
 
         if (!_fetchedDates.Contains(nextFrom))
         {
-            DateTime to = nextFrom.Add(timeCursor);
+            DateOnly to = nextFrom.AddDays(dayOffset);
             prefetchTasks.Add(this.LoadEntriesBetweenASync(nextFrom, to, cancellationToken));
         }
 
         await Task.WhenAll(prefetchTasks).ConfigureAwait(false);
     }
 
-    private async Task LoadEntriesBetweenASync(DateTime from, DateTime to, CancellationToken cancellationToken = default)
+    private async Task LoadEntriesBetweenASync(DateOnly from, DateOnly to, CancellationToken cancellationToken = default)
     {
         IReadOnlyList<TimeEntry> entries = await _repository.GetEntriesBetween(from, to, cancellationToken).ConfigureAwait(false);
 

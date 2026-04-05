@@ -18,10 +18,10 @@ public class JournalTests
     {
         //Arrange
         Journal journal = new(_repository);
-        JournalCursorsConfiguration configuration = new()
+        JournalConfiguration configuration = new()
         {
-            DateCursor = new DateTime(2026, 08, 10),
-            TimeCursor = TimeSpan.FromDays(1)
+            DateCursor = new DateOnly(2026, 08, 10),
+            DayOffset = 1
         };
 
         //Act
@@ -29,8 +29,8 @@ public class JournalTests
 
         //Assert
         A.CallTo(() => _repository.GetEntriesBetween(
-                new DateTime(2026, 08, 10),
-                new DateTime(2026, 08, 11),
+                new DateOnly(2026, 08, 10),
+                new DateOnly(2026, 08, 11),
                 A<CancellationToken>.Ignored))
             .MustHaveHappenedOnceExactly();
     }
@@ -40,10 +40,10 @@ public class JournalTests
     {
         //Arrange
         Journal journal = new(_repository);
-        JournalCursorsConfiguration configuration = new()
+        JournalConfiguration configuration = new()
         {
-            DateCursor = new DateTime(2026, 08, 10),
-            TimeCursor = TimeSpan.FromDays(1)
+            DateCursor = new DateOnly(2026, 08, 10),
+            DayOffset = 1
         };
 
         //Act
@@ -51,14 +51,14 @@ public class JournalTests
 
         //Assert
         A.CallTo(() => _repository.GetEntriesBetween(
-                new DateTime(2026, 08, 09),
-                new DateTime(2026, 08, 10),
+                new DateOnly(2026, 08, 09),
+                new DateOnly(2026, 08, 10),
                 A<CancellationToken>.Ignored))
             .MustHaveHappenedOnceExactly();
 
         A.CallTo(() => _repository.GetEntriesBetween(
-                new DateTime(2026, 08, 11),
-                new DateTime(2026, 08, 12),
+                new DateOnly(2026, 08, 11),
+                new DateOnly(2026, 08, 12),
                 A<CancellationToken>.Ignored))
             .MustHaveHappenedOnceExactly();
     }
@@ -68,10 +68,10 @@ public class JournalTests
     {
         //Arrange
         Journal journal = new(_repository);
-        JournalCursorsConfiguration configuration = new()
+        JournalConfiguration configuration = new()
         {
-            DateCursor = new DateTime(2026, 08, 10),
-            TimeCursor = TimeSpan.FromDays(1)
+            DateCursor = new DateOnly(2026, 08, 10),
+            DayOffset = 1
         };
 
         //Act
@@ -80,8 +80,8 @@ public class JournalTests
 
         //Assert
         A.CallTo(() => _repository.GetEntriesBetween(
-                new DateTime(2026, 08, 10),
-                new DateTime(2026, 08, 11),
+                new DateOnly(2026, 08, 10),
+                new DateOnly(2026, 08, 11),
                 A<CancellationToken>.Ignored))
             .MustHaveHappenedOnceExactly();
     }
@@ -91,15 +91,15 @@ public class JournalTests
     {
         //Arrange
         Journal journal = new(_repository);
-        JournalCursorsConfiguration configuration1 = new()
+        JournalConfiguration configuration1 = new()
         {
-            DateCursor = new DateTime(2026, 08, 10),
-            TimeCursor = TimeSpan.FromDays(1)
+            DateCursor = new DateOnly(2026, 08, 10),
+            DayOffset = 1
         };
-        JournalCursorsConfiguration configuration2 = new()
+        JournalConfiguration configuration2 = new()
         {
-            DateCursor = new DateTime(2026, 08, 15),
-            TimeCursor = TimeSpan.FromDays(1)
+            DateCursor = new DateOnly(2026, 08, 15),
+            DayOffset = 1
         };
 
         //Act
@@ -109,8 +109,8 @@ public class JournalTests
 
         //Assert
         A.CallTo(() => _repository.GetEntriesBetween(
-                new DateTime(2026, 08, 10),
-                new DateTime(2026, 08, 11),
+                new DateOnly(2026, 08, 10),
+                new DateOnly(2026, 08, 11),
                 A<CancellationToken>.Ignored))
             .MustHaveHappenedOnceExactly();
     }
@@ -126,7 +126,7 @@ public class JournalTests
 
         //Assert
         journal.DateCursor.Should().Be(journal.DefaultConfiguration.DateCursor);
-        journal.TimeCursor.Should().Be(journal.DefaultConfiguration.TimeCursor);
+        journal.DayOffset.Should().Be(journal.DefaultConfiguration.DayOffset);
     }
 }
 

@@ -8,13 +8,13 @@ namespace deavnote.core.Interfaces;
 public interface IJournal
 {
     /// <summary>
-    /// Gets the current date and time cursor position.
+    /// Gets the current date cursor value.
     /// </summary>
-    DateTime DateCursor { get; }
+    DateOnly DateCursor { get; }
     /// <summary>
-    /// Gets the current position in time.
+    /// Gets the number of days to offset from <see cref="DateCursor"/>.
     /// </summary>
-    TimeSpan TimeCursor { get; }
+    int DayOffset { get; }
     /// <summary>
     /// Gets the collection of time entries corresponding to the current date and time cursors.
     /// </summary>
@@ -22,7 +22,7 @@ public interface IJournal
     /// <summary>
     /// Gets the default configuration for journal cursors.
     /// </summary>
-    JournalCursorsConfiguration DefaultConfiguration { get; }
+    JournalConfiguration DefaultConfiguration { get; }
 
     /// <summary>
     /// Asynchronously loads the default cursor.
@@ -31,7 +31,7 @@ public interface IJournal
     /// <summary>
     /// Asynchronously sets journal cursors based on the specified configuration.
     /// </summary>
-    Task SetCursorsAsync(JournalCursorsConfiguration configuration, CancellationToken cancellationToken = default);
+    Task SetCursorsAsync(JournalConfiguration configuration, CancellationToken cancellationToken = default);
     /// <summary>
     /// Asynchronously shifts the date cursor by the specified number of days.
     /// </summary>

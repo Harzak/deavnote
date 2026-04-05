@@ -44,6 +44,7 @@ internal sealed partial class App : Application, IDisposable
     {
         string connectionString = DatabasePathResolver.Resolve();
 
+        services.AddUtilsServiceDependencies();
         services.AddModelServiceDependencies(connectionString);
         services.AddRepositoryServiceDependencies();
         services.AddCoreServiceDependencies();

@@ -12,5 +12,5 @@ public interface ITimeEntryRepository
     /// <param name="startDate">The start date of the range to retrieve entries for.</param>
     /// <param name="endDate">The end date of the range to retrieve entries for.</param>
     /// <returns>contains a read-only list of time entries within the specified date range.</returns>
-    Task<IReadOnlyList<TimeEntry>> GetEntriesBetween(DateTime startDate, DateTime endDate, CancellationToken cancellationToken = default);
+    Task<IReadOnlyList<TimeEntry>> GetEntriesBetween(DateOnly startDate, DateOnly endDate, CancellationToken cancellationToken = default);
 }

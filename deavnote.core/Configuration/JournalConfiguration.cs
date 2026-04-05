@@ -3,14 +3,14 @@
 /// <summary>
 /// Represents configuration settings for journal cursors, including date and time positions.
 /// </summary>
-public record JournalCursorsConfiguration
+public record JournalConfiguration
 {
     /// <summary>
     /// Gets the current date and time cursor value.
     /// </summary>
-    public required DateTime DateCursor { get; init; }
+    public required DateOnly DateCursor { get; init; }
     /// <summary>
     /// Gets the current position in time within the context of the operation.
     /// </summary>
-    public required TimeSpan TimeCursor { get; init; }
+    public required int DayOffset { get; init; }
 }

@@ -6,16 +6,21 @@
 internal sealed class ViewModelFactory : IViewModelFactory
 {
     private readonly IJournal _journal;
-    public ViewModelFactory(IJournal journal)
+    private readonly IDateProvider _dateProvider;
+
+    public ViewModelFactory(IJournal journal, IDateProvider dateProvider)
     {
         ArgumentNullException.ThrowIfNull(journal);
+        ArgumentNullException.ThrowIfNull(dateProvider);
+        
         _journal = journal;
+        _dateProvider = dateProvider;
     }
 
     /// <inheritdoc/>
     public JournalViewModel CreateJournalViewModel()
     {
-        return new JournalViewModel(_journal, this);
+        return new JournalViewModel(_journal, _dateProvider, this);
     }
 
     /// <inheritdoc/>

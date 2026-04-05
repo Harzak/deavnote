@@ -12,16 +12,15 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\deavnote.model\deavnote.model.csproj" />
-		<ProjectReference Include="..\deavnote.utils\deavnote.utils.csproj" />
+	  <EditorConfigFiles Remove="C:\Workspaces\deavnote\deavnote.utils\.editorconfig" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <EditorConfigFiles Remove="C:\Workspaces\deavnote\deavnote.repository\.editorconfig" />
+	  <None Include="C:\Workspaces\deavnote\deavnote.utils\.editorconfig" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Include="C:\Workspaces\deavnote\deavnote.repository\.editorconfig" />
+	  <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.5" />
 	</ItemGroup>
 
 </Project>

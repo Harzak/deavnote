@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "deavnote.core.tests", "deav
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "deavnote.app.tests", "deavnote.app.tests\deavnote.app.tests.csproj", "{6CB47611-F7A8-4CAA-9C7F-0689F78B792E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "deavnote.utils", "deavnote.utils\deavnote.utils.csproj", "{D068091B-4943-482B-8F62-306D4FC9F754}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,6 +49,10 @@ Global
 		{6CB47611-F7A8-4CAA-9C7F-0689F78B792E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6CB47611-F7A8-4CAA-9C7F-0689F78B792E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6CB47611-F7A8-4CAA-9C7F-0689F78B792E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D068091B-4943-482B-8F62-306D4FC9F754}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D068091B-4943-482B-8F62-306D4FC9F754}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D068091B-4943-482B-8F62-306D4FC9F754}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D068091B-4943-482B-8F62-306D4FC9F754}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

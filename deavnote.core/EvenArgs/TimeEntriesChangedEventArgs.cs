@@ -9,15 +9,15 @@ public sealed class TimeEntriesChangedEventArgs : EventArgs
     /// Gets the current date and time position used for data traversal or processing.
     /// </summary>
     /// 
-    public DateTime DateCursor { get; }
+    public DateOnly DateCursor { get; }
     /// <summary>
     /// Gets the current position in time within the timeline.
     /// </summary>
-    public TimeSpan TimeCursor { get; }
+    public int DayOffset { get; }
 
-    public TimeEntriesChangedEventArgs(DateTime dateCursor, TimeSpan timeCursor)
+    public TimeEntriesChangedEventArgs(DateOnly dateCursor, int dayOffset)
     {
         this.DateCursor = dateCursor;
-        this.TimeCursor = timeCursor;
+        this.DayOffset = dayOffset;
     }
 }

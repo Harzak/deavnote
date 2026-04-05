@@ -1,9 +1,9 @@
 ﻿namespace deavnote.core.Enums;
 
 /// <summary>
-/// Specifies the available modes for displaying an agenda.
+/// Specifies the available modes for displaying the journal.
 /// </summary>
-public enum EAgendaMode
+public enum EJournalMode
 {
     Day,
     Week,

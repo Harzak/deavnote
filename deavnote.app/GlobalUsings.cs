@@ -1,13 +1,16 @@
 ﻿/// App
 global using deavnote.app.ViewModels;
 global using deavnote.app.Views;
-global using deavnote.core.Enums;
-global using deavnote.core.EvenArgs;
-global using deavnote.core.Interfaces;
-global using deavnote.model.Entities;
-global using deavnote.core.Configuration;
 global using deavnote.app.ViewModels.Base;
 global using deavnote.app.Interfaces;
+global using deavnote.core.Enums;
+global using deavnote.core.EvenArgs;
+global using deavnote.core.Configuration;
+global using deavnote.core.Interfaces;
+global using deavnote.model.Entities;
+global using deavnote.utils.Interfaces;
+global using deavnote.utils.Configuration;
+global using deavnote.utils.Extensions;
 
 /// Repository
 global using deavnote.repository.Interfaces;

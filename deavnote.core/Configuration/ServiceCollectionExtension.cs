@@ -1,5 +1,4 @@
-﻿using deavnote.core.Services;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 
 namespace deavnote.core.Configuration;
 
@@ -16,8 +15,8 @@ public static class ServiceCollectionExtension
         ArgumentNullException.ThrowIfNull(services);
 
         services.AddSingleton<IJournal, Journal>();
+        services.AddSingleton<IDateProvider, DateProvider>();
 
         return services;
     }
 }
-

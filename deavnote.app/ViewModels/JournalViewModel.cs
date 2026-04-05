@@ -6,6 +6,8 @@ internal sealed partial class JournalViewModel : BaseViewModel
 {
     private readonly IViewModelFactory _viewModelFactory;
     private readonly IJournal _journal;
+    private readonly IDateProvider _dateProvider;
+
     private DateTime _dateCursor;
 
     [ObservableProperty]
@@ -14,12 +16,14 @@ internal sealed partial class JournalViewModel : BaseViewModel
     [ObservableProperty]
     private ObservableCollection<TimeEntryViewModel> _timeEntries;
 
-    public JournalViewModel(IJournal journal, IViewModelFactory viewModelFactory)
+    public JournalViewModel(IJournal journal, IDateProvider dateProvider, IViewModelFactory viewModelFactory)
     {
         ArgumentNullException.ThrowIfNull(journal);
+        ArgumentNullException.ThrowIfNull(dateProvider);
         ArgumentNullException.ThrowIfNull(viewModelFactory);
 
         _journal = journal;
+        _dateProvider = dateProvider;
         _viewModelFactory = viewModelFactory;
 
         _journal.TimeEntriesChanged += OnJournalTimeEntriesChanged;
@@ -62,34 +66,34 @@ internal sealed partial class JournalViewModel : BaseViewModel
     [RelayCommand]
     private async Task MoveDateCursorToPreviousDayAsync()
     {
-        await _journal.ShiftDateCursorAsync(-1).ConfigureAwait(false);
+        await _journal.ShiftDateCursorAsync(days: -1).ConfigureAwait(false);
     }
 
     [RelayCommand]
     private async Task MoveDateCursorToNextDayAsync()
     {
-        await _journal.ShiftDateCursorAsync(1).ConfigureAwait(false);
+        await _journal.ShiftDateCursorAsync(days: 1).ConfigureAwait(false);
     }
 
     [RelayCommand]
-    private async Task ChangeAgendaMode(EAgendaMode mode)
+    private async Task ChangeJournalMode(EJournalMode mode)
     {
-        JournalCursorsConfiguration configuration = mode switch
+        JournalConfiguration configuration = mode switch
         {
-            EAgendaMode.Day => new JournalCursorsConfiguration()
+            EJournalMode.Day => new JournalConfiguration()
             {
-                DateCursor = DateTime.Now.AddDays(1), //normalize
-                TimeCursor = TimeSpan.FromDays(1)
+                DateCursor = DateOnly.FromDateTime(DateTime.Today),
+                DayOffset = 1
             },
-            EAgendaMode.Week => new JournalCursorsConfiguration()
+            EJournalMode.Week => new JournalConfiguration()
             {
-                DateCursor = DateTime.Now.AddDays(1), //normalize
-                TimeCursor = TimeSpan.FromDays(7)
+                DateCursor = _dateProvider.GetFirstDayOfWeek(from: DateTime.Today),
+                DayOffset = 7
             },
-            EAgendaMode.Month => new JournalCursorsConfiguration()
+            EJournalMode.Month => new JournalConfiguration()
             {
-                DateCursor = DateTime.Now.AddDays(1), //normalize
-                TimeCursor = TimeSpan.FromDays(30)
+                DateCursor = _dateProvider.GetFirstDayOfMonth(from: DateTime.Today),
+                DayOffset = _dateProvider.GetDaysInMonth(from: DateTime.Today)
             },
             _ => _journal.DefaultConfiguration,
         };
