@@ -16,7 +16,7 @@ internal sealed class TimeEntryRepository : ITimeEntryRepository
     }
 
     /// <inheritdoc/>
-    public async Task<IReadOnlyList<TimeEntry>> GetEntriesBetween(DateOnly startDateUtc, DateOnly endDateUtc, CancellationToken cancellationToken = default)
+    public async Task<IReadOnlyList<TimeEntry>> GetEntriesBetweenAsync(DateOnly startDateUtc, DateOnly endDateUtc, CancellationToken cancellationToken = default)
     {
         if (startDateUtc > endDateUtc)
         {

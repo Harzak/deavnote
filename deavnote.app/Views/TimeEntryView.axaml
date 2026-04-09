@@ -2,25 +2,41 @@
 			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-			 mc:Ignorable="d" d:DesignWidth="300" d:DesignHeight="200"
-			 xmlns:dd="using:deavnote.app.DesignData"
+			 mc:Ignorable="d" d:DesignWidth="250" d:DesignHeight="130"
+			 xmlns:dd="using:deavnote.app.Design"
 			 xmlns:viewmodels="using:deavnote.app.ViewModels"
+			 xmlns:ic="using:FluentIcons.Avalonia"
+			 xmlns:conv="using:deavnote.app.Converters"
+			 d:DataContext="{x:Static dd:DesignData.TimeEntryViewModel}"
 			 x:DataType="viewmodels:TimeEntryViewModel"
-			 x:Class="deavnote.app.Views.TimeEntryView">
+			 x:Class="deavnote.app.Views.TimeEntryView"
+			 MinHeight="130"
+			 MinWidth="250"
+			 Background="{DynamicResource TimeEntryBackground}">
 
-	<Grid Margin="5" ColumnDefinitions="Auto, *, Auto" RowDefinitions="Auto, Auto, *, Auto">
-		<Button HorizontalAlignment="Right" Grid.Column="3" Grid.Row="0" Content="Expt." />
+	<UserControl.Resources>
+		<conv:DevTaskStateToIconConverter x:Key="DevTaskStateToIconConverter" />
+		<conv:DevTaskStateToColorConverter x:Key="DevTaskStateToColorConverter" />
+		<conv:TimeSpanToReadableDurationConverter x:Key="TimeSpanToReadableDurationConverter" />
+	</UserControl.Resources>
 
-		<TextBlock Foreground="White" Grid.Column="0" Grid.ColumnSpan="3"
-				   Grid.Row="1" Text="{Binding Code}" HorizontalAlignment="Center"
-				   VerticalAlignment="Top" Margin="5"/>
+	<Grid Margin="5" ColumnDefinitions="Auto, *, Auto" RowDefinitions="Auto, *, Auto">
+		<Button HorizontalAlignment="Right" Grid.Column="3" Grid.Row="0" ToolTip.Tip="Copy time entry" Command="{Binding CopyToClipboardCommand}"  >
+			<ic:FluentIcon Icon="Copy" />
+		</Button>
 
-		<TextBlock Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="2" Text="{Binding Title}"
-				   HorizontalAlignment="Center" VerticalAlignment="Top" Margin="5"/>
+		<TextBlock Grid.Column="0" Grid.ColumnSpan="3" Classes="CardTitle"
+				   Grid.Row="0" Text="{Binding Code}"/>
 
-		<Button Grid.Column="0" Grid.Row="3" Content="en cours" IsEnabled="False" />
+		<TextBlock Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1" Text="{Binding Title}" Classes="CardContent"/>
 
-		<TextBlock Grid.Column="2" Grid.Row="3" Text="{Binding Duration}"/>
+		<ic:FluentIcon Grid.Column="0"
+					   Grid.Row="2"
+					   Foreground="{Binding State, Converter={StaticResource DevTaskStateToColorConverter}}"
+					   ToolTip.Tip="{Binding State, Converter={StaticResource EnumDisplayNameConverter}}"
+					   Icon="{Binding State, Converter={StaticResource DevTaskStateToIconConverter}}" IconSize="Size12" />
+
+		<TextBlock Grid.Column="2" Classes="CardLegend"  HorizontalAlignment="Right" Grid.Row="2" Text="{Binding Duration, Converter={StaticResource TimeSpanToReadableDurationConverter}}"/>
 
 	</Grid>
 

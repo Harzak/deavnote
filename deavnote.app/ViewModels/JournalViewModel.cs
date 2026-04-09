@@ -7,8 +7,10 @@ internal sealed partial class JournalViewModel : BaseViewModel
     private readonly IViewModelFactory _viewModelFactory;
     private readonly IJournal _journal;
     private readonly IDateProvider _dateProvider;
+    private readonly IDialogService _dialogService;
 
-    private DateTime _dateCursor;
+    [ObservableProperty]
+    private DateOnly _dateCursor;
 
     [ObservableProperty]
     private bool _isLoading;
@@ -16,18 +18,19 @@ internal sealed partial class JournalViewModel : BaseViewModel
     [ObservableProperty]
     private ObservableCollection<TimeEntryViewModel> _timeEntries;
 
-    public JournalViewModel(IJournal journal, IDateProvider dateProvider, IViewModelFactory viewModelFactory)
+    public JournalViewModel(IJournal journal, IDateProvider dateProvider, IViewModelFactory viewModelFactory, IDialogService dialogService)
     {
         ArgumentNullException.ThrowIfNull(journal);
         ArgumentNullException.ThrowIfNull(dateProvider);
         ArgumentNullException.ThrowIfNull(viewModelFactory);
+        ArgumentNullException.ThrowIfNull(dialogService);
 
         _journal = journal;
         _dateProvider = dateProvider;
         _viewModelFactory = viewModelFactory;
+        _dialogService = dialogService;
 
         _journal.TimeEntriesChanged += OnJournalTimeEntriesChanged;
-        _dateCursor = DateTime.Now.Date;
         _timeEntries = [];
     }
 
@@ -40,6 +43,8 @@ internal sealed partial class JournalViewModel : BaseViewModel
 
     private void OnJournalTimeEntriesChanged(object? sender, TimeEntriesChangedEventArgs e)
     {
+        this.DateCursor = _journal.DateCursor;
+
         this.TimeEntries.Clear();
 
         if (_journal.TimeEntries.Count == 0) return;
@@ -52,9 +57,15 @@ internal sealed partial class JournalViewModel : BaseViewModel
     }
 
     [RelayCommand]
-    private void AddTimeEntry()
+    private async Task AddTimeEntryAsync()
     {
-        throw new NotImplementedException();
+        AddTimeEntryViewModel vm = _viewModelFactory.CreateAddTimeEntryViewModel();
+        TimeEntry? result = await _dialogService.ShowDialogAsync(vm).ConfigureAwait(false);
+
+        if (result != null)
+        {
+            // TODO: persist
+        }
     }
 
     [RelayCommand]

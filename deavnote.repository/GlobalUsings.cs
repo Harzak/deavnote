@@ -4,6 +4,7 @@ global using deavnote.model.Entities;
 global using deavnote.repository.Interfaces;
 global using deavnote.repository.Services;
 global using deavnote.utils.Extensions;
+global using deavnote.repository.Dto;
 
 /// .NET
 global using System;

@@ -106,7 +106,7 @@ internal sealed class Journal : IJournal
         await this.LoadEntriesInCursorAsync(cancellationToken).ConfigureAwait(false);
 
         _entriesInCursor.Clear();
-        IEnumerable<TimeEntry> entries = _pool.Values.Where(e => e.StartedAtUtc.IsInRange(this.DateCursor, this.DateCursor.AddDays(this.DayOffset)));
+        IEnumerable<TimeEntry> entries = _pool.Values.Where(e => e.StartedAtUtc.IsInRangeExclusive(this.DateCursor, this.DateCursor.AddDays(this.DayOffset)));
 
         _entriesInCursor.AddRange(entries);
         TimeEntriesChanged?.Invoke(this, new TimeEntriesChangedEventArgs(this.DateCursor, this.DayOffset));
@@ -151,7 +151,7 @@ internal sealed class Journal : IJournal
 
     private async Task LoadEntriesBetweenASync(DateOnly from, DateOnly to, CancellationToken cancellationToken = default)
     {
-        IReadOnlyList<TimeEntry> entries = await _repository.GetEntriesBetween(from, to, cancellationToken).ConfigureAwait(false);
+        IReadOnlyList<TimeEntry> entries = await _repository.GetEntriesBetweenAsync(from, to, cancellationToken).ConfigureAwait(false);
 
         foreach (TimeEntry entry in entries)
         {

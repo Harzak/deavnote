@@ -8,6 +8,7 @@
 		mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
 		x:Class="deavnote.app.Views.MainView"
 		x:DataType="vm:MainViewModel"
+		Background="{DynamicResource CustomMainBackground}"
 		Icon="/Assets/avalonia-logo.ico"
 		Title="deavnote.app">
 

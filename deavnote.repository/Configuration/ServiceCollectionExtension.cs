@@ -14,8 +14,9 @@ public static class ServiceCollectionExtension
     {
         ArgumentNullException.ThrowIfNull(services);
 
-        services.AddSingleton<ITimeEntryRepository, TimeEntryRepository>();
         services.AddSingleton<IDatabaseInitializer, DatabaseInitializer>();
+        services.AddSingleton<ITimeEntryRepository, TimeEntryRepository>();
+        services.AddSingleton<IDevTaskRepository, DevTaskRepository>();
 
         return services;
     }

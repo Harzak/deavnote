@@ -28,7 +28,7 @@ public class JournalTests
         await journal.SetCursorsAsync(configuration, this.TestContext.CancellationToken).ConfigureAwait(false);
 
         //Assert
-        A.CallTo(() => _repository.GetEntriesBetween(
+        A.CallTo(() => _repository.GetEntriesBetweenAsync(
                 new DateOnly(2026, 08, 10),
                 new DateOnly(2026, 08, 11),
                 A<CancellationToken>.Ignored))
@@ -50,13 +50,13 @@ public class JournalTests
         await journal.SetCursorsAsync(configuration, this.TestContext.CancellationToken).ConfigureAwait(false);
 
         //Assert
-        A.CallTo(() => _repository.GetEntriesBetween(
+        A.CallTo(() => _repository.GetEntriesBetweenAsync(
                 new DateOnly(2026, 08, 09),
                 new DateOnly(2026, 08, 10),
                 A<CancellationToken>.Ignored))
             .MustHaveHappenedOnceExactly();
 
-        A.CallTo(() => _repository.GetEntriesBetween(
+        A.CallTo(() => _repository.GetEntriesBetweenAsync(
                 new DateOnly(2026, 08, 11),
                 new DateOnly(2026, 08, 12),
                 A<CancellationToken>.Ignored))
@@ -79,7 +79,7 @@ public class JournalTests
         await journal.SetCursorsAsync(configuration, this.TestContext.CancellationToken).ConfigureAwait(false);
 
         //Assert
-        A.CallTo(() => _repository.GetEntriesBetween(
+        A.CallTo(() => _repository.GetEntriesBetweenAsync(
                 new DateOnly(2026, 08, 10),
                 new DateOnly(2026, 08, 11),
                 A<CancellationToken>.Ignored))
@@ -108,11 +108,82 @@ public class JournalTests
         await journal.SetCursorsAsync(configuration1, this.TestContext.CancellationToken).ConfigureAwait(false);
 
         //Assert
-        A.CallTo(() => _repository.GetEntriesBetween(
+        A.CallTo(() => _repository.GetEntriesBetweenAsync(
                 new DateOnly(2026, 08, 10),
                 new DateOnly(2026, 08, 11),
                 A<CancellationToken>.Ignored))
             .MustHaveHappenedOnceExactly();
+    }
+
+
+    [TestMethod]
+    public async Task ShiftDate_WithSameDate_ShouldRetrieveResult()
+    {
+        //Arrange
+        Journal journal = new(_repository);
+        JournalConfiguration configuration1 = new()
+        {
+            DateCursor = new DateOnly(2026, 08, 10),
+            DayOffset = 1
+        };
+        A.CallTo(() => _repository.GetEntriesBetweenAsync(
+                new DateOnly(2026, 08, 10),
+                new DateOnly(2026, 08, 11),
+                A<CancellationToken>.Ignored))
+            .Returns(new List<TimeEntry>()
+            {
+                new TimeEntry()
+                {
+                    Id = 1,
+                    Code = "TEST",
+                    Name = "Test Entry",
+                    StartedAtUtc = new DateTime(2026, 08, 10, 8, 0, 0),
+                }
+            }.AsReadOnly());
+
+        //Act
+        await journal.SetCursorsAsync(configuration1, this.TestContext.CancellationToken).ConfigureAwait(false);
+        await journal.ShiftDateCursorAsync(-1, this.TestContext.CancellationToken).ConfigureAwait(false);
+        await journal.ShiftDateCursorAsync(1, this.TestContext.CancellationToken).ConfigureAwait(false);
+
+        //Assert
+        journal.TimeEntries.Should().ContainSingle();
+        journal.TimeEntries.ElementAt(0).Id.Should().Be(1);
+        journal.TimeEntries.ElementAt(0).Code.Should().Be("TEST");
+        journal.TimeEntries.ElementAt(0).Name.Should().Be("Test Entry");
+    }
+
+    [TestMethod]
+    public async Task ShiftDate_WhenEmptyDays_ShouldNotRetrieveResult()
+    {
+        //Arrange
+        Journal journal = new(_repository);
+        JournalConfiguration configuration1 = new()
+        {
+            DateCursor = new DateOnly(2026, 08, 10),
+            DayOffset = 1
+        };
+        A.CallTo(() => _repository.GetEntriesBetweenAsync(
+                new DateOnly(2026, 08, 10),
+                new DateOnly(2026, 08, 11),
+                A<CancellationToken>.Ignored))
+            .Returns(new List<TimeEntry>()
+            {
+                new TimeEntry()
+                {
+                    Id = 1,
+                    Code = "TEST",
+                    Name = "Test Entry",
+                    StartedAtUtc = new DateTime(2026, 08, 10, 8, 0, 0),
+                }
+            }.AsReadOnly());
+
+        //Act
+        await journal.SetCursorsAsync(configuration1, this.TestContext.CancellationToken).ConfigureAwait(false);
+        await journal.ShiftDateCursorAsync(-1, this.TestContext.CancellationToken).ConfigureAwait(false);
+
+        //Assert
+        journal.TimeEntries.Should().BeEmpty();
     }
 
     [TestMethod]

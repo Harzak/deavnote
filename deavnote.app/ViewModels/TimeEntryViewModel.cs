@@ -1,6 +1,4 @@
-﻿using deavnote.app.ViewModels.Base;
-
-namespace deavnote.app.ViewModels;
+﻿namespace deavnote.app.ViewModels;
 
 internal sealed partial class TimeEntryViewModel : BaseViewModel
 {
@@ -13,6 +11,9 @@ internal sealed partial class TimeEntryViewModel : BaseViewModel
     [ObservableProperty]
     private TimeSpan _duration;
 
+    [ObservableProperty]
+    private EDevTaskState _state;
+
     public TimeEntryViewModel(TimeEntry timeEntry)
     {
         ArgumentNullException.ThrowIfNull(timeEntry);
@@ -20,7 +21,13 @@ internal sealed partial class TimeEntryViewModel : BaseViewModel
         _code = timeEntry.Code;
         _title = timeEntry.Task.Name;
         _duration = timeEntry.Duration;
+        _state = timeEntry.Task.State;
     }
 
+    [RelayCommand]
+    private void CopyToClipboard()
+    {
+        throw new NotImplementedException();
+    }
 }
 

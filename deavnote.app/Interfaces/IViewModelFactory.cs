@@ -18,4 +18,8 @@ internal interface IViewModelFactory
     /// </summary>
     /// <returns>A JournalViewModel representing the journal data.</returns>
     JournalViewModel CreateJournalViewModel();
+    /// <summary>
+    /// Creates a new instance of the AddTimeEntryViewModel.
+    /// </summary>
+    AddTimeEntryViewModel CreateAddTimeEntryViewModel();
 }
