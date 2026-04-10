@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="deavnote.app.Views.TimeEntryView"
+﻿<UserControl x:Class="deavnote.app.Views.TimeEntry.TimeEntryListItemView"
              xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:conv="using:deavnote.app.Converters"
@@ -6,13 +6,13 @@
              xmlns:dd="using:deavnote.app.Design"
              xmlns:ic="using:FluentIcons.Avalonia"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:viewmodels="using:deavnote.app.ViewModels"
+             xmlns:viewmodels="using:deavnote.app.ViewModels.TimeEntry"
              MinWidth="250"
              MinHeight="130"
              d:DataContext="{x:Static dd:DesignData.TimeEntryViewModel}"
              d:DesignHeight="130"
              d:DesignWidth="250"
-             x:DataType="viewmodels:TimeEntryViewModel"
+             x:DataType="viewmodels:TimeEntryListItemViewModel"
              Background="{DynamicResource TimeEntryBackground}"
              mc:Ignorable="d">
 
@@ -26,6 +26,7 @@
           ColumnDefinitions="Auto, *, Auto" RowDefinitions="Auto, *, Auto">
         <Button Grid.Row="0" Grid.Column="3"
                 HorizontalAlignment="Right"
+                Classes="SmallIconButton"
                 Command="{Binding CopyToClipboardCommand}"
                 ToolTip.Tip="Copy time entry">
             <ic:FluentIcon Icon="Copy" />

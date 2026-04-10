@@ -1,8 +1,8 @@
-﻿namespace deavnote.app.ViewModels;
+﻿namespace deavnote.app.ViewModels.DevTask;
 
 internal sealed partial class DevTaskDetailViewModel : BaseViewModel
 {
-    private readonly DevTask _model;
+    private readonly model.Entities.DevTask _model;
 
     public DateTime CreatedAtUtc => _model.CreatedAtUtc;
     public DateTime UpdatedAtUtc => _model.UpdatedAtUtc;
@@ -20,7 +20,7 @@ internal sealed partial class DevTaskDetailViewModel : BaseViewModel
     private EDevTaskState _state;
 
 
-    public DevTaskDetailViewModel(DevTask model)
+    public DevTaskDetailViewModel(model.Entities.DevTask model)
     {
         ArgumentNullException.ThrowIfNull(model);
         _model = model;

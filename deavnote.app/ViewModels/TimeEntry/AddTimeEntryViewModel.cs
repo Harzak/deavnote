@@ -1,4 +1,4 @@
-namespace deavnote.app.ViewModels;
+namespace deavnote.app.ViewModels.TimeEntry;
 
 internal sealed partial class AddTimeEntryViewModel : DialogViewModel<AddTimeEntryRequest>
 {

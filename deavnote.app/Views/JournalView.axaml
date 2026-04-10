@@ -4,8 +4,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:ic="using:FluentIcons.Avalonia"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:teviews="using:deavnote.app.Views.TimeEntry"
              xmlns:viewmodels="using:deavnote.app.ViewModels"
-             xmlns:views="using:deavnote.app.Views"
              d:DesignHeight="800"
              d:DesignWidth="400"
              x:DataType="viewmodels:JournalViewModel"
@@ -51,14 +51,29 @@
             <ic:FluentIcon Icon="Add" />
         </Button>
 
-        <ItemsControl Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="6"
-                      ItemsSource="{Binding TimeEntries}">
-            <ItemsControl.ItemTemplate>
-                <DataTemplate x:DataType="viewmodels:TimeEntryViewModel">
-                    <views:TimeEntryView Margin="4,6" />
+        <ListBox Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="6"
+                 ItemsSource="{Binding TimeEntries}"
+                 SelectedItem="{Binding SelectedTimeEntry}"
+                 SelectionMode="Single">
+            <ListBox.ItemContainerTheme>
+                <ControlTheme TargetType="ListBoxItem">
+                    <Setter Property="Padding" Value="0" />
+                    <Setter Property="Background" Value="Transparent" />
+                    <Setter Property="Template">
+                        <ControlTemplate>
+                            <ContentPresenter Padding="{TemplateBinding Padding}"
+                                              Content="{TemplateBinding Content}"
+                                              ContentTemplate="{TemplateBinding ContentTemplate}" />
+                        </ControlTemplate>
+                    </Setter>
+                </ControlTheme>
+            </ListBox.ItemContainerTheme>
+            <ListBox.ItemTemplate>
+                <DataTemplate x:DataType="viewmodels:TimeEntry.TimeEntryListItemViewModel">
+                    <teviews:TimeEntryListItemView Margin="4,6" />
                 </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
+            </ListBox.ItemTemplate>
+        </ListBox>
     </Grid>
 
 </UserControl>

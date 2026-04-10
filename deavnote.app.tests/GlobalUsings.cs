@@ -11,3 +11,4 @@ global using FakeItEasy;
 global using FluentAssertions;
 global using System;
 global using System.Globalization;
+global using CommunityToolkit.Mvvm.Messaging;

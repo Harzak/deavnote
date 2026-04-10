@@ -5,7 +5,7 @@
 /// </summary>
 internal static class DesignData
 {
-    public static TimeEntryViewModel TimeEntryViewModel { get; } = new(new TimeEntry()
+    public static TimeEntryListItemViewModel TimeEntryViewModel { get; } = new(new TimeEntry()
     {
         Name = "Design Time Entry",
         Task = new DevTask()

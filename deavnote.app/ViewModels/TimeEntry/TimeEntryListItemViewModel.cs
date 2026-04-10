@@ -1,7 +1,9 @@
-﻿namespace deavnote.app.ViewModels;
+﻿namespace deavnote.app.ViewModels.TimeEntry;
 
-internal sealed partial class TimeEntryViewModel : BaseViewModel
+internal sealed partial class TimeEntryListItemViewModel : BaseViewModel
 {
+    public int Id { get; }
+
     [ObservableProperty]
     private string _code = string.Empty;
 
@@ -14,7 +16,7 @@ internal sealed partial class TimeEntryViewModel : BaseViewModel
     [ObservableProperty]
     private EDevTaskState _state;
 
-    public TimeEntryViewModel(TimeEntry timeEntry)
+    public TimeEntryListItemViewModel(model.Entities.TimeEntry timeEntry)
     {
         ArgumentNullException.ThrowIfNull(timeEntry);
 
@@ -22,6 +24,7 @@ internal sealed partial class TimeEntryViewModel : BaseViewModel
         _title = timeEntry.Name;
         _state = timeEntry.Task.State;
         _duration = timeEntry.Duration;
+        this.Id = timeEntry.Id;
     }
 
     [RelayCommand]

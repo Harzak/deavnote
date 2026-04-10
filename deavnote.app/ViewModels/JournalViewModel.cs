@@ -1,4 +1,5 @@
 ﻿using Avalonia.Threading;
+using CommunityToolkit.Mvvm.Messaging;
 
 [assembly: InternalsVisibleTo("deavnote.app.tests")]
 
@@ -11,6 +12,7 @@ internal sealed partial class JournalViewModel : BaseViewModel
     private readonly IDateProvider _dateProvider;
     private readonly IDialogService _dialogService;
     private readonly INotificationService _notificationService;
+    private readonly IMessenger _messenger;
 
     [ObservableProperty]
     private DateOnly _dateCursor;
@@ -19,26 +21,32 @@ internal sealed partial class JournalViewModel : BaseViewModel
     private bool _isLoading;
 
     [ObservableProperty]
-    private ObservableCollection<TimeEntryViewModel> _timeEntries;
+    private ObservableCollection<TimeEntryListItemViewModel> _timeEntries;
+
+    [ObservableProperty]
+    private TimeEntryListItemViewModel? _selectedTimeEntry;
 
     public JournalViewModel(
         IJournal journal,
         IDateProvider dateProvider,
         IViewModelFactory viewModelFactory,
         IDialogService dialogService,
-        INotificationService notificationService)
+        INotificationService notificationService,
+        IMessenger messenger)
     {
         ArgumentNullException.ThrowIfNull(journal);
         ArgumentNullException.ThrowIfNull(dateProvider);
         ArgumentNullException.ThrowIfNull(viewModelFactory);
         ArgumentNullException.ThrowIfNull(dialogService);
         ArgumentNullException.ThrowIfNull(notificationService);
+        ArgumentNullException.ThrowIfNull(messenger);
 
         _journal = journal;
         _dateProvider = dateProvider;
         _viewModelFactory = viewModelFactory;
         _dialogService = dialogService;
         _notificationService = notificationService;
+        _messenger = messenger;
 
         _journal.TimeEntriesChanged += OnJournalTimeEntriesChanged;
         _timeEntries = [];
@@ -51,22 +59,22 @@ internal sealed partial class JournalViewModel : BaseViewModel
         this.IsLoading = false;
     }
 
-    private void OnJournalTimeEntriesChanged(object? sender, TimeEntriesChangedEventArgs e)
+    [RelayCommand]
+    private async Task MoveDateCursorToNowAsync()
     {
-        Dispatcher.UIThread.Post(() =>
-        {
-            this.DateCursor = _journal.DateCursor;
+        await _journal.ResetDateCursorAsync().ConfigureAwait(false);
+    }
 
-            this.TimeEntries.Clear();
+    [RelayCommand]
+    private async Task MoveDateCursorToPreviousDayAsync()
+    {
+        await _journal.ShiftDateCursorAsync(days: -1).ConfigureAwait(false);
+    }
 
-            if (_journal.TimeEntries.Count == 0) return;
-
-            foreach (TimeEntry entry in _journal.TimeEntries)
-            {
-                TimeEntryViewModel timeEntryViewModel = _viewModelFactory.CreateTimeEntryViewModel(entry);
-                this.TimeEntries.Add(timeEntryViewModel);
-            }
-        });
+    [RelayCommand]
+    private async Task MoveDateCursorToNextDayAsync()
+    {
+        await _journal.ShiftDateCursorAsync(days: 1).ConfigureAwait(false);
     }
 
     [RelayCommand]
@@ -90,24 +98,6 @@ internal sealed partial class JournalViewModel : BaseViewModel
         {
             _notificationService.Show(result.ErrorMessage ?? "Failed to add time entry.", ENotificationType.Error, durationMs: 0);
         }
-    }
-
-    [RelayCommand]
-    private async Task MoveDateCursorToNowAsync()
-    {
-        await _journal.ResetDateCursorAsync().ConfigureAwait(false);
-    }
-
-    [RelayCommand]
-    private async Task MoveDateCursorToPreviousDayAsync()
-    {
-        await _journal.ShiftDateCursorAsync(days: -1).ConfigureAwait(false);
-    }
-
-    [RelayCommand]
-    private async Task MoveDateCursorToNextDayAsync()
-    {
-        await _journal.ShiftDateCursorAsync(days: 1).ConfigureAwait(false);
     }
 
     [RelayCommand]
@@ -139,5 +129,32 @@ internal sealed partial class JournalViewModel : BaseViewModel
     private void CopyToClipboard()
     {
         throw new NotImplementedException();
+    }
+
+    partial void OnSelectedTimeEntryChanged(TimeEntryListItemViewModel? value)
+    {
+        if (value != null)
+        {
+            model.Entities.TimeEntry model = _journal.TimeEntries.First(entry => entry.Id == value.Id);
+            _messenger.Send(new TimeEntrySelectedMessage(model));
+        }
+    }
+
+    private void OnJournalTimeEntriesChanged(object? sender, TimeEntriesChangedEventArgs e)
+    {
+        Dispatcher.UIThread.Post((Action)(() =>
+        {
+            this.DateCursor = _journal.DateCursor;
+
+            this.TimeEntries.Clear();
+
+            if (_journal.TimeEntries.Count == 0) return;
+
+            foreach (model.Entities.TimeEntry entry in _journal.TimeEntries)
+            {
+                TimeEntryListItemViewModel timeEntryViewModel = _viewModelFactory.CreateTimeEntryViewModel(entry);
+                this.TimeEntries.Add(timeEntryViewModel);
+            }
+        }));
     }
 }

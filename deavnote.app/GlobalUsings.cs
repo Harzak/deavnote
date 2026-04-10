@@ -2,9 +2,12 @@
 global using deavnote.app.ViewModels;
 global using deavnote.app.Views;
 global using deavnote.app.ViewModels.Base;
+global using deavnote.app.ViewModels.TimeEntry;
+global using deavnote.app.ViewModels.DevTask;
 global using deavnote.app.Interfaces;
 global using deavnote.app.Services;
 global using deavnote.app.Enums;
+global using deavnote.app.Messages;
 global using deavnote.core.Enums;
 global using deavnote.core.EvenArgs;
 global using deavnote.core.Configuration;
@@ -36,4 +39,6 @@ global using Avalonia.Data.Core.Plugins;
 /// External libraries
 global using CommunityToolkit.Mvvm.ComponentModel;
 global using CommunityToolkit.Mvvm.Input;
+global using CommunityToolkit.Mvvm.Messaging.Messages;
+global using CommunityToolkit.Mvvm.Messaging;
 

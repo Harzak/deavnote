@@ -18,6 +18,7 @@ internal static class ServiceCollectionExtension
         services.AddSingleton<IViewModelFactory, ViewModelFactory>();
         services.AddSingleton<IDialogService, DialogService>();
         services.AddSingleton<INotificationService, NotificationService>();
+        services.AddSingleton<IMessenger>(WeakReferenceMessenger.Default);
 
         return services;
     }

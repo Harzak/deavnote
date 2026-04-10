@@ -12,7 +12,7 @@ internal interface IViewModelFactory
     /// Creates a view model representation of a time entry.
     /// </summary>
     /// <param name="timeEntry">The time entry to convert.</param>
-    TimeEntryViewModel CreateTimeEntryViewModel(TimeEntry timeEntry);
+    TimeEntryListItemViewModel CreateTimeEntryViewModel(TimeEntry timeEntry);
     /// <summary>
     /// Creates a new instance of the JournalViewModel.
     /// </summary>

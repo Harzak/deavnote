@@ -1,9 +1,8 @@
-﻿
-namespace deavnote.app.ViewModels;
+﻿namespace deavnote.app.ViewModels.TimeEntry;
 
 internal sealed partial class TimeEntryDetailViewModel : BaseViewModel
 {
-    private readonly TimeEntry _model;
+    private readonly model.Entities.TimeEntry _model;
 
     public DateTimeOffset StartedAtUtc => _model.StartedAtUtc;
     public DateTime CreatedAtUtc => _model.CreatedAtUtc;
@@ -18,7 +17,10 @@ internal sealed partial class TimeEntryDetailViewModel : BaseViewModel
     [ObservableProperty]
     private TimeSpan _duration;
 
-    public TimeEntryDetailViewModel(TimeEntry model)
+    [ObservableProperty]
+    private DevTaskDetailViewModel _relatedTask;
+
+    public TimeEntryDetailViewModel(model.Entities.TimeEntry model)
     {
         ArgumentNullException.ThrowIfNull(model);
         _model = model;
@@ -26,5 +28,6 @@ internal sealed partial class TimeEntryDetailViewModel : BaseViewModel
         _name = model.Name;
         _workDone = model.WorkDone ?? string.Empty;
         _duration = model.Duration;
+        _relatedTask = new DevTaskDetailViewModel(model.Task);
     }
 }

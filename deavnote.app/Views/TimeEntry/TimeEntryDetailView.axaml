@@ -1,12 +1,12 @@
-﻿<UserControl x:Class="deavnote.app.Views.TimeEntryDetailView"
+﻿<UserControl x:Class="deavnote.app.Views.TimeEntry.TimeEntryDetailView"
              xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:dd="using:deavnote.app.Design"
+             xmlns:dtviews="using:deavnote.app.Views.DevTask"
              xmlns:ic="using:FluentIcons.Avalonia"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:viewmodels="using:deavnote.app.ViewModels"
-             xmlns:views="using:deavnote.app.Views"
+             xmlns:viewmodels="using:deavnote.app.ViewModels.TimeEntry"
              d:DataContext="{x:Static dd:DesignData.TimeEntryDetailViewModel}"
              d:DesignHeight="450"
              d:DesignWidth="800"
@@ -18,7 +18,8 @@
           ColumnDefinitions="*, Auto" ColumnSpacing="15" RowDefinitions="Auto, Auto, Auto, Auto,Auto, Auto, *"
           RowSpacing="15">
 
-        <views:DevTaskDetailView Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" />
+        <dtviews:DevTaskDetailView Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2"
+                                   DataContext="{Binding RelatedTask}" />
 
         <TextBlock Grid.Row="0" Grid.Column="0"
                    Text="Time entry" />

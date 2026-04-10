@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="deavnote.app.Views.DevTaskDetailView"
+﻿<UserControl x:Class="deavnote.app.Views.DevTask.DevTaskDetailView"
              xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -8,7 +8,7 @@
              d:DataContext="{x:Static dd:DesignData.DevTaskDetailViewModel}"
              d:DesignHeight="500"
              d:DesignWidth="600"
-             x:DataType="viewmodels:DevTaskDetailViewModel"
+             x:DataType="viewmodels:DevTask.DevTaskDetailViewModel"
              Background="{DynamicResource TimeEntryBackground}"
              mc:Ignorable="d">
 

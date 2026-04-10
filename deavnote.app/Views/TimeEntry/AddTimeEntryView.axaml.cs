@@ -1,6 +1,6 @@
 using Avalonia.Interactivity;
 
-namespace deavnote.app.Views;
+namespace deavnote.app.Views.TimeEntry;
 
 internal sealed partial class AddTimeEntryView : UserControl
 {

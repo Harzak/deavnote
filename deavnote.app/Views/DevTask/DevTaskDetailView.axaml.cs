@@ -1,4 +1,4 @@
-namespace deavnote.app.Views;
+namespace deavnote.app.Views.DevTask;
 
 internal sealed partial class DevTaskDetailView : UserControl
 {
