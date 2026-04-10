@@ -1,0 +1,59 @@
+﻿<UserControl x:Class="deavnote.app.Views.DevTaskDetailView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:dd="using:deavnote.app.Design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewmodels="using:deavnote.app.ViewModels"
+             d:DataContext="{x:Static dd:DesignData.DevTaskDetailViewModel}"
+             d:DesignHeight="500"
+             d:DesignWidth="600"
+             x:DataType="viewmodels:DevTaskDetailViewModel"
+             Background="{DynamicResource TimeEntryBackground}"
+             mc:Ignorable="d">
+
+    <Grid Margin="10"
+          ColumnDefinitions="*, Auto" ColumnSpacing="15" RowDefinitions="Auto,Auto, *"
+          RowSpacing="15">
+
+        <StackPanel Grid.Row="0" Grid.Column="0"
+                    VerticalAlignment="Center"
+                    Orientation="Horizontal">
+            <TextBlock Text="DevTask: " />
+            <TextBlock Text="{Binding Code}" />
+        </StackPanel>
+
+        <Grid Grid.Row="0" Grid.Column="1"
+              HorizontalAlignment="Right"
+              ColumnDefinitions="Auto, *" ColumnSpacing="2" RowDefinitions="Auto, Auto"
+              RowSpacing="2">
+            <TextBlock Grid.Row="0" Grid.Column="0"
+                       HorizontalAlignment="Left"
+                       Text="Created at:" />
+            <TextBlock Grid.Row="0" Grid.Column="1"
+                       Margin="0,0,0,5" HorizontalAlignment="Right"
+                       Text="{Binding CreatedAtUtc}" />
+
+            <TextBlock Grid.Row="1" Grid.Column="0"
+                       HorizontalAlignment="Left"
+                       Text="Modified at:" />
+            <TextBlock Grid.Row="1" Grid.Column="1"
+                       HorizontalAlignment="Right"
+                       Text="{Binding UpdatedAtUtc}" />
+        </Grid>
+
+
+        <TextBox Grid.Row="1" Grid.Column="0"
+                 Text="{Binding Name}" />
+        <ComboBox Grid.Row="1" Grid.Column="1"
+                  DisplayMemberBinding="{Binding}"
+                  SelectedValue="{Binding State}" />
+
+        <TextBox Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
+                 MinHeight="200"
+                 AcceptsReturn="True"
+                 Text="{Binding Description}"
+                 Watermark="Enter a task description here..." />
+    </Grid>
+
+</UserControl>

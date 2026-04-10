@@ -1,83 +1,85 @@
-<UserControl xmlns="https://github.com/avaloniaui"
-			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-			 xmlns:ic="using:FluentIcons.Avalonia"
-			 xmlns:vm="using:deavnote.app.ViewModels"
-			 mc:Ignorable="d"
-			 d:DesignWidth="300"
-			 d:DesignHeight="200"
-			 x:Class="deavnote.app.Views.NotificationView"
-			 x:DataType="vm:MainViewModel">
+﻿<UserControl x:Class="deavnote.app.Views.NotificationView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:ic="using:FluentIcons.Avalonia"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:deavnote.app.ViewModels"
+             d:DesignHeight="200"
+             d:DesignWidth="300"
+             x:DataType="vm:MainViewModel"
+             mc:Ignorable="d">
 
-	<ItemsControl ItemsSource="{Binding Notifications.Notifications, FallbackValue={x:Null}}"
-				  HorizontalAlignment="Right" VerticalAlignment="Top"
-				  MinWidth="300" MaxWidth="300"
-				  Margin="16">
-		<ItemsControl.ItemTemplate>
-			<DataTemplate x:DataType="vm:NotificationViewModel">
-				<Border CornerRadius="8" Padding="12,8"
-						Margin="0,0,0,8" BorderThickness="1">
-					<Border.Styles>
-						<Style Selector="Border">
-							<Setter Property="Background" Value="SlateGray" />
-							<Setter Property="BorderBrush" Value="LightSlateGray" />
-						</Style>
-						<Style Selector="Border[Tag=Info]">
-							<Setter Property="Background" Value="SteelBlue" />
-							<Setter Property="BorderBrush" Value="CadetBlue" />
-						</Style>
-						<Style Selector="Border[Tag=Success]">
-							<Setter Property="Background" Value="SlateBlue" />
-							<Setter Property="BorderBrush" Value="MediumSlateBlue" />
-						</Style>
-						<Style Selector="Border[Tag=Warning]">
-							<Setter Property="Background" Value="DarkOrange" />
-							<Setter Property="BorderBrush" Value="Orange" />
-						</Style>
-						<Style Selector="Border[Tag=Error]">
-							<Setter Property="Background" Value="DarkRed" />
-							<Setter Property="BorderBrush" Value="Red" />
-						</Style>
-						<Style Selector="Border[Tag=Debug] ic|FluentIcon#NotificationIcon">
-							<Setter Property="Icon" Value="Code" />
-						</Style>
-						<Style Selector="Border[Tag=Info] ic|FluentIcon#NotificationIcon">
-							<Setter Property="Icon" Value="Info" />
-						</Style>
-						<Style Selector="Border[Tag=Success] ic|FluentIcon#NotificationIcon">
-							<Setter Property="Icon" Value="CheckmarkCircle" />
-						</Style>
-						<Style Selector="Border[Tag=Warning] ic|FluentIcon#NotificationIcon">
-							<Setter Property="Icon" Value="Warning" />
-						</Style>
-						<Style Selector="Border[Tag=Error] ic|FluentIcon#NotificationIcon">
-							<Setter Property="Icon" Value="ErrorCircle" />
-						</Style>
-					</Border.Styles>
-					<Border.Tag>
-						<Binding Path="Type" />
-					</Border.Tag>
-					<Grid ColumnDefinitions="Auto,*,Auto">
-						<ic:FluentIcon x:Name="NotificationIcon" Grid.Column="0" VerticalAlignment="Center"
-									   IconSize="Size24" Margin="10,0" />
-						<TextBlock Grid.Column="1" Text="{Binding Message}" TextWrapping="Wrap"
-								   Foreground="White" VerticalAlignment="Center" />
-						<Button Grid.Column="2" FontSize="10"
-								Background="Transparent"
-								Foreground="White"
-								Opacity="0.6"
-								Padding="4,2" Margin="8,0,0,0"
-								Command="{Binding CloseCommand}" >
-							<ic:FluentIcon Grid.Column="0"
-										   VerticalAlignment="Center"
-										   Icon="DismissSquare"
-										   IconSize="Size20"/>
-						</Button>
-					</Grid>
-				</Border>
-			</DataTemplate>
-		</ItemsControl.ItemTemplate>
-	</ItemsControl>
+    <ItemsControl MinWidth="300" MaxWidth="300"
+                  Margin="16" HorizontalAlignment="Right" VerticalAlignment="Top"
+                  ItemsSource="{Binding Notifications.Notifications, FallbackValue={x:Null}}">
+        <ItemsControl.ItemTemplate>
+            <DataTemplate x:DataType="vm:NotificationViewModel">
+                <Border Margin="0,0,0,8" Padding="12,8"
+                        BorderThickness="1" CornerRadius="8">
+                    <Border.Styles>
+                        <Style Selector="Border">
+                            <Setter Property="Background" Value="SlateGray" />
+                            <Setter Property="BorderBrush" Value="LightSlateGray" />
+                        </Style>
+                        <Style Selector="Border[Tag=Info]">
+                            <Setter Property="Background" Value="SteelBlue" />
+                            <Setter Property="BorderBrush" Value="CadetBlue" />
+                        </Style>
+                        <Style Selector="Border[Tag=Success]">
+                            <Setter Property="Background" Value="SlateBlue" />
+                            <Setter Property="BorderBrush" Value="MediumSlateBlue" />
+                        </Style>
+                        <Style Selector="Border[Tag=Warning]">
+                            <Setter Property="Background" Value="DarkOrange" />
+                            <Setter Property="BorderBrush" Value="Orange" />
+                        </Style>
+                        <Style Selector="Border[Tag=Error]">
+                            <Setter Property="Background" Value="DarkRed" />
+                            <Setter Property="BorderBrush" Value="Red" />
+                        </Style>
+                        <Style Selector="Border[Tag=Debug] ic|FluentIcon#NotificationIcon">
+                            <Setter Property="Icon" Value="Code" />
+                        </Style>
+                        <Style Selector="Border[Tag=Info] ic|FluentIcon#NotificationIcon">
+                            <Setter Property="Icon" Value="Info" />
+                        </Style>
+                        <Style Selector="Border[Tag=Success] ic|FluentIcon#NotificationIcon">
+                            <Setter Property="Icon" Value="CheckmarkCircle" />
+                        </Style>
+                        <Style Selector="Border[Tag=Warning] ic|FluentIcon#NotificationIcon">
+                            <Setter Property="Icon" Value="Warning" />
+                        </Style>
+                        <Style Selector="Border[Tag=Error] ic|FluentIcon#NotificationIcon">
+                            <Setter Property="Icon" Value="ErrorCircle" />
+                        </Style>
+                    </Border.Styles>
+                    <Border.Tag>
+                        <Binding Path="Type" />
+                    </Border.Tag>
+                    <Grid ColumnDefinitions="Auto,*,Auto">
+                        <ic:FluentIcon x:Name="NotificationIcon"
+                                       Grid.Column="0"
+                                       Margin="10,0" VerticalAlignment="Center"
+                                       IconSize="Size24" />
+                        <TextBlock Grid.Column="1"
+                                   VerticalAlignment="Center"
+                                   Foreground="White"
+                                   Text="{Binding Message}"
+                                   TextWrapping="Wrap" />
+                        <Button Grid.Column="2"
+                                Margin="8,0,0,0" Padding="4,2"
+                                Background="Transparent"
+                                Command="{Binding CloseCommand}"
+                                FontSize="10" Foreground="White" Opacity="0.6">
+                            <ic:FluentIcon Grid.Column="0"
+                                           VerticalAlignment="Center"
+                                           Icon="DismissSquare" IconSize="Size20" />
+                        </Button>
+                    </Grid>
+                </Border>
+            </DataTemplate>
+        </ItemsControl.ItemTemplate>
+    </ItemsControl>
 
 </UserControl>

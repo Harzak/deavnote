@@ -1,0 +1,44 @@
+{
+  // --- Attribute line breaking ---
+  "AttributesTolerance": 2,             // Elements with <= 2 attributes stay on one line
+  "KeepFirstAttributeOnSameLine": true, // First attribute goes on a new line below the tag
+  "MaxAttributesPerLine": 3,            // One attribute per line (after tolerance is exceeded)
+  "MaxAttributeCharactersPerLine": 0,   // No character limit per line (0 = disabled)
+  "AttributeIndentation": 0,            // 0 = align with first attribute; 4 = fixed indent
+  "AttributeIndentationStyle": 1,       // 1 = mixed (spaces), 2 = spaces only
+  "SeparateByGroups": true,             // Blank line between attribute ordering groups
+
+  // --- Elements that should never have attributes broken across lines ---
+  "NewlineExemptionElements": "RadialGradientBrush, GradientStop, LinearGradientBrush, ScaleTransform, SkewTransform, RotateTransform, TranslateTransform, Trigger, Condition, Setter",
+
+  // --- Attribute reordering ---
+  "EnableAttributeReordering": true,
+  "AttributeOrderingRuleGroups": [
+    "x:Class",
+    "xmlns, xmlns:x",
+    "xmlns:*",
+    "x:Key, Key, x:Name, Name, x:Uid, Uid, Title",
+    "Grid.Row, Grid.RowSpan, Grid.Column, Grid.ColumnSpan, Canvas.Left, Canvas.Top, Canvas.Right, Canvas.Bottom",
+    "Width, Height, MinWidth, MinHeight, MaxWidth, MaxHeight",
+    "Margin, Padding, HorizontalAlignment, VerticalAlignment, HorizontalContentAlignment, VerticalContentAlignment, Panel.ZIndex",
+    "*:*, *",
+    "PageSource, PageIndex, Offset, Color, TargetName, Property, Value, StartPoint, EndPoint",
+    "mc:Ignorable, d:IsDataSource, d:LayoutOverrides, d:IsStaticText"
+  ],
+  "FirstLineAttributes": "",            // Attributes always kept on the opening tag line
+  "OrderAttributesByName": true,        // Within a group, sort alphabetically
+
+  // --- Element formatting ---
+  "PutEndingBracketOnNewLine": false,   // /> stays on last attribute line
+  "RemoveEndingTagOfEmptyElement": true, // <Button></Button> → <Button />
+  "SpaceBeforeClosingSlash": true,      // <Button /> not <Button/>
+  "RootElementLineBreakRule": 1,        // Always break root element attributes
+
+  // --- Misc ---
+  "FormatMarkupExtension": true,        // Format {Binding ...} expressions
+  "NoNewLineMarkupExtensions": "x:Bind, Binding",
+  "ThicknessSeparator": 2,              // 2 = comma separator for Margin/Padding
+  "ThicknessAttributes": "Margin, Padding, BorderThickness, ThumbnailClipMargin",
+  "RemoveDesignTimeReferences": false,
+  "IgnoreDesignTimeReferencePrefix": false
+}

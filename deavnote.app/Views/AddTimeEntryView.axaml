@@ -1,122 +1,130 @@
-<UserControl xmlns="https://github.com/avaloniaui"
-			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-			 xmlns:vm="using:deavnote.app.ViewModels"
-			 xmlns:viewmodels="using:deavnote.app.ViewModels" xmlns:dd="using:deavnote.app.Design"
-			 xmlns:local="using:deavnote.app.Views"
-			 mc:Ignorable="d"
-			 d:DesignWidth="690"
-			 d:DesignHeight="500"
-			 x:DataType="viewmodels:AddTimeEntryViewModel"
-			 x:Class="deavnote.app.Views.AddTimeEntryView"
-			 Background="{DynamicResource CustomMainBackground}">
+﻿<UserControl x:Class="deavnote.app.Views.AddTimeEntryView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewmodels="using:deavnote.app.ViewModels"
+             d:DesignHeight="500"
+             d:DesignWidth="690"
+             x:DataType="viewmodels:AddTimeEntryViewModel"
+             Background="{DynamicResource CustomMainBackground}"
+             mc:Ignorable="d">
 
-	<Grid MinWidth="650" MaxWidth="650" Margin="16" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,20,Auto" ColumnDefinitions="Auto,*">
+    <Grid MinWidth="650" MaxWidth="650"
+          Margin="16"
+          ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,20,Auto">
 
-		<TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Classes="Title" Text="Related Task" />
+        <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
+                   Classes="Title" Text="Related Task" />
 
-		<TextBlock Grid.Row="1" Grid.Column="0"
-				   Classes="Content" Text="Code" VerticalAlignment="Center"
-				   Margin="0,0,12,8" />
-		<AutoCompleteBox Grid.Row="1" Grid.Column="1"
-						 Margin="0,0,0,8"
-						 ItemsSource="{Binding ExistingTasks}"
-						 SelectedItem="{Binding SelectedTask}"
-						 ValueMemberBinding="{Binding Code}"
-						 Text="{Binding SearchTaskCode}"
-						 MaxDropDownHeight="400"
-						 FilterMode="Contains"
-						 Watermark="e.g. DEV-168"
-						 MinimumPrefixLength="0" />
+        <TextBlock Grid.Row="1" Grid.Column="0"
+                   Margin="0,0,12,8" VerticalAlignment="Center"
+                   Classes="Content" Text="Code" />
+        <AutoCompleteBox Grid.Row="1" Grid.Column="1"
+                         Margin="0,0,0,8"
+                         FilterMode="Contains"
+                         ItemsSource="{Binding ExistingTasks}"
+                         MaxDropDownHeight="400" MinimumPrefixLength="0"
+                         SelectedItem="{Binding SelectedTask}"
+                         Text="{Binding SearchTaskCode}"
+                         ValueMemberBinding="{Binding Code}"
+                         Watermark="e.g. DEV-168" />
 
-		<TextBlock Grid.Row="2" Grid.Column="0"
-				   Classes="Content" Text="Name" VerticalAlignment="Center"
-				   Margin="0,0,12,8" />
-		<AutoCompleteBox Grid.Row="2" Grid.Column="1"
-						 Margin="0,0,0,8"
-						 ItemsSource="{Binding ExistingTasks}"
-						 SelectedItem="{Binding SelectedTask}"
-						 ValueMemberBinding="{Binding Name}"
-						 Text="{Binding SearchTaskName}"
-						 MaxDropDownHeight="400"
-						 FilterMode="Contains"
-						 Watermark="e.g. DO-896"
-						 MinimumPrefixLength="0" />
+        <TextBlock Grid.Row="2" Grid.Column="0"
+                   Margin="0,0,12,8" VerticalAlignment="Center"
+                   Classes="Content" Text="Name" />
+        <AutoCompleteBox Grid.Row="2" Grid.Column="1"
+                         Margin="0,0,0,8"
+                         FilterMode="Contains"
+                         ItemsSource="{Binding ExistingTasks}"
+                         MaxDropDownHeight="400" MinimumPrefixLength="0"
+                         SelectedItem="{Binding SelectedTask}"
+                         Text="{Binding SearchTaskName}"
+                         ValueMemberBinding="{Binding Name}"
+                         Watermark="e.g. DO-896" />
 
-		<ContentControl Grid.Row="3" Grid.Column="1"  Content="{Binding EntryTaskLink}">
-			<ContentControl.Styles>
-				<Style Selector="ContentControl[Content=CreateNewTask]">
-					<Setter Property="ContentTemplate">
-						<DataTemplate>
-							<Border Classes="BannerBlue">
-								<StackPanel Orientation="Horizontal">
-									<TextBlock Classes="Banner" Text="The task will be created" />
-								</StackPanel>
-							</Border>
-						</DataTemplate>
-					</Setter>
-				</Style>
-				<Style Selector="ContentControl[Content=LinkToExistingTask]">
-					<Setter Property="ContentTemplate">
-						<DataTemplate>
-							<Border Classes="BannerViolet">
-								<StackPanel Orientation="Horizontal">
-									<TextBlock Classes="Banner" Text="the time entry will be linked to this task" />
-								</StackPanel>
-							</Border>
-						</DataTemplate>
-					</Setter>
-				</Style>
-				<Style Selector="ContentControl[Content=None]">
-					<Setter Property="ContentTemplate">
-						<DataTemplate>
-							<Border Classes="BannerGray">
-								<StackPanel Orientation="Horizontal">
-									<TextBlock Classes="Banner" Text="You can link this time entry to an existing task or create a new one" />
-								</StackPanel>
-							</Border>
-						</DataTemplate>
-					</Setter>
-				</Style>
-			</ContentControl.Styles>
-		</ContentControl>
+        <ContentControl Grid.Row="3" Grid.Column="1"
+                        Content="{Binding EntryTaskLink}">
+            <ContentControl.Styles>
+                <Style Selector="ContentControl[Content=CreateNewTask]">
+                    <Setter Property="ContentTemplate">
+                        <DataTemplate>
+                            <Border Classes="BannerBlue">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Classes="Banner" Text="The task will be created" />
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </Setter>
+                </Style>
+                <Style Selector="ContentControl[Content=LinkToExistingTask]">
+                    <Setter Property="ContentTemplate">
+                        <DataTemplate>
+                            <Border Classes="BannerViolet">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Classes="Banner" Text="the time entry will be linked to this task" />
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </Setter>
+                </Style>
+                <Style Selector="ContentControl[Content=None]">
+                    <Setter Property="ContentTemplate">
+                        <DataTemplate>
+                            <Border Classes="BannerGray">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Classes="Banner" Text="You can link this time entry to an existing task or create a new one" />
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </Setter>
+                </Style>
+            </ContentControl.Styles>
+        </ContentControl>
 
-		<TextBlock Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Classes="Title" Text="Time Entry"/>
+        <TextBlock Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2"
+                   Classes="Title" Text="Time Entry" />
 
-		<TextBlock Grid.Row="5" Grid.Column="0"
-				   Classes="Content" Text="Name" VerticalAlignment="Center"
-				   Margin="0,0,12,8" />
-		<TextBox Grid.Row="5" Grid.Column="7" Text="{Binding EntryName}" Watermark="Time entry name"
-				 Margin="0,0,0,8" />
+        <TextBlock Grid.Row="5" Grid.Column="0"
+                   Margin="0,0,12,8" VerticalAlignment="Center"
+                   Classes="Content" Text="Name" />
+        <TextBox Grid.Row="5" Grid.Column="7"
+                 Margin="0,0,0,8"
+                 Text="{Binding EntryName}"
+                 Watermark="Time entry name" />
 
-		<TextBlock Grid.Row="6" Grid.Column="0"
-				   Classes="Content" Text="Duration" VerticalAlignment="Center"
-				   Margin="0,0,12,8" />
-		<TimePicker Grid.Row="6" Grid.Column="1"
-					ClockIdentifier="24HourClock"
-					SelectedTime="{Binding EntryDuration}"
-					Margin="0,0,0,8"
-					MinuteIncrement="5"/>
+        <TextBlock Grid.Row="6" Grid.Column="0"
+                   Margin="0,0,12,8" VerticalAlignment="Center"
+                   Classes="Content" Text="Duration" />
+        <MaskedTextBox Grid.Row="6" Grid.Column="1"
+                       Margin="0,0,0,8"
+                       Mask="00:00"
+                       Text="{Binding EntryDuration, UpdateSourceTrigger=LostFocus}" />
 
-		<TextBlock Grid.Row="7" Grid.Column="0"
-				   Classes="Content" Text="Started at" VerticalAlignment="Center"
-				   Margin="0,0,12,8" />
-		<DatePicker Grid.Row="7" Grid.Column="1" SelectedDate="{Binding EntryStartedAt}"
-					Margin="0,0,0,8" />
 
-		<TextBlock Grid.Row="8" Grid.Column="0"
-				   Classes="Content" Text="Work done" VerticalAlignment="Top"
-				   Margin="0,4,12,0" />
-		<TextBox Grid.Row="8" Grid.Column="1" Text="{Binding EntryWorkDone}"
-				 Watermark="Optional description" AcceptsReturn="True"
-				 MinHeight="100" MaxHeight="300" />
 
-		<StackPanel Grid.Row="11" Grid.Column="0" Grid.ColumnSpan="2"
-					Orientation="Horizontal" HorizontalAlignment="Right" Spacing="8">
-			<Button Content="Cancel" Command="{Binding CancelCommand}" />
-			<Button Content="Add" Command="{Binding ConfirmCommand}" />
-		</StackPanel>
+        <TextBlock Grid.Row="7" Grid.Column="0"
+                   Margin="0,0,12,8" VerticalAlignment="Center"
+                   Classes="Content" Text="Started at" />
+        <DatePicker Grid.Row="7" Grid.Column="1"
+                    Margin="0,0,0,8"
+                    SelectedDate="{Binding EntryStartedAt}" />
 
-	</Grid>
+        <TextBlock Grid.Row="8" Grid.Column="0"
+                   Margin="0,4,12,0" VerticalAlignment="Top"
+                   Classes="Content" Text="Work done" />
+        <TextBox Grid.Row="8" Grid.Column="1"
+                 MinHeight="100" MaxHeight="300"
+                 AcceptsReturn="True"
+                 Text="{Binding EntryWorkDone}"
+                 Watermark="Optional description" />
+
+        <StackPanel Grid.Row="11" Grid.Column="0" Grid.ColumnSpan="2"
+                    HorizontalAlignment="Right"
+                    Orientation="Horizontal" Spacing="8">
+            <Button Command="{Binding ConfirmCommand}" Content="Add" />
+            <Button Command="{Binding CancelCommand}" Content="Cancel" />
+        </StackPanel>
+
+    </Grid>
 </UserControl>

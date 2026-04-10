@@ -49,4 +49,7 @@
 	    <DependentUpon>MainView.axaml</DependentUpon>
 	  </Compile>
 	</ItemGroup>
+	<Target Name="FormatXaml" BeforeTargets="BeforeBuild">
+		<Exec Command="xstyler -r -d $(MSBuildProjectDirectory) -c $(SolutionDir)Settings.XamlStyler" />
+	</Target>
 </Project>

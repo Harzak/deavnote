@@ -1,39 +1,39 @@
-<Application xmlns="https://github.com/avaloniaui"
-			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-			 x:Class="deavnote.app.App"
-			 xmlns:local="using:deavnote.app"
-			 xmlns:conv="using:deavnote.app.Converters"
-			 RequestedThemeVariant="Dark">
+﻿<Application x:Class="deavnote.app.App"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:conv="using:deavnote.app.Converters"
+             xmlns:local="using:deavnote.app"
+             RequestedThemeVariant="Dark">
 
-	<Application.Resources>
-		<ResourceDictionary>
+    <Application.Resources>
+        <ResourceDictionary>
 
-			<ResourceDictionary.MergedDictionaries>
-				<ResourceInclude Source="/Styles/Colors.axaml"/>
-			</ResourceDictionary.MergedDictionaries>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceInclude Source="/Styles/Colors.axaml" />
+            </ResourceDictionary.MergedDictionaries>
 
-			<ResourceDictionary.ThemeDictionaries>
-				<ResourceDictionary x:Key="Light">
-					<StaticResource x:Key="CustomMainBackground" ResourceKey="CustomLightBackground" />
-					<StaticResource x:Key="TimeEntryBackground" ResourceKey="LightTimeEntryBackground" />
-				</ResourceDictionary>
-				<ResourceDictionary x:Key="Dark">
-					<StaticResource x:Key="CustomMainBackground" ResourceKey="CustomDarkBackground" />
-					<StaticResource x:Key="TimeEntryBackground" ResourceKey="DarkTimeEntryBackground" />
-				</ResourceDictionary>
-			</ResourceDictionary.ThemeDictionaries>
+            <ResourceDictionary.ThemeDictionaries>
+                <ResourceDictionary x:Key="Light">
+                    <StaticResource x:Key="CustomMainBackground" ResourceKey="CustomLightBackground" />
+                    <StaticResource x:Key="TimeEntryBackground" ResourceKey="LightTimeEntryBackground" />
+                </ResourceDictionary>
+                <ResourceDictionary x:Key="Dark">
+                    <StaticResource x:Key="CustomMainBackground" ResourceKey="CustomDarkBackground" />
+                    <StaticResource x:Key="TimeEntryBackground" ResourceKey="DarkTimeEntryBackground" />
+                </ResourceDictionary>
+            </ResourceDictionary.ThemeDictionaries>
 
-			<conv:EnumDisplayNameConverter x:Key="EnumDisplayNameConverter" />
+            <conv:EnumDisplayNameConverter x:Key="EnumDisplayNameConverter" />
 
-		</ResourceDictionary>
-	</Application.Resources>
+        </ResourceDictionary>
+    </Application.Resources>
 
-	<Application.DataTemplates>
-		<local:ViewLocator/>
-	</Application.DataTemplates>
+    <Application.DataTemplates>
+        <local:ViewLocator />
+    </Application.DataTemplates>
 
-	<Application.Styles>
-		<StyleInclude Source="Styles/CustomStyles.axaml" />
-		<FluentTheme />
-	</Application.Styles>
+    <Application.Styles>
+        <StyleInclude Source="Styles/CustomStyles.axaml" />
+        <FluentTheme />
+    </Application.Styles>
 </Application>

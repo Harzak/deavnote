@@ -1,52 +1,64 @@
-<UserControl xmlns="https://github.com/avaloniaui"
-			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-			 xmlns:ic="using:FluentIcons.Avalonia"
-			 xmlns:viewmodels="using:deavnote.app.ViewModels"
-			 xmlns:vmDesign="using:deavnote.app.DesignData.ViewModels"
-			 xmlns:views="using:deavnote.app.Views"
-			 mc:Ignorable="d"
-			 d:DesignWidth="400"
-			 d:DesignHeight="800"
-			 x:DataType="viewmodels:JournalViewModel"
-			 x:Class="deavnote.app.Views.JournalView">
+﻿<UserControl x:Class="deavnote.app.Views.JournalView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:ic="using:FluentIcons.Avalonia"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewmodels="using:deavnote.app.ViewModels"
+             xmlns:views="using:deavnote.app.Views"
+             d:DesignHeight="800"
+             d:DesignWidth="400"
+             x:DataType="viewmodels:JournalViewModel"
+             mc:Ignorable="d">
 
-	<Grid Margin="5" RowDefinitions="Auto,Auto, *" ColumnDefinitions="Auto, Auto, Auto, 50,Auto, Auto">
+    <Grid Margin="5"
+          ColumnDefinitions="Auto, Auto, Auto, 50,Auto, Auto" RowDefinitions="Auto,Auto, *">
 
-		<TextBlock Text="{Binding DateCursor, StringFormat='{}{0:dddd dd MMMM}'}"
-				   Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="6"
-				   HorizontalAlignment="Center" FontSize="15" />
+        <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="6"
+                   HorizontalAlignment="Center"
+                   FontSize="15"
+                   Text="{Binding DateCursor, StringFormat='{}{0:dddd dd MMMM}'}" />
 
-		<Button Command="{Binding MoveDateCursorToPreviousDayCommand}" Classes="Icon"
-				ToolTip.Tip="Go to previous day" Grid.Column="0" Grid.Row="1">
-			<ic:FluentIcon  Icon="ArrowLeft" IconSize="Size16" />
-		</Button>
-		<Button ToolTip.Tip="Go to today" Classes="Icon"
-				Command="{Binding MoveDateCursorToNowCommand}" Grid.Column="1" Grid.Row="1" >
-			<ic:FluentIcon Icon="CalendarClock" IconSize="Size20" />
-		</Button>
-		<Button ToolTip.Tip="Go to next day" Classes="Icon"
-				Command="{Binding MoveDateCursorToNextDayCommand}" Grid.Column="2" Grid.Row="1" >
-			<ic:FluentIcon Icon="ArrowRight" IconSize="Size16" />
-		</Button>
+        <Button Grid.Row="1" Grid.Column="0"
+                Classes="Icon"
+                Command="{Binding MoveDateCursorToPreviousDayCommand}"
+                ToolTip.Tip="Go to previous day">
+            <ic:FluentIcon Icon="ArrowLeft" IconSize="Size16" />
+        </Button>
+        <Button Grid.Row="1" Grid.Column="1"
+                Classes="Icon"
+                Command="{Binding MoveDateCursorToNowCommand}"
+                ToolTip.Tip="Go to today">
+            <ic:FluentIcon Icon="CalendarClock" IconSize="Size20" />
+        </Button>
+        <Button Grid.Row="1" Grid.Column="2"
+                Classes="Icon"
+                Command="{Binding MoveDateCursorToNextDayCommand}"
+                ToolTip.Tip="Go to next day">
+            <ic:FluentIcon Icon="ArrowRight" IconSize="Size16" />
+        </Button>
 
-		<Button ToolTip.Tip="Copy today's time entries" Classes="Icon"
-				Command="{Binding CopyToClipboardCommand}" Grid.Column="4" Grid.Row="1" >
-			<ic:FluentIcon Icon="Copy" />
-		</Button>
-		<Button ToolTip.Tip="Add time entry" Classes="Icon"
-				Command="{Binding AddTimeEntryCommand}" Grid.Column="5" Grid.Row="1" >
-			<ic:FluentIcon Icon="Add" />
-		</Button>
+        <Button Grid.Row="1" Grid.Column="4"
+                Classes="Icon"
+                Command="{Binding CopyToClipboardCommand}"
+                ToolTip.Tip="Copy today's time entries">
+            <ic:FluentIcon Icon="Copy" />
+        </Button>
+        <Button Grid.Row="1" Grid.Column="5"
+                Classes="Icon"
+                Command="{Binding AddTimeEntryCommand}"
+                ToolTip.Tip="Add time entry">
+            <ic:FluentIcon Icon="Add" />
+        </Button>
 
-		<ItemsControl Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="6" ItemsSource="{Binding TimeEntries}">
-			<ItemsControl.ItemTemplate>
-				<DataTemplate x:DataType="viewmodels:TimeEntryViewModel">
-					<views:TimeEntryView Margin="4,6" />
-				</DataTemplate>
-			</ItemsControl.ItemTemplate>
-		</ItemsControl>
-	</Grid>
+        <ItemsControl Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="6"
+                      ItemsSource="{Binding TimeEntries}">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate x:DataType="viewmodels:TimeEntryViewModel">
+                    <views:TimeEntryView Margin="4,6" />
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+    </Grid>
 
 </UserControl>
