@@ -1,17 +1,10 @@
-using deavnote.app.Enums;
-using FluentIcons.Common.Internals;
-
 namespace deavnote.app.ViewModels;
 
-internal sealed partial class AddTimeEntryViewModel : DialogViewModel<TimeEntry>
+internal sealed partial class AddTimeEntryViewModel : DialogViewModel<AddTimeEntryRequest>
 {
-    private readonly IDevTaskRepository _repository;
+    private readonly IDevTaskRepository _taskRepository;
 
     internal override string Title => "Add time entry";
-
-    [ObservableProperty]
-    [NotifyCanExecuteChangedFor("ConfirmCommand")]
-    private string _entryCode = string.Empty;
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor("ConfirmCommand")]
@@ -28,7 +21,7 @@ internal sealed partial class AddTimeEntryViewModel : DialogViewModel<TimeEntry>
     private DateTimeOffset _entryStartedAt;
 
     [ObservableProperty]
-    private IEnumerable<DevTaskLightDto> _availableTasks;
+    private IEnumerable<DevTaskLightDto> _existingTasks;
 
     [ObservableProperty]
     private DevTaskLightDto? _selectedTask;
@@ -42,42 +35,61 @@ internal sealed partial class AddTimeEntryViewModel : DialogViewModel<TimeEntry>
     [ObservableProperty]
     private ETimeEntryCreationTaskLink _entryTaskLink;
 
-    private bool CanConfirm =>
-        !string.IsNullOrWhiteSpace(this.EntryCode) &&
-        !string.IsNullOrWhiteSpace(this.EntryName) &&
-        this.EntryDuration > TimeSpan.Zero;
-
-    public AddTimeEntryViewModel(IDevTaskRepository repository)
+    private bool CanConfirm
     {
-        ArgumentNullException.ThrowIfNull(repository);
-        _repository = repository;
+        get
+        {
+            bool taskIsValid = this.EntryTaskLink == ETimeEntryCreationTaskLink.LinkToExistingTask
+                ? this.SelectedTask != null
+                : !string.IsNullOrWhiteSpace(this.SearchTaskCode) && !string.IsNullOrWhiteSpace(this.SearchTaskName);
+            return taskIsValid
+                && !string.IsNullOrWhiteSpace(this.EntryName)
+                && this.EntryDuration > TimeSpan.Zero;
+        }
+    }
 
+    public AddTimeEntryViewModel(IDevTaskRepository taskRepository)
+    {
+        ArgumentNullException.ThrowIfNull(taskRepository);
+        _taskRepository = taskRepository;
+
+        _existingTasks = [];
         _entryStartedAt = DateTimeOffset.Now;
-        _availableTasks = [];
+        _entryDuration = TimeSpan.FromHours(1);
         _searchTaskCode = string.Empty;
         _searchTaskName = string.Empty;
     }
 
     public async Task InitializedAsync()
     {
-        this.AvailableTasks = await _repository.GetAllLightDtoAsync().ConfigureAwait(false);
+        this.ExistingTasks = await _taskRepository.GetAllLightDtoAsync().ConfigureAwait(false);
     }
 
     [RelayCommand(CanExecute = nameof(CanConfirm))]
     private void Confirm()
     {
-        TimeEntry result = new()
+        AddTimeEntryRequest request = this.EntryTaskLink switch
         {
-            Code = this.EntryCode.Trim(),
-            Name = this.EntryName.Trim(),
-            WorkDone = string.IsNullOrWhiteSpace(this.EntryWorkDone) ? null : this.EntryWorkDone.Trim(),
-            Duration = this.EntryDuration,
-            StartedAtUtc = this.EntryStartedAt.UtcDateTime,
-            CreatedAtUtc = DateTime.UtcNow,
-            UpdatedAtUtc = DateTime.UtcNow,
+            ETimeEntryCreationTaskLink.LinkToExistingTask => new AddTimeEntryRequest.ForExistingTask()
+            {
+                Name = this.EntryName.Trim(),
+                WorkDone = string.IsNullOrWhiteSpace(this.EntryWorkDone) ? null : this.EntryWorkDone.Trim(),
+                Duration = this.EntryDuration,
+                StartedAtUtc = this.EntryStartedAt.UtcDateTime,
+                TaskId = this.SelectedTask!.Id,
+            },
+            _ => new AddTimeEntryRequest.ForNewTask()
+            {
+                Name = this.EntryName.Trim(),
+                WorkDone = string.IsNullOrWhiteSpace(this.EntryWorkDone) ? null : this.EntryWorkDone.Trim(),
+                Duration = this.EntryDuration,
+                StartedAtUtc = this.EntryStartedAt.UtcDateTime,
+                TaskCode = this.SearchTaskCode,
+                TaskName = this.SearchTaskName,
+            },
         };
 
-        base.Close(result);
+        base.Close(request);
     }
 
     [RelayCommand]

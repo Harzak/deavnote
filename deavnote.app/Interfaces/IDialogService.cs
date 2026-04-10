@@ -10,5 +10,5 @@ internal interface IDialogService
     /// </summary>
     /// <typeparam name="TResult">The type of result returned by the dialog.</typeparam>
     /// <param name="viewModel">The view model that drives the dialog content.</param>
-    Task<TResult?> ShowDialogAsync<TResult>(DialogViewModel<TResult> viewModel);
+    Task<TResult?> ShowWindowAsync<TResult>(DialogViewModel<TResult> viewModel);
 }

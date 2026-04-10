@@ -1,4 +1,6 @@
 ﻿using deavnote.core.Services;
+using deavnote.repository.Dto;
+using deavnote.utils.Results;
 
 namespace deavnote.core.Interfaces;
 
@@ -41,6 +43,11 @@ public interface IJournal
     /// Resets the date cursor to its initial state asynchronously.
     /// </summary>
     Task ResetDateCursorAsync(CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Asynchronously adds a new time entry.
+    /// </summary>
+    Task<OperationResult> AddEntryAsync(AddTimeEntryRequest request, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Occurs when the collection of time entries is modified.

@@ -65,10 +65,6 @@ public sealed class DeavnoteDbContext : DbContext
             entity.ToTable("TimeEntries");
             entity.HasKey(e => e.Id);
 
-            entity.Property(e => e.Code)
-                  .IsRequired()
-                  .HasMaxLength(50);
-
             entity.Property(e => e.Name)
                   .IsRequired()
                   .HasMaxLength(200);

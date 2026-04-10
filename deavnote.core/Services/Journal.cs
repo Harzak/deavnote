@@ -1,4 +1,7 @@
-﻿[assembly: InternalsVisibleTo("deavnote.core.tests")]
+﻿using deavnote.repository.Dto;
+using deavnote.utils.Results;
+
+[assembly: InternalsVisibleTo("deavnote.core.tests")]
 
 namespace deavnote.core.Services;
 
@@ -73,6 +76,17 @@ internal sealed class Journal : IJournal
         await this.MoveDateCursorAsync(to: this.DefaultConfiguration.DateCursor, cancellationToken).ConfigureAwait(false);
     }
 
+    /// <inheritdoc/>
+    public async Task<OperationResult> AddEntryAsync(AddTimeEntryRequest request, CancellationToken cancellationToken = default)
+    {
+        OperationResult result = await _repository.AddTimeEntryAsync(request, cancellationToken).ConfigureAwait(false);
+        if (result.IsSuccess)
+        {
+            await this.LoadEntriesInCursorAsync(hardReload: true, cancellationToken).ConfigureAwait(false);
+        }
+        return result;
+    }
+
     private async Task MoveDateCursorAsync(DateOnly to, CancellationToken cancellationToken = default)
     {
         if (this.TrySetDateCursor(to))
@@ -103,28 +117,25 @@ internal sealed class Journal : IJournal
 
     private async Task OnCursorChangedAsync(CancellationToken cancellationToken = default)
     {
-        await this.LoadEntriesInCursorAsync(cancellationToken).ConfigureAwait(false);
-
-        _entriesInCursor.Clear();
-        IEnumerable<TimeEntry> entries = _pool.Values.Where(e => e.StartedAtUtc.IsInRangeExclusive(this.DateCursor, this.DateCursor.AddDays(this.DayOffset)));
-
-        _entriesInCursor.AddRange(entries);
-        TimeEntriesChanged?.Invoke(this, new TimeEntriesChangedEventArgs(this.DateCursor, this.DayOffset));
-
+        await this.LoadEntriesInCursorAsync(hardReload: false, cancellationToken).ConfigureAwait(false);
         _ = this.LoadAdjacentEntriesAsync(this.DateCursor, this.DayOffset, cancellationToken);
     }
 
-    private async Task LoadEntriesInCursorAsync(CancellationToken cancellationToken = default)
+    private async Task LoadEntriesInCursorAsync(bool hardReload = false, CancellationToken cancellationToken = default)
     {
         DateOnly from = this.DateCursor;
         DateOnly to = this.DateCursor.AddDays(this.DayOffset);
 
-        if (_fetchedDates.Contains(from))
+        if (!_fetchedDates.Contains(from) || hardReload)
         {
-            return;
+            await this.LoadEntriesBetweenASync(from, to, cancellationToken).ConfigureAwait(false);
         }
 
-        await this.LoadEntriesBetweenASync(from, to, cancellationToken).ConfigureAwait(false);
+        _entriesInCursor.Clear();
+        IEnumerable<TimeEntry> entries = _pool.Values.Where(e => e.StartedAtUtc.IsInRangeExclusive(this.DateCursor, this.DateCursor.AddDays(this.DayOffset)));
+        _entriesInCursor.AddRange(entries);
+
+        this.InvokeTimeEntriesChanged();
     }
 
     private async Task LoadAdjacentEntriesAsync(DateOnly cursor, int dayOffset, CancellationToken cancellationToken = default)
@@ -137,13 +148,15 @@ internal sealed class Journal : IJournal
         if (!_fetchedDates.Contains(prevFrom))
         {
             DateOnly to = prevFrom.AddDays(dayOffset);
-            prefetchTasks.Add(this.LoadEntriesBetweenASync(prevFrom, to, cancellationToken));
+            Task previous = this.LoadEntriesBetweenASync(prevFrom, to, cancellationToken);
+            prefetchTasks.Add(previous);
         }
 
         if (!_fetchedDates.Contains(nextFrom))
         {
             DateOnly to = nextFrom.AddDays(dayOffset);
-            prefetchTasks.Add(this.LoadEntriesBetweenASync(nextFrom, to, cancellationToken));
+            Task next = this.LoadEntriesBetweenASync(nextFrom, to, cancellationToken);
+            prefetchTasks.Add(next);
         }
 
         await Task.WhenAll(prefetchTasks).ConfigureAwait(false);
@@ -160,5 +173,11 @@ internal sealed class Journal : IJournal
 
         _fetchedDates.Add(from);
     }
+
+    private void InvokeTimeEntriesChanged()
+    {
+        TimeEntriesChanged?.Invoke(this, new TimeEntriesChangedEventArgs(this.DateCursor, this.DayOffset));
+    }
+
 }
 

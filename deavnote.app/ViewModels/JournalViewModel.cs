@@ -1,4 +1,6 @@
-﻿[assembly: InternalsVisibleTo("deavnote.app.tests")]
+﻿using Avalonia.Threading;
+
+[assembly: InternalsVisibleTo("deavnote.app.tests")]
 
 namespace deavnote.app.ViewModels;
 
@@ -8,6 +10,7 @@ internal sealed partial class JournalViewModel : BaseViewModel
     private readonly IJournal _journal;
     private readonly IDateProvider _dateProvider;
     private readonly IDialogService _dialogService;
+    private readonly INotificationService _notificationService;
 
     [ObservableProperty]
     private DateOnly _dateCursor;
@@ -18,17 +21,24 @@ internal sealed partial class JournalViewModel : BaseViewModel
     [ObservableProperty]
     private ObservableCollection<TimeEntryViewModel> _timeEntries;
 
-    public JournalViewModel(IJournal journal, IDateProvider dateProvider, IViewModelFactory viewModelFactory, IDialogService dialogService)
+    public JournalViewModel(
+        IJournal journal,
+        IDateProvider dateProvider,
+        IViewModelFactory viewModelFactory,
+        IDialogService dialogService,
+        INotificationService notificationService)
     {
         ArgumentNullException.ThrowIfNull(journal);
         ArgumentNullException.ThrowIfNull(dateProvider);
         ArgumentNullException.ThrowIfNull(viewModelFactory);
         ArgumentNullException.ThrowIfNull(dialogService);
+        ArgumentNullException.ThrowIfNull(notificationService);
 
         _journal = journal;
         _dateProvider = dateProvider;
         _viewModelFactory = viewModelFactory;
         _dialogService = dialogService;
+        _notificationService = notificationService;
 
         _journal.TimeEntriesChanged += OnJournalTimeEntriesChanged;
         _timeEntries = [];
@@ -43,28 +53,42 @@ internal sealed partial class JournalViewModel : BaseViewModel
 
     private void OnJournalTimeEntriesChanged(object? sender, TimeEntriesChangedEventArgs e)
     {
-        this.DateCursor = _journal.DateCursor;
-
-        this.TimeEntries.Clear();
-
-        if (_journal.TimeEntries.Count == 0) return;
-
-        foreach (TimeEntry entry in _journal.TimeEntries)
+        Dispatcher.UIThread.Post(() =>
         {
-            TimeEntryViewModel timeEntryViewModel = _viewModelFactory.CreateTimeEntryViewModel(entry);
-            this.TimeEntries.Add(timeEntryViewModel);
-        }
+            this.DateCursor = _journal.DateCursor;
+
+            this.TimeEntries.Clear();
+
+            if (_journal.TimeEntries.Count == 0) return;
+
+            foreach (TimeEntry entry in _journal.TimeEntries)
+            {
+                TimeEntryViewModel timeEntryViewModel = _viewModelFactory.CreateTimeEntryViewModel(entry);
+                this.TimeEntries.Add(timeEntryViewModel);
+            }
+        });
     }
 
     [RelayCommand]
     private async Task AddTimeEntryAsync()
     {
         AddTimeEntryViewModel vm = _viewModelFactory.CreateAddTimeEntryViewModel();
-        TimeEntry? result = await _dialogService.ShowDialogAsync(vm).ConfigureAwait(false);
+        AddTimeEntryRequest? request = await _dialogService.ShowWindowAsync(vm).ConfigureAwait(false);
 
-        if (result != null)
+        if (request == null)
         {
-            // TODO: persist
+            return;
+        }
+
+        OperationResult result = await _journal.AddEntryAsync(request).ConfigureAwait(false);
+
+        if (result.IsSuccess)
+        {
+            _notificationService.Show($"Time entry added: {Environment.NewLine} [{vm.EntryName}]", ENotificationType.Success);
+        }
+        else
+        {
+            _notificationService.Show(result.ErrorMessage ?? "Failed to add time entry.", ENotificationType.Error, durationMs: 0);
         }
     }
 

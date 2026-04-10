@@ -13,4 +13,9 @@ public interface ITimeEntryRepository
     /// <param name="endDate">The end date of the range to retrieve entries for.</param>
     /// <returns>contains a read-only list of time entries within the specified date range.</returns>
     Task<IReadOnlyList<TimeEntry>> GetEntriesBetweenAsync(DateOnly startDate, DateOnly endDate, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Asynchronously adds a new time entry.
+    /// </summary>
+    Task<OperationResult> AddTimeEntryAsync(AddTimeEntryRequest request, CancellationToken cancellationToken = default);
 }

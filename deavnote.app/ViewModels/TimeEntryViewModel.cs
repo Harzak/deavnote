@@ -18,10 +18,10 @@ internal sealed partial class TimeEntryViewModel : BaseViewModel
     {
         ArgumentNullException.ThrowIfNull(timeEntry);
 
-        _code = timeEntry.Code;
-        _title = timeEntry.Task.Name;
-        _duration = timeEntry.Duration;
+        _code = timeEntry.Task.Code;
+        _title = timeEntry.Name;
         _state = timeEntry.Task.State;
+        _duration = timeEntry.Duration;
     }
 
     [RelayCommand]

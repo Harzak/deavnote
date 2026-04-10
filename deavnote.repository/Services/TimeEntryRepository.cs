@@ -1,3 +1,5 @@
+using deavnote.model.Entities;
+using deavnote.model.Enums;
 using Microsoft.EntityFrameworkCore;
 
 namespace deavnote.repository.Services;
@@ -37,5 +39,60 @@ internal sealed class TimeEntryRepository : ITimeEntryRepository
 
             return entries.AsReadOnly();
         }
+    }
+
+    /// <inheritdoc/>
+    public async Task<OperationResult> AddTimeEntryAsync(AddTimeEntryRequest request, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(request);
+
+        DateTime now = DateTime.UtcNow;
+
+        TimeEntry timeEntry = new()
+        {
+            Name = request.Name,
+            WorkDone = request.WorkDone,
+            Duration = request.Duration,
+            StartedAtUtc = request.StartedAtUtc,
+            CreatedAtUtc = now,
+            UpdatedAtUtc = now,
+        };
+
+        using DeavnoteDbContext context = await _contextFactory.CreateDbContextAsync(cancellationToken).ConfigureAwait(false);
+
+        switch (request)
+        {
+            case AddTimeEntryRequest.ForExistingTask existing:
+                timeEntry.TaskId = existing.TaskId;
+                await context.Tasks
+                    .Where(t => t.Id == existing.TaskId)
+                    .ExecuteUpdateAsync(s => s.SetProperty(t => t.UpdatedAtUtc, now), cancellationToken)
+                    .ConfigureAwait(false);
+                break;
+
+            case AddTimeEntryRequest.ForNewTask newTask:
+                timeEntry.Task = new DevTask
+                {
+                    Code = newTask.TaskCode,
+                    Name = newTask.TaskName,
+                    State = EDevTaskState.InProgress,
+                    CreatedAtUtc = now,
+                    UpdatedAtUtc = now,
+                };
+                break;
+        }
+
+        context.TimeEntries.Add(timeEntry);
+
+        try
+        {
+            await context.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+        }
+        catch (DbUpdateException ex)
+        {
+            return OperationResult.Failure($"Failed to add time entry: {ex.InnerException?.Message}");
+        }
+
+        return OperationResult.Success();
     }
 }

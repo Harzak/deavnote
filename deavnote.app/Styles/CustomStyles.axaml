@@ -7,7 +7,7 @@
 			   Height="150" Width="700"
 			   ColumnDefinitions="100, *, 100"
 			   RowDefinitions="Auto, *, Auto" >
-			<Border Classes="BannerGray" Margin="50,50" Grid.Column="1" Grid.Row="1">
+			<Border Classes="BannerRed" Margin="50,50" Grid.Column="1" Grid.Row="1">
 
 				<TextBlock Classes="Banner" Text="Sample Text Sample Text Sample Text" />
 
@@ -32,19 +32,6 @@
 		<Setter Property="VerticalAlignment" Value="Center" />
 	</Style>
 
-	<Style Selector="TextBlock.CardTitle">
-		<Setter Property="Foreground" Value="{StaticResource White1Brush}" />
-		<Setter Property="FontSize" Value="14" />
-		<Setter Property="FontWeight" Value="DemiBold" />
-		<Setter Property="HorizontalAlignment" Value="Center" />
-		<Setter Property="VerticalAlignment" Value="Center" />
-	</Style>
-	<Style Selector="TextBlock.CardContent">
-		<Setter Property="Foreground" Value="{StaticResource White1Brush}" />
-		<Setter Property="FontSize" Value="14" />
-		<Setter Property="HorizontalAlignment" Value="Center" />
-		<Setter Property="VerticalAlignment" Value="Center" />
-	</Style>
 	<Style Selector="TextBlock.CardLegend">
 		<Setter Property="Foreground" Value="{StaticResource White3Brush}" />
 		<Setter Property="FontSize" Value="14" />
@@ -57,6 +44,21 @@
 		<Setter Property="Foreground" Value="{StaticResource White1Brush}" />
 		<Setter Property="FontSize" Value="15" />
 		<Setter Property="FontWeight" Value="Normal" />
+		<Setter Property="HorizontalAlignment" Value="Center" />
+		<Setter Property="VerticalAlignment" Value="Center" />
+	</Style>
+
+	<!--SelectableTextBlock-->
+	<Style Selector="SelectableTextBlock.CardContent">
+		<Setter Property="Foreground" Value="{StaticResource White1Brush}" />
+		<Setter Property="FontSize" Value="14" />
+		<Setter Property="HorizontalAlignment" Value="Center" />
+		<Setter Property="VerticalAlignment" Value="Center" />
+	</Style>
+	<Style Selector="SelectableTextBlock.CardTitle">
+		<Setter Property="Foreground" Value="{StaticResource White1Brush}" />
+		<Setter Property="FontSize" Value="14" />
+		<Setter Property="FontWeight" Value="DemiBold" />
 		<Setter Property="HorizontalAlignment" Value="Center" />
 		<Setter Property="VerticalAlignment" Value="Center" />
 	</Style>
@@ -86,6 +88,33 @@
 		<Setter Property="CornerRadius" Value="8" />
 		<Setter Property="BorderThickness" Value="1" />
 		<Setter Property="BorderBrush" Value="LightSlateGray" />
+		<Setter Property="Padding" Value="10" />
+	</Style>
+
+	<Style Selector="Border.BannerRed">
+		<Setter Property="Opacity" Value="0.8" />
+		<Setter Property="Background" Value="DarkRed" />
+		<Setter Property="CornerRadius" Value="8" />
+		<Setter Property="BorderThickness" Value="1" />
+		<Setter Property="BorderBrush" Value="Red" />
+		<Setter Property="Padding" Value="10" />
+	</Style>
+
+	<Style Selector="Border.BannerOrange">
+		<Setter Property="Opacity" Value="0.8" />
+		<Setter Property="Background" Value="DarkOrange" />
+		<Setter Property="CornerRadius" Value="8" />
+		<Setter Property="BorderThickness" Value="1" />
+		<Setter Property="BorderBrush" Value="Orange" />
+		<Setter Property="Padding" Value="10" />
+	</Style>
+
+	<Style Selector="Border.BannerRed">
+		<Setter Property="Opacity" Value="0.8" />
+		<Setter Property="Background" Value="DarkRed" />
+		<Setter Property="CornerRadius" Value="8" />
+		<Setter Property="BorderThickness" Value="1" />
+		<Setter Property="BorderBrush" Value="Red" />
 		<Setter Property="Padding" Value="10" />
 	</Style>
 

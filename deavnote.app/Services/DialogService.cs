@@ -1,6 +1,3 @@
-using Avalonia.Controls;
-using Avalonia.Controls.ApplicationLifetimes;
-
 namespace deavnote.app.Services;
 
 /// <summary>
@@ -10,7 +7,7 @@ namespace deavnote.app.Services;
 internal sealed class DialogService : IDialogService
 {
     /// <inheritdoc/>
-    public async Task<TResult?> ShowDialogAsync<TResult>(DialogViewModel<TResult> viewModel)
+    public async Task<TResult?> ShowWindowAsync<TResult>(DialogViewModel<TResult> viewModel)
     {
         ArgumentNullException.ThrowIfNull(viewModel);
 
@@ -19,13 +16,7 @@ internal sealed class DialogService : IDialogService
         if (owner is null)
         {
             return default;
-        }
-
-        TaskCompletionSource<TResult?> tcs = new();
-        viewModel.CloseDialog = result =>
-        {
-            tcs.TrySetResult(result);
-        };
+        }   
 
         Window dialog = new()
         {
@@ -36,9 +27,17 @@ internal sealed class DialogService : IDialogService
             CanResize = true,
         };
 
+
+        TaskCompletionSource<TResult?> tcs = new();
+        viewModel.CloseDialog = result =>
+        {
+            tcs.TrySetResult(result);
+            dialog.Close();
+        };
+
         dialog.Closed += (_, _) => tcs.TrySetResult(default);
 
-        await dialog.ShowDialog(owner).ConfigureAwait(false);
+        var e = await dialog.ShowDialog<TResult>(owner).ConfigureAwait(false);
 
         return await tcs.Task.ConfigureAwait(false);
     }

@@ -12,7 +12,7 @@
 			 x:Class="deavnote.app.Views.AddTimeEntryView"
 			 Background="{DynamicResource CustomMainBackground}">
 
-	<Grid MinWidth="650" MaxWidth="650" Margin="16" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,20,Auto" ColumnDefinitions="Auto,*">
+	<Grid MinWidth="650" MaxWidth="650" Margin="16" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,20,Auto" ColumnDefinitions="Auto,*">
 
 		<TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Classes="Title" Text="Related Task" />
 
@@ -21,7 +21,7 @@
 				   Margin="0,0,12,8" />
 		<AutoCompleteBox Grid.Row="1" Grid.Column="1"
 						 Margin="0,0,0,8"
-						 ItemsSource="{Binding AvailableTasks}"
+						 ItemsSource="{Binding ExistingTasks}"
 						 SelectedItem="{Binding SelectedTask}"
 						 ValueMemberBinding="{Binding Code}"
 						 Text="{Binding SearchTaskCode}"
@@ -35,7 +35,7 @@
 				   Margin="0,0,12,8" />
 		<AutoCompleteBox Grid.Row="2" Grid.Column="1"
 						 Margin="0,0,0,8"
-						 ItemsSource="{Binding AvailableTasks}"
+						 ItemsSource="{Binding ExistingTasks}"
 						 SelectedItem="{Binding SelectedTask}"
 						 ValueMemberBinding="{Binding Name}"
 						 Text="{Binding SearchTaskName}"
@@ -85,37 +85,34 @@
 		<TextBlock Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Classes="Title" Text="Time Entry"/>
 
 		<TextBlock Grid.Row="5" Grid.Column="0"
-				   Classes="Content" Text="Code" VerticalAlignment="Center"
+				   Classes="Content" Text="Name" VerticalAlignment="Center"
 				   Margin="0,0,12,8" />
-		<TextBox Grid.Row="5" Grid.Column="1" Text="{Binding EntryCode}" Watermark="e.g. T-123"
+		<TextBox Grid.Row="5" Grid.Column="7" Text="{Binding EntryName}" Watermark="Time entry name"
 				 Margin="0,0,0,8" />
 
 		<TextBlock Grid.Row="6" Grid.Column="0"
-				   Classes="Content" Text="Name" VerticalAlignment="Center"
-				   Margin="0,0,12,8" />
-		<TextBox Grid.Row="6" Grid.Column="7" Text="{Binding EntryName}" Watermark="Time entry name"
-				 Margin="0,0,0,8" />
-
-		<TextBlock Grid.Row="7" Grid.Column="0"
 				   Classes="Content" Text="Duration" VerticalAlignment="Center"
 				   Margin="0,0,12,8" />
-		<TextBox Grid.Row="7" Grid.Column="1" Text="{Binding EntryDuration}" Watermark="hh:mm:ss"
-				 Margin="0,0,0,8" />
+		<TimePicker Grid.Row="6" Grid.Column="1"
+					ClockIdentifier="24HourClock"
+					SelectedTime="{Binding EntryDuration}"
+					Margin="0,0,0,8"
+					MinuteIncrement="5"/>
 
-		<TextBlock Grid.Row="8" Grid.Column="0"
+		<TextBlock Grid.Row="7" Grid.Column="0"
 				   Classes="Content" Text="Started at" VerticalAlignment="Center"
 				   Margin="0,0,12,8" />
-		<DatePicker Grid.Row="8" Grid.Column="1" SelectedDate="{Binding EntryStartedAt}"
+		<DatePicker Grid.Row="7" Grid.Column="1" SelectedDate="{Binding EntryStartedAt}"
 					Margin="0,0,0,8" />
 
-		<TextBlock Grid.Row="9" Grid.Column="0"
+		<TextBlock Grid.Row="8" Grid.Column="0"
 				   Classes="Content" Text="Work done" VerticalAlignment="Top"
 				   Margin="0,4,12,0" />
-		<TextBox Grid.Row="9" Grid.Column="1" Text="{Binding EntryWorkDone}"
+		<TextBox Grid.Row="8" Grid.Column="1" Text="{Binding EntryWorkDone}"
 				 Watermark="Optional description" AcceptsReturn="True"
 				 MinHeight="100" MaxHeight="300" />
 
-		<StackPanel Grid.Row="12" Grid.Column="0" Grid.ColumnSpan="2"
+		<StackPanel Grid.Row="11" Grid.Column="0" Grid.ColumnSpan="2"
 					Orientation="Horizontal" HorizontalAlignment="Right" Spacing="8">
 			<Button Content="Cancel" Command="{Binding CancelCommand}" />
 			<Button Content="Add" Command="{Binding ConfirmCommand}" />

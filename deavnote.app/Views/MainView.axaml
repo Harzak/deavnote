@@ -1,19 +1,25 @@
 <Window xmlns="https://github.com/avaloniaui"
 		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		xmlns:ic="using:FluentIcons.Avalonia"
 		xmlns:vm="using:deavnote.app.ViewModels"
 		xmlns:dd="using:deavnote.app.DesignData"
 		xmlns:views="using:deavnote.app.Views"
-		xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 		mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
 		x:Class="deavnote.app.Views.MainView"
 		x:DataType="vm:MainViewModel"
 		Background="{DynamicResource CustomMainBackground}"
 		Icon="/Assets/avalonia-logo.ico"
 		Title="deavnote.app">
+	<Panel>
 
-	<Grid ColumnDefinitions="Auto, *" RowDefinitions="*">
-		<views:JournalView DataContext="{Binding Journal}" Grid.Column="0" Grid.Row="0" />
-	</Grid>
+		<Grid ColumnDefinitions="Auto, *" RowDefinitions="*">
+			<views:JournalView DataContext="{Binding Journal}" Grid.Column="0" Grid.Row="0" />
+		</Grid>
+
+
+		<views:NotificationView DataContext="{Binding}" />
+	</Panel>
 
 </Window>

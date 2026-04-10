@@ -7,6 +7,7 @@ public class JournalViewModelTests
     private IDateProvider _dateProvider;
     private IViewModelFactory _viewModelFactory;
     private IDialogService _dialogService;
+    private INotificationService _notificationService;
 
     [TestInitialize]
     public void Initialize()
@@ -15,13 +16,14 @@ public class JournalViewModelTests
         _dateProvider = A.Fake<IDateProvider>();
         _viewModelFactory = A.Fake<IViewModelFactory>();
         _dialogService = A.Fake<IDialogService>();
+        _notificationService = A.Fake<INotificationService>();
     }
 
     [TestMethod]
     public void Instanciation_ShouldInitialize()
     {
         // Arrange & Act
-        var viewModel = new JournalViewModel(_journal, _dateProvider, _viewModelFactory, _dialogService);
+        var viewModel = new JournalViewModel(_journal, _dateProvider, _viewModelFactory, _dialogService, _notificationService);
 
         // Assert
         viewModel.TimeEntries.Should().NotBeNull();   

@@ -25,10 +25,12 @@
 			<ic:FluentIcon Icon="Copy" />
 		</Button>
 
-		<TextBlock Grid.Column="0" Grid.ColumnSpan="3" Classes="CardTitle"
-				   Grid.Row="0" Text="{Binding Code}"/>
+		<SelectableTextBlock Grid.Column="0" Grid.ColumnSpan="3" Classes="CardTitle"
+							 Grid.Row="0" Text="{Binding Code}"/>
 
-		<TextBlock Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1" Text="{Binding Title}" Classes="CardContent"/>
+		<SelectableTextBlock Grid.Column="0"  Grid.ColumnSpan="3"  Grid.Row="1"
+							 Text="{Binding Title}"
+							 Classes="CardContent"/>
 
 		<ic:FluentIcon Grid.Column="0"
 					   Grid.Row="2"

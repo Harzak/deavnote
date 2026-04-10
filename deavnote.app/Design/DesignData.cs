@@ -8,7 +8,6 @@ internal static class DesignData
     public static TimeEntryViewModel TimeEntryViewModel { get; } = new(new TimeEntry()
     {
         Name = "Design Time Entry",
-        Code = "T123",
         Task = new DevTask()
         {
             Name = "Design Data Task",

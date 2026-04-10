@@ -6,7 +6,6 @@
 public partial class TimeEntry
 {
     public int Id { get; set; }
-    public required string Code { get; set; }
     public required string Name { get; set; }
     public string? WorkDone { get; set; }
     public TimeSpan Duration { get; set; }

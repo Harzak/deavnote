@@ -17,6 +17,7 @@ internal static class ServiceCollectionExtension
         services.AddSingleton<MainViewModel>();
         services.AddSingleton<IViewModelFactory, ViewModelFactory>();
         services.AddSingleton<IDialogService, DialogService>();
+        services.AddSingleton<INotificationService, NotificationService>();
 
         return services;
     }

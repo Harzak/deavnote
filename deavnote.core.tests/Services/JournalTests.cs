@@ -135,7 +135,6 @@ public class JournalTests
                 new TimeEntry()
                 {
                     Id = 1,
-                    Code = "TEST",
                     Name = "Test Entry",
                     StartedAtUtc = new DateTime(2026, 08, 10, 8, 0, 0),
                 }
@@ -149,7 +148,6 @@ public class JournalTests
         //Assert
         journal.TimeEntries.Should().ContainSingle();
         journal.TimeEntries.ElementAt(0).Id.Should().Be(1);
-        journal.TimeEntries.ElementAt(0).Code.Should().Be("TEST");
         journal.TimeEntries.ElementAt(0).Name.Should().Be("Test Entry");
     }
 
@@ -172,7 +170,6 @@ public class JournalTests
                 new TimeEntry()
                 {
                     Id = 1,
-                    Code = "TEST",
                     Name = "Test Entry",
                     StartedAtUtc = new DateTime(2026, 08, 10, 8, 0, 0),
                 }

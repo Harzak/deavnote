@@ -53,7 +53,6 @@ namespace deavnote.model.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Code = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
                     Name = table.Column<string>(type: "TEXT", maxLength: 200, nullable: false),
                     WorkDone = table.Column<string>(type: "TEXT", maxLength: 4000, nullable: true),
                     Duration = table.Column<long>(type: "INTEGER", nullable: false),
