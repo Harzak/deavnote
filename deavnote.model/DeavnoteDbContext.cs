@@ -12,6 +12,7 @@ public sealed class DeavnoteDbContext : DbContext
     public DbSet<DevTask> Tasks { get; set; } = null!;
     public DbSet<TimeEntry> TimeEntries { get; set; } = null!;
     public DbSet<Todo> Todos { get; set; } = null!;
+    public DbSet<ClipboardFormat> ClipboardFormats { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

@@ -19,6 +19,7 @@ internal static class ServiceCollectionExtension
         services.AddSingleton<IDialogService, DialogService>();
         services.AddSingleton<INotificationService, NotificationService>();
         services.AddSingleton<IMessenger>(WeakReferenceMessenger.Default);
+        services.AddSingleton<IClipboardInterop, ClipboardInterop>();
 
         return services;
     }

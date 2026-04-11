@@ -10,3 +10,4 @@ global using deavnote.utils.Interfaces;
 
 /// .NET
 global using System.Runtime.CompilerServices;
+global using System.Text;

@@ -2,6 +2,9 @@
 
 internal sealed partial class TimeEntryListItemViewModel : BaseViewModel
 {
+    private readonly INotificationService _notification;
+    private readonly IClipboardService _clipboard;
+    private readonly model.Entities.TimeEntry _model;
     public int Id { get; }
 
     [ObservableProperty]
@@ -16,9 +19,17 @@ internal sealed partial class TimeEntryListItemViewModel : BaseViewModel
     [ObservableProperty]
     private EDevTaskState _state;
 
-    public TimeEntryListItemViewModel(model.Entities.TimeEntry timeEntry)
+    public TimeEntryListItemViewModel(
+        model.Entities.TimeEntry timeEntry, 
+        IClipboardService clipboard,
+        INotificationService notification)
     {
         ArgumentNullException.ThrowIfNull(timeEntry);
+        ArgumentNullException.ThrowIfNull(clipboard);
+        ArgumentNullException.ThrowIfNull(notification);
+        _model = timeEntry;
+        _clipboard = clipboard;
+        _notification = notification;
 
         _code = timeEntry.Task.Code;
         _title = timeEntry.Name;
@@ -28,9 +39,10 @@ internal sealed partial class TimeEntryListItemViewModel : BaseViewModel
     }
 
     [RelayCommand]
-    private void CopyToClipboard()
+    private async Task CopyToClipboard()
     {
-        throw new NotImplementedException();
+        await _clipboard.SetDailyTimeEntryAsync(_model).ConfigureAwait(false);
+        _notification.Show($"[{_model.Name}] copied.", ENotificationType.Success);
     }
 }
 

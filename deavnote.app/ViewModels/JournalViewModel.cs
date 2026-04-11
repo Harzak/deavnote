@@ -13,6 +13,10 @@ internal sealed partial class JournalViewModel : BaseViewModel
     private readonly IDialogService _dialogService;
     private readonly INotificationService _notificationService;
     private readonly IMessenger _messenger;
+    private readonly IClipboardService _clipboard;
+
+    [ObservableProperty]
+    private EJournalContext _viewType;
 
     [ObservableProperty]
     private DateOnly _dateCursor;
@@ -32,7 +36,8 @@ internal sealed partial class JournalViewModel : BaseViewModel
         IViewModelFactory viewModelFactory,
         IDialogService dialogService,
         INotificationService notificationService,
-        IMessenger messenger)
+        IMessenger messenger,
+        IClipboardService clipboard)
     {
         ArgumentNullException.ThrowIfNull(journal);
         ArgumentNullException.ThrowIfNull(dateProvider);
@@ -40,6 +45,7 @@ internal sealed partial class JournalViewModel : BaseViewModel
         ArgumentNullException.ThrowIfNull(dialogService);
         ArgumentNullException.ThrowIfNull(notificationService);
         ArgumentNullException.ThrowIfNull(messenger);
+        ArgumentNullException.ThrowIfNull(clipboard);
 
         _journal = journal;
         _dateProvider = dateProvider;
@@ -50,6 +56,7 @@ internal sealed partial class JournalViewModel : BaseViewModel
 
         _journal.TimeEntriesChanged += OnJournalTimeEntriesChanged;
         _timeEntries = [];
+        _clipboard = clipboard;
     }
 
     public async Task InitializedAsync()
@@ -128,7 +135,18 @@ internal sealed partial class JournalViewModel : BaseViewModel
     [RelayCommand]
     private void CopyToClipboard()
     {
-        throw new NotImplementedException();
+        switch(this.ViewType)
+        {
+            case EJournalContext.Daily:
+                _clipboard.SetDailyTimeEntriesAsync(_journal.TimeEntries).ConfigureAwait(false);
+                break;
+            case EJournalContext.Weekly:
+                _clipboard.SetWeeklyTimeEntriesAsync(_journal.TimeEntries).ConfigureAwait(false);
+                break;
+            default:
+                throw new NotImplementedException(nameof(this.ViewType));
+        }
+        _notificationService.Show($"{_journal.TimeEntries.Count} time entries copied.", ENotificationType.Success);
     }
 
     partial void OnSelectedTimeEntryChanged(TimeEntryListItemViewModel? value)

@@ -1,7 +1,8 @@
 ﻿/// App
 global using deavnote.core.Services;
-global using deavnote.repository.Interfaces;
 global using deavnote.core.Configuration;
+global using deavnote.core.Interfaces;
+global using deavnote.repository.Interfaces;
 global using deavnote.model.Entities;
 
 /// .NET
