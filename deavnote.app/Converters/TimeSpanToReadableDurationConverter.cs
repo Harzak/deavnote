@@ -42,7 +42,7 @@ internal sealed class TimeSpanToReadableDurationConverter : IValueConverter
 
     public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
-        throw new NotSupportedException("TimeSpanToReadableDurationConverter does not support two-way binding.");
+        throw new NotSupportedException($"{nameof(TimeSpanToReadableDurationConverter)} does not support two-way binding.");
     }
 }
 

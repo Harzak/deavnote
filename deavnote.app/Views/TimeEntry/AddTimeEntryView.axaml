@@ -22,7 +22,7 @@
                    Classes="Content" Text="Code" />
         <AutoCompleteBox Grid.Row="1" Grid.Column="1"
                          Margin="0,0,0,8"
-                         FilterMode="Contains"
+                         FilterMode="ContainsOrdinal"
                          ItemsSource="{Binding ExistingTasks}"
                          MaxDropDownHeight="400" MinimumPrefixLength="0"
                          SelectedItem="{Binding SelectedTask}"

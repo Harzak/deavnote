@@ -28,5 +28,7 @@ internal sealed class DevTaskStateToIconConverter : IValueConverter
     }
 
     public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
-        => throw new NotSupportedException();
+    {
+        throw new NotSupportedException($"{nameof(DevTaskStateToIconConverter)} does not support two-way binding.");
+    }
 }

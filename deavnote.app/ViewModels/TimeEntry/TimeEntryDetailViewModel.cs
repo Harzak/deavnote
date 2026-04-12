@@ -1,9 +1,10 @@
 ﻿namespace deavnote.app.ViewModels.TimeEntry;
 
-internal sealed partial class TimeEntryDetailViewModel : BaseViewModel
+internal sealed partial class TimeEntryDetailViewModel : DialogViewModel<OperationResult>
 {
     private readonly model.Entities.TimeEntry _model;
 
+    internal override string Title => _model.Name;
     public DateTimeOffset StartedAtUtc => _model.StartedAtUtc;
     public DateTime CreatedAtUtc => _model.CreatedAtUtc;
     public DateTime UpdatedAtUtc => _model.UpdatedAtUtc;

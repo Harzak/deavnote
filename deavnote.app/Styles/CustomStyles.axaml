@@ -33,6 +33,11 @@
         <Setter Property="HorizontalAlignment" Value="Left" />
         <Setter Property="VerticalAlignment" Value="Center" />
     </Style>
+    <Style Selector="TextBlock.Legend">
+        <Setter Property="Foreground" Value="{StaticResource White1Brush}" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="Opacity" Value="0.6" />
+    </Style>
 
     <Style Selector="TextBlock.CardLegend">
         <Setter Property="Foreground" Value="{StaticResource White3Brush}" />

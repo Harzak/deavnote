@@ -1,12 +1,12 @@
-﻿using CommunityToolkit.Mvvm.Messaging;
-using deavnote.core.Interfaces;
-
-namespace deavnote.app.ViewModels;
+﻿namespace deavnote.app.ViewModels;
 
 internal sealed partial class MainViewModel : BaseViewModel, IRecipient<TimeEntrySelectedMessage>
 {
     [ObservableProperty]
-    public JournalViewModel _journal;
+    private SearchViewModel _search;
+
+    [ObservableProperty]
+    private JournalViewModel _journal;
 
     [ObservableProperty]
     private TimeEntryDetailViewModel? _selectedTimeEntry;
@@ -21,6 +21,7 @@ internal sealed partial class MainViewModel : BaseViewModel, IRecipient<TimeEntr
         ArgumentNullException.ThrowIfNull(viewModelFactory);
         ArgumentNullException.ThrowIfNull(notificationService);
 
+        this.Search = viewModelFactory.CreateSearchViewModel();
         this.Journal = viewModelFactory.CreateJournalViewModel();
         this.Notifications = notificationService;
 

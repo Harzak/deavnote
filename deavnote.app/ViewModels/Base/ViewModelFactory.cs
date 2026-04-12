@@ -1,4 +1,6 @@
-﻿namespace deavnote.app.ViewModels.Base;
+﻿using deavnote.app.ViewModels.Search;
+
+namespace deavnote.app.ViewModels.Base;
 
 /// <summary>
 /// Provides methods to create view model instances for journals and time entries.
@@ -7,6 +9,8 @@ internal sealed class ViewModelFactory : IViewModelFactory
 {
     private readonly IJournal _journal;
     private readonly IDevTaskRepository _taskRepository;
+    private readonly ISearchRepository _searchRepository;
+    private readonly ITimeEntryRepository _timeEntryRepository;
     private readonly IDateProvider _dateProvider;
     private readonly IDialogService _dialogService;
     private readonly INotificationService _notificationService;
@@ -16,6 +20,8 @@ internal sealed class ViewModelFactory : IViewModelFactory
     public ViewModelFactory(
         IJournal journal,
         IDevTaskRepository taskRepository,
+        ISearchRepository searchRepository,
+        ITimeEntryRepository timeEntryRepository,
         IDateProvider dateProvider,
         IDialogService dialogService,
         INotificationService notificationService,
@@ -24,6 +30,8 @@ internal sealed class ViewModelFactory : IViewModelFactory
     {
         ArgumentNullException.ThrowIfNull(journal);
         ArgumentNullException.ThrowIfNull(taskRepository);
+        ArgumentNullException.ThrowIfNull(searchRepository);
+        ArgumentNullException.ThrowIfNull(timeEntryRepository);
         ArgumentNullException.ThrowIfNull(dateProvider);
         ArgumentNullException.ThrowIfNull(dialogService);
         ArgumentNullException.ThrowIfNull(notificationService);
@@ -32,6 +40,8 @@ internal sealed class ViewModelFactory : IViewModelFactory
 
         _journal = journal;
         _taskRepository = taskRepository;
+        _searchRepository = searchRepository;
+        _timeEntryRepository = timeEntryRepository;
         _dateProvider = dateProvider;
         _dialogService = dialogService;
         _notificationService = notificationService;
@@ -64,5 +74,23 @@ internal sealed class ViewModelFactory : IViewModelFactory
     public AddTimeEntryViewModel CreateAddTimeEntryViewModel()
     {
         return new AddTimeEntryViewModel(_taskRepository);
+    }
+
+    /// <inheritdoc/>
+    public SearchViewModel CreateSearchViewModel()
+    {
+        return new SearchViewModel(_searchRepository, _dialogService, viewModelFactory: this, _timeEntryRepository, _taskRepository);
+    }
+
+    /// <inheritdoc/>
+    public DevTaskDetailViewModel CreateDevTaskDetailViewModel(model.Entities.DevTask model)
+    {
+        return new DevTaskDetailViewModel(model);
+    }
+
+    /// <inheritdoc/>
+    public TimeEntryDetailViewModel CreateTimeEntryDetailViewModel(model.Entities.TimeEntry model)
+    {
+        return new TimeEntryDetailViewModel(model);
     }
 }

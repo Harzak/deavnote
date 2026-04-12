@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 namespace deavnote.repository.Services;
 
 /// <summary>
-/// Provides data access methods for time entry entities
+/// Provides data access methods for <see cref="TimeEntry"/> entities
 /// </summary>
 internal sealed class TimeEntryRepository : ITimeEntryRepository
 {
@@ -94,5 +94,19 @@ internal sealed class TimeEntryRepository : ITimeEntryRepository
         }
 
         return OperationResult.Success();
+    }
+
+    /// <inheritdoc/>
+    public async Task<TimeEntry?> GetEntry(int id, CancellationToken cancellationToken = default)
+    {
+        using (DeavnoteDbContext context = await _contextFactory.CreateDbContextAsync(cancellationToken).ConfigureAwait(false))
+        {
+            return await context.TimeEntries
+              .Where(e => e.Id == id)
+              .Include(e => e.DevTask)
+              .AsNoTracking()
+              .FirstOrDefaultAsync(cancellationToken)
+              .ConfigureAwait(false);
+        }
     }
 }

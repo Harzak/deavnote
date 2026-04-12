@@ -145,7 +145,7 @@ internal sealed partial class JournalViewModel : BaseViewModel
                 _clipboard.SetWeeklyTimeEntriesAsync(_journal.TimeEntries).ConfigureAwait(false);
                 break;
             default:
-                throw new NotImplementedException(nameof(this.ViewType));
+                throw new NotImplementedException(this.ViewType.ToString());
         }
         _notificationService.Show($"{_journal.TimeEntries.Count} time entries copied.", ENotificationType.Success);
     }
