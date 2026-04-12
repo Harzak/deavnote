@@ -17,6 +17,7 @@ public static class ServiceCollectionExtension
         services.AddSingleton<IDatabaseInitializer, DatabaseInitializer>();
         services.AddSingleton<ITimeEntryRepository, TimeEntryRepository>();
         services.AddSingleton<IDevTaskRepository, DevTaskRepository>();
+        services.AddSingleton<IClipboardFormatRepository, ClipboardFormatRepository>();
 
         return services;
     }

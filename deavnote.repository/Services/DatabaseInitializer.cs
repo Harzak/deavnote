@@ -15,9 +15,12 @@ internal sealed class DatabaseInitializer : IDatabaseInitializer
     }
 
     /// <inheritdoc/>
-    public void Initialize()
+    public async Task InitializeAsync()
     {
         using DeavnoteDbContext context = _factory.CreateDbContext();
-        context.Database.EnsureCreated();
+        await context.Database.MigrateAsync().ConfigureAwait(false);
+
+        ClipboardFormatSeeder seeder = new(context);
+        await seeder.SeedAsync().ConfigureAwait(false);
     }
 }

@@ -7,6 +7,7 @@ global using deavnote.model.Entities;
 
 /// .NET
 global using Microsoft.VisualStudio.TestTools.UnitTesting;
+global using System.Globalization;
 
 /// Testing
 global using FakeItEasy;

@@ -20,7 +20,7 @@ internal sealed class DevTaskRepository : IDevTaskRepository
     {
         using (DeavnoteDbContext context = await _contextFactory.CreateDbContextAsync(cancellationToken).ConfigureAwait(false))
         {
-            List<DevTaskLightDto> tasks = await context.Tasks
+            List<DevTaskLightDto> tasks = await context.DevTasks
                 .OrderBy(x => x.CreatedAtUtc)
                 .Select(x => new DevTaskLightDto()
                 {
