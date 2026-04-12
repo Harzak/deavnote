@@ -1,21 +1,27 @@
 ﻿namespace deavnote.app.ViewModels.Search;
 
-internal sealed partial class SearchViewModel : BaseViewModel
+internal sealed partial class SearchViewModel : BaseViewModel, IDisposable
 {
     private readonly ISearchRepository _repository;
     private readonly IDialogService _dialogService;
     private readonly IViewModelFactory _viewModelFactory;
     private readonly ITimeEntryRepository _timeEntryRepository;
     private readonly IDevTaskRepository _devTaskRepository;
+    private CancellationTokenSource? _searchCts;
 
-    public TimeSpan SearchDelay { get; } = TimeSpan.FromMilliseconds(700);
-    public Func<string?, CancellationToken, Task<IEnumerable<object>>>? AsyncPopulator { get; set; }
+    private static readonly TimeSpan SearchDelay = TimeSpan.FromMilliseconds(700);
 
     [ObservableProperty]
     private string? _searchTerms;
 
     [ObservableProperty]
     private SearchResultItem? _selectedItem;
+
+    [ObservableProperty]
+    private bool _hasResults;
+
+    [ObservableProperty]
+    public ObservableCollection<SearchResultItem> _searchResults;
 
     public SearchViewModel(
         ISearchRepository repository,
@@ -36,22 +42,69 @@ internal sealed partial class SearchViewModel : BaseViewModel
         _timeEntryRepository = timeEntryRepository;
         _devTaskRepository = devTaskRepository;
 
-        this.AsyncPopulator = GetSearchResults;
+        _searchResults = [];
     }
 
-    private async Task<IEnumerable<object>> GetSearchResults(string? query, CancellationToken cancellationToken)
+    partial void OnSearchTermsChanged(string? value)
     {
-        if (!string.IsNullOrWhiteSpace(query))
+        ScheduleSearch(value);
+    }
+
+    partial void OnHasResultsChanged(bool value)
+    {
+        if (value && this.SearchResults.Count == 0)
         {
-            return await _repository.Search(query, count: 15, cancellationToken).ConfigureAwait(false);
+            ScheduleSearch(this.SearchTerms);
         }
-        return await _repository.GetMostRecent(count: 15, cancellationToken).ConfigureAwait(false);
+    }
+
+    private void ScheduleSearch(string? query)
+    {
+        _searchCts?.Cancel();
+        _searchCts?.Dispose();
+        _searchCts = new CancellationTokenSource();
+
+        _ = ExecuteSearchAsync(query, _searchCts.Token);
+    }
+
+    private async Task ExecuteSearchAsync(string? query, CancellationToken cancellationToken)
+    {
+        try
+        {
+            await Task.Delay(SearchDelay, cancellationToken).ConfigureAwait(false);
+
+            IReadOnlyList<SearchResultItem> results = string.IsNullOrWhiteSpace(query)
+                ? await _repository.GetMostRecent(count: 15, cancellationToken).ConfigureAwait(false)
+                : await _repository.Search(query, count: 15, cancellationToken).ConfigureAwait(false);
+
+            if (cancellationToken.IsCancellationRequested)
+            {
+                return;
+            }
+
+            await Avalonia.Threading.Dispatcher.UIThread.InvokeAsync(() =>
+            {
+                this.SearchResults.Clear();
+                foreach (SearchResultItem item in results)
+                {
+                    this.SearchResults.Add(item);
+                }
+                this.HasResults = this.SearchResults.Count > 0;
+            });
+        }
+        catch (TaskCanceledException)
+        {
+            // a new search replaces a previous one
+            throw;
+        }
     }
 
     [RelayCommand]
     private void ClearSearchTerms()
     {
         this.SearchTerms = string.Empty;
+        this.SearchResults.Clear();
+        this.HasResults = false;
     }
 
     partial void OnSelectedItemChanged(SearchResultItem? value)
@@ -83,5 +136,12 @@ internal sealed partial class SearchViewModel : BaseViewModel
             default:
                 throw new NotImplementedException(value.Type.ToString());
         }
+    }
+
+    public void Dispose()
+    {
+        _searchCts?.Cancel();
+        _searchCts?.Dispose();
+        _searchCts = null;
     }
 }
