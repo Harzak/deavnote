@@ -35,6 +35,7 @@
     <Application.Styles>
         <StyleInclude Source="Styles/CustomStyles.axaml" />
         <StyleInclude Source="Styles/SearchBoxTheme.axaml" />
+        <StyleInclude Source="Styles/TimeEntryListItemTheme.axaml" />
         <FluentTheme />
     </Application.Styles>
 </Application>

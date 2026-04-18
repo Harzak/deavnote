@@ -1,7 +1,4 @@
-﻿using Avalonia.Threading;
-using CommunityToolkit.Mvvm.Messaging;
-
-[assembly: InternalsVisibleTo("deavnote.app.tests")]
+﻿[assembly: InternalsVisibleTo("deavnote.app.tests")]
 
 namespace deavnote.app.ViewModels;
 
@@ -11,8 +8,8 @@ internal sealed partial class JournalViewModel : BaseViewModel
     private readonly IJournal _journal;
     private readonly IDateProvider _dateProvider;
     private readonly IDialogService _dialogService;
+    private readonly IViewOrchestrator _viewOrchestrator;
     private readonly INotificationService _notificationService;
-    private readonly IMessenger _messenger;
     private readonly IClipboardService _clipboard;
 
     [ObservableProperty]
@@ -35,26 +32,27 @@ internal sealed partial class JournalViewModel : BaseViewModel
         IDateProvider dateProvider,
         IViewModelFactory viewModelFactory,
         IDialogService dialogService,
+        IViewOrchestrator viewOrchestrator,
         INotificationService notificationService,
-        IMessenger messenger,
         IClipboardService clipboard)
     {
         ArgumentNullException.ThrowIfNull(journal);
         ArgumentNullException.ThrowIfNull(dateProvider);
         ArgumentNullException.ThrowIfNull(viewModelFactory);
         ArgumentNullException.ThrowIfNull(dialogService);
+        ArgumentNullException.ThrowIfNull(viewOrchestrator);
         ArgumentNullException.ThrowIfNull(notificationService);
-        ArgumentNullException.ThrowIfNull(messenger);
         ArgumentNullException.ThrowIfNull(clipboard);
 
         _journal = journal;
         _dateProvider = dateProvider;
         _viewModelFactory = viewModelFactory;
         _dialogService = dialogService;
+        _viewOrchestrator = viewOrchestrator;
         _notificationService = notificationService;
-        _messenger = messenger;
 
         _journal.TimeEntriesChanged += OnJournalTimeEntriesChanged;
+        _journal.CursorChanged += OnJournalCursorChanged;
         _timeEntries = [];
         _clipboard = clipboard;
         _viewType = EJournalContext.DailyMultiple;
@@ -136,7 +134,7 @@ internal sealed partial class JournalViewModel : BaseViewModel
     [RelayCommand]
     private void CopyToClipboard()
     {
-        switch(this.ViewType)
+        switch (this.ViewType)
         {
             case EJournalContext.DailyMultiple:
                 _clipboard.SetDailyTimeEntriesAsync(_journal.TimeEntries).ConfigureAwait(false);
@@ -155,7 +153,10 @@ internal sealed partial class JournalViewModel : BaseViewModel
         if (value != null)
         {
             model.Entities.TimeEntry model = _journal.TimeEntries.First(entry => entry.Id == value.Id);
-            _messenger.Send(new TimeEntrySelectedMessage(model));
+            Task.Run(async () =>
+            {
+                await _viewOrchestrator.NavigateToTimeEntryDetailAsync(model).ConfigureAwait(false);
+            });
         }
     }
 
@@ -163,8 +164,6 @@ internal sealed partial class JournalViewModel : BaseViewModel
     {
         Dispatcher.UIThread.Post((Action)(() =>
         {
-            this.DateCursor = _journal.DateCursor;
-
             this.TimeEntries.Clear();
 
             if (_journal.TimeEntries.Count == 0) return;
@@ -174,6 +173,14 @@ internal sealed partial class JournalViewModel : BaseViewModel
                 TimeEntryListItemViewModel timeEntryViewModel = _viewModelFactory.CreateTimeEntryViewModel(entry);
                 this.TimeEntries.Add(timeEntryViewModel);
             }
+        }));
+    }
+
+    private void OnJournalCursorChanged(object? sender, JournalCursorChangedEventArgs e)
+    {
+        Dispatcher.UIThread.Post((Action)(() =>
+        {
+            this.DateCursor = e.DateCursor;
         }));
     }
 }

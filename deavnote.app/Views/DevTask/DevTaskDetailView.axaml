@@ -9,39 +9,19 @@
              d:DesignHeight="500"
              d:DesignWidth="600"
              x:DataType="viewmodels:DevTask.DevTaskDetailViewModel"
-             Background="{DynamicResource TimeEntryBackground}"
              mc:Ignorable="d">
 
     <Grid Margin="10"
-          ColumnDefinitions="*, Auto" ColumnSpacing="15" RowDefinitions="Auto,Auto, *"
+          ColumnDefinitions="*, Auto" ColumnSpacing="15" RowDefinitions="Auto,Auto, *, Auto"
           RowSpacing="15">
 
         <StackPanel Grid.Row="0" Grid.Column="0"
                     VerticalAlignment="Center"
                     Orientation="Horizontal">
-            <TextBlock Text="DevTask: " />
-            <TextBlock Text="{Binding Code}" />
+            <SelectableTextBlock Classes="CardTitle"
+                                 Foreground="{StaticResource Violet1Brush}"
+                                 Text="{Binding Code}" />
         </StackPanel>
-
-        <Grid Grid.Row="0" Grid.Column="1"
-              HorizontalAlignment="Right"
-              ColumnDefinitions="Auto, *" ColumnSpacing="2" RowDefinitions="Auto, Auto"
-              RowSpacing="2">
-            <TextBlock Grid.Row="0" Grid.Column="0"
-                       HorizontalAlignment="Left"
-                       Text="Created at:" />
-            <TextBlock Grid.Row="0" Grid.Column="1"
-                       Margin="0,0,0,5" HorizontalAlignment="Right"
-                       Text="{Binding CreatedAtUtc}" />
-
-            <TextBlock Grid.Row="1" Grid.Column="0"
-                       HorizontalAlignment="Left"
-                       Text="Modified at:" />
-            <TextBlock Grid.Row="1" Grid.Column="1"
-                       HorizontalAlignment="Right"
-                       Text="{Binding UpdatedAtUtc}" />
-        </Grid>
-
 
         <TextBox Grid.Row="1" Grid.Column="0"
                  Text="{Binding Name}" />
@@ -54,6 +34,18 @@
                  AcceptsReturn="True"
                  Text="{Binding Description}"
                  Watermark="Enter a task description here..." />
+
+        <StackPanel Grid.Row="3" Grid.Column="1"
+                    Orientation="Horizontal">
+            <TextBlock Classes="Legend" Text="Created at" />
+            <TextBlock Margin="3,0,10,0"
+                       Classes="Legend"
+                       Text="{Binding CreatedAtUtc}" />
+            <TextBlock Classes="Legend" Text="-" />
+            <TextBlock Margin="10,0,3,0"
+                       Classes="Legend" Text="Modified at" />
+            <TextBlock Classes="Legend" Text="{Binding UpdatedAtUtc}" />
+        </StackPanel>
     </Grid>
 
 </UserControl>

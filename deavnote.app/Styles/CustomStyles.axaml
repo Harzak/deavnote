@@ -5,15 +5,12 @@
         <Grid Width="700" Height="150"
               Background="{DynamicResource CustomMainBackground}"
               ColumnDefinitions="100, *, 100" RowDefinitions="Auto, *, Auto">
-            <Border Grid.Row="1" Grid.Column="1"
-                    Margin="50,50">
-
-                <Button Grid.Row="0" Grid.Column="3"
-                        HorizontalAlignment="Right"
-                        Classes="SmallIconButton" ToolTip.Tip="Copy time entry">
-                    <ic:FluentIcon Icon="Copy" />
-                </Button>
-            </Border>
+            <StackPanel Grid.Row="1" Grid.Column="1"
+                        Margin="50,50">
+                <SelectableTextBlock FontWeight="DemiBold" Text="some text" />
+                <SelectableTextBlock FontWeight="Medium" Text="some text" />
+                <SelectableTextBlock FontWeight="Normal" Text="some text" />
+            </StackPanel>
         </Grid>
     </Design.PreviewWith>
 
@@ -59,11 +56,12 @@
     <Style Selector="SelectableTextBlock.CardContent">
         <Setter Property="Foreground" Value="{StaticResource White1Brush}" />
         <Setter Property="FontSize" Value="14" />
+        <Setter Property="FontWeight" Value="Medium" />
         <Setter Property="HorizontalAlignment" Value="Center" />
         <Setter Property="VerticalAlignment" Value="Center" />
     </Style>
     <Style Selector="SelectableTextBlock.CardTitle">
-        <Setter Property="Foreground" Value="{StaticResource White1Brush}" />
+        <Setter Property="Foreground" Value="{StaticResource White2Brush}" />
         <Setter Property="FontSize" Value="14" />
         <Setter Property="FontWeight" Value="DemiBold" />
         <Setter Property="HorizontalAlignment" Value="Center" />
@@ -153,12 +151,35 @@
 
     <!--  TextBox  -->
     <Style Selector="TextBox">
-        <Setter Property="Background" Value="{StaticResource Grey2}" />
-        <Setter Property="BorderBrush" Value="{StaticResource Grey3}" />
+        <Setter Property="Background" Value="{StaticResource Grey3}" />
+        <Setter Property="BorderBrush" Value="{StaticResource Grey4}" />
     </Style>
-    <Style Selector="TextBox:focus /template/ Border#PART_BorderElement">
-        <Setter Property="Background" Value="{StaticResource Grey1}" />
-        <Setter Property="BorderBrush" Value="{StaticResource White3}" />
+
+    <!--  ListBox  -->
+    <Style Selector="ListBox.Journal">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Padding" Value="0" />
+    </Style>
+
+    <!--  DatePicker  -->
+    <Style Selector="DatePicker">
+        <Setter Property="Background" Value="{StaticResource Grey3}" />
+        <Setter Property="BorderBrush" Value="{StaticResource Grey4}" />
+    </Style>
+
+    <!--  Combobox  -->
+    <Style Selector="ComboBox">
+        <Setter Property="Background" Value="{StaticResource Grey3}" />
+        <Setter Property="BorderBrush" Value="{StaticResource Grey4}" />
+    </Style>
+
+    <!--  RepeatButton  -->
+    <Style Selector="RepeatButton">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Padding" Value="5" />
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
     </Style>
 
     <!--  Custom Color Resources  -->

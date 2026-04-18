@@ -1,5 +1,4 @@
-﻿using Avalonia.Threading;
-namespace deavnote.app.Services;
+﻿namespace deavnote.app.Services;
 
 internal sealed class NotificationService : INotificationService
 {

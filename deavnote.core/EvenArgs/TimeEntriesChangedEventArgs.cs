@@ -5,19 +5,10 @@
 /// </summary>
 public sealed class TimeEntriesChangedEventArgs : EventArgs
 {
-    /// <summary>
-    /// Gets the current date and time position used for data traversal or processing.
-    /// </summary>
-    /// 
-    public DateOnly DateCursor { get; }
-    /// <summary>
-    /// Gets the current position in time within the timeline.
-    /// </summary>
-    public int DayOffset { get; }
+    public int EntryCount { get; init; }
 
-    public TimeEntriesChangedEventArgs(DateOnly dateCursor, int dayOffset)
+    public TimeEntriesChangedEventArgs(int entryCount)
     {
-        this.DateCursor = dateCursor;
-        this.DayOffset = dayOffset;
+        this.EntryCount = entryCount;
     }
 }

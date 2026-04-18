@@ -31,6 +31,8 @@ internal sealed class Journal : IJournal
     /// <inheritdoc/>
     public event EventHandler<TimeEntriesChangedEventArgs>? TimeEntriesChanged;
 
+    public event EventHandler<JournalCursorChangedEventArgs>? CursorChanged;
+
     public Journal(ITimeEntryRepository repository)
     {
         ArgumentNullException.ThrowIfNull(repository);
@@ -101,6 +103,7 @@ internal sealed class Journal : IJournal
         if (hasChanged)
         {
             this.DateCursor = date;
+            this.InvokeCursorChanged();
         }
         return hasChanged;
     }
@@ -111,6 +114,7 @@ internal sealed class Journal : IJournal
         if (hasChanged)
         {
             this.DayOffset = time;
+            this.InvokeCursorChanged();
         }
         return hasChanged;
     }
@@ -176,7 +180,12 @@ internal sealed class Journal : IJournal
 
     private void InvokeTimeEntriesChanged()
     {
-        TimeEntriesChanged?.Invoke(this, new TimeEntriesChangedEventArgs(this.DateCursor, this.DayOffset));
+        TimeEntriesChanged?.Invoke(this, new TimeEntriesChangedEventArgs(_entriesInCursor.Count));
+    }
+
+    private void InvokeCursorChanged()
+    {
+        CursorChanged?.Invoke(this, new JournalCursorChangedEventArgs(this.DateCursor, this.DayOffset));
     }
 
 }

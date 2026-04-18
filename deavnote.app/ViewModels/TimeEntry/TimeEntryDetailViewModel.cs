@@ -1,10 +1,9 @@
 ﻿namespace deavnote.app.ViewModels.TimeEntry;
 
-internal sealed partial class TimeEntryDetailViewModel : DialogViewModel<OperationResult>
+internal sealed partial class TimeEntryDetailViewModel : BaseEditableViewModel
 {
     private readonly model.Entities.TimeEntry _model;
 
-    internal override string Title => _model.Name;
     public DateTimeOffset StartedAtUtc => _model.StartedAtUtc;
     public DateTime CreatedAtUtc => _model.CreatedAtUtc;
     public DateTime UpdatedAtUtc => _model.UpdatedAtUtc;
@@ -30,5 +29,19 @@ internal sealed partial class TimeEntryDetailViewModel : DialogViewModel<Operati
         _workDone = model.WorkDone ?? string.Empty;
         _duration = model.Duration;
         _relatedTask = new DevTaskDetailViewModel(model.DevTask);
+    }
+
+    protected override void ApplyChanges()
+    {
+        throw new NotImplementedException();
+    }
+
+    protected override void Dispose(bool disposing)
+    {
+        if (disposing)
+        {
+            _relatedTask?.Dispose();
+        }
+        base.Dispose(disposing);
     }
 }

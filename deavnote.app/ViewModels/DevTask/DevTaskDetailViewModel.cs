@@ -1,10 +1,9 @@
 ﻿namespace deavnote.app.ViewModels.DevTask;
 
-internal sealed partial class DevTaskDetailViewModel : DialogViewModel<OperationResult>
+internal sealed partial class DevTaskDetailViewModel : BaseEditableViewModel
 {
     private readonly model.Entities.DevTask _model;
 
-    internal override string Title => _model.Name;
     public DateTime CreatedAtUtc => _model.CreatedAtUtc;
     public DateTime UpdatedAtUtc => _model.UpdatedAtUtc;
 
@@ -30,6 +29,11 @@ internal sealed partial class DevTaskDetailViewModel : DialogViewModel<Operation
         _name = model.Name;
         _description = model.Description ?? string.Empty;
         _state = model.State;
+    }
+
+    protected override void ApplyChanges()
+    {
+        throw new NotImplementedException();
     }
 }
 
