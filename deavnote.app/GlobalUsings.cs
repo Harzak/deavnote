@@ -7,6 +7,7 @@ global using deavnote.app.ViewModels.DevTask;
 global using deavnote.app.ViewModels.Search;
 global using deavnote.app.Interfaces;
 global using deavnote.app.Services;
+global using deavnote.app.Navigation;
 global using deavnote.app.Navigation.Context;
 global using deavnote.app.Navigation.Guards;
 global using deavnote.app.Enums;
