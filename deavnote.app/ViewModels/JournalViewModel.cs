@@ -66,25 +66,25 @@ internal sealed partial class JournalViewModel : BaseViewModel
     }
 
     [RelayCommand]
-    private async Task MoveDateCursorToNowAsync()
+    private async Task MoveDateCursorToNowAsync(CancellationToken cancellationToken)
     {
-        await _journal.ResetDateCursorAsync().ConfigureAwait(false);
+        await _journal.ResetDateCursorAsync(cancellationToken).ConfigureAwait(false);
     }
 
     [RelayCommand]
-    private async Task MoveDateCursorToPreviousDayAsync()
+    private async Task MoveDateCursorToPreviousDayAsync(CancellationToken cancellationToken)
     {
-        await _journal.ShiftDateCursorAsync(days: -1).ConfigureAwait(false);
+        await _journal.ShiftDateCursorAsync(days: -1, cancellationToken).ConfigureAwait(false);
     }
 
     [RelayCommand]
-    private async Task MoveDateCursorToNextDayAsync()
+    private async Task MoveDateCursorToNextDayAsync(CancellationToken cancellationToken)
     {
-        await _journal.ShiftDateCursorAsync(days: 1).ConfigureAwait(false);
+        await _journal.ShiftDateCursorAsync(days: 1, cancellationToken).ConfigureAwait(false);
     }
 
     [RelayCommand]
-    private async Task AddTimeEntryAsync()
+    private async Task AddTimeEntryAsync(CancellationToken cancellationToken)
     {
         AddTimeEntryViewModel vm = _viewModelFactory.CreateAddTimeEntryViewModel();
         AddTimeEntryRequest? request = await _dialogService.ShowWindowAsync(vm).ConfigureAwait(false);
@@ -94,7 +94,7 @@ internal sealed partial class JournalViewModel : BaseViewModel
             return;
         }
 
-        OperationResult result = await _journal.AddEntryAsync(request).ConfigureAwait(false);
+        OperationResult result = await _journal.AddEntryAsync(request, cancellationToken).ConfigureAwait(false);
 
         if (result.IsSuccess)
         {
@@ -107,7 +107,7 @@ internal sealed partial class JournalViewModel : BaseViewModel
     }
 
     [RelayCommand]
-    private async Task ChangeJournalMode(EJournalMode mode)
+    private async Task ChangeJournalMode(EJournalMode mode, CancellationToken cancellationToken)
     {
         JournalConfiguration configuration = mode switch
         {
@@ -128,7 +128,7 @@ internal sealed partial class JournalViewModel : BaseViewModel
             },
             _ => _journal.DefaultConfiguration,
         };
-        await _journal.SetCursorsAsync(configuration).ConfigureAwait(false);
+        await _journal.SetCursorsAsync(configuration, cancellationToken).ConfigureAwait(false);
     }
 
     [RelayCommand]

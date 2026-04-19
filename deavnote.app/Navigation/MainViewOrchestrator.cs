@@ -45,8 +45,6 @@ internal sealed class MainViewOrchestrator : IViewOrchestrator
     {
         ArgumentNullException.ThrowIfNull(viewModel);
 
-        this.ActiveViewModelChanging?.Invoke(this, EventArgs.Empty);
-
         NavigationContext context = new(parameters);
         foreach (INavigationGuard guard in _navigationGuards)
         {
@@ -56,6 +54,8 @@ internal sealed class MainViewOrchestrator : IViewOrchestrator
                 return;
             }
         }
+
+        this.ActiveViewModelChanging?.Invoke(this, EventArgs.Empty);
 
         if (this.ActiveViewModel != null)
         {

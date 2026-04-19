@@ -48,10 +48,11 @@ internal sealed partial class DevTaskDetailViewModel : BaseEditableViewModel<(st
     public override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync().ConfigureAwait(false);
+        base.ValidateAllProperties();
         base.CommitSnapshot();
     }
 
-    protected override async Task<OperationResult> ApplyChangesAsync()
+    protected override async Task<OperationResult> ApplyChangesAsync(CancellationToken cancellationToken)
     {
         return await _repository.UpdateTaskAsync(new UpdateDevTaskRequest
         {
@@ -60,7 +61,7 @@ internal sealed partial class DevTaskDetailViewModel : BaseEditableViewModel<(st
             Code = this.Code,
             Description = this.Description,
             State = this.State
-        })
+        }, cancellationToken)
         .ConfigureAwait(false);
     }
 
