@@ -33,7 +33,10 @@
     </Application.DataTemplates>
 
     <Application.Styles>
-        <StyleInclude Source="Styles/CustomStyles.axaml" />
+        <StyleInclude Source="Styles/TextBlocks.axaml" />
+        <StyleInclude Source="Styles/Borders.axaml" />
+        <StyleInclude Source="Styles/Buttons.axaml" />
+        <StyleInclude Source="Styles/Inputs.axaml" />
         <StyleInclude Source="Styles/SearchBoxTheme.axaml" />
         <StyleInclude Source="Styles/TimeEntryListItemTheme.axaml" />
         <FluentTheme />
