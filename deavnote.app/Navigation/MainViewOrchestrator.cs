@@ -27,20 +27,16 @@ internal sealed class MainViewOrchestrator : IViewOrchestrator
     }
 
     /// <inheritdoc/>
-    public async Task NavigateToDevTaskDetailAsync(DevTask devTask)
+    public async Task NavigateToDevTaskDetailAsync(int id)
     {
-        ArgumentNullException.ThrowIfNull(devTask);
-
-        DevTaskDetailViewModel viewModel = _factory.CreateDevTaskDetailViewModel(devTask);
+        DevTaskDetailViewModel viewModel = _factory.CreateDevTaskDetailViewModel(id);
         await this.NavigateToAsync(viewModel).ConfigureAwait(false);
     }
 
     /// <inheritdoc/>
-    public async Task NavigateToTimeEntryDetailAsync(TimeEntry timeEntry)
+    public async Task NavigateToTimeEntryDetailAsync(int id)
     {
-        ArgumentNullException.ThrowIfNull(timeEntry);
-
-        TimeEntryDetailViewModel viewModel = _factory.CreateTimeEntryDetailViewModel(timeEntry);
+        TimeEntryDetailViewModel viewModel = _factory.CreateTimeEntryDetailViewModel(id);
         await this.NavigateToAsync(viewModel).ConfigureAwait(false);
     }
 

@@ -1,23 +1,25 @@
-﻿using FluentIcons.Common.Internals;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using System.ComponentModel;
-
-namespace deavnote.app.ViewModels.Base;
+﻿namespace deavnote.app.ViewModels.Base;
 
 /// <summary>
 /// Provides a base class for editable view models with change tracking and disposal support.
 /// </summary>
 internal abstract partial class BaseEditableViewModel<TSnapshot> : BaseViewModel, IEditableViewModel
 {
+    private readonly INotificationService _notificationService;
     private bool _disposed;
     private TSnapshot? _snapshot;
 
-    /// <inheritdoc/>
-    public bool HasChanges { get; private set; }
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(CancelCommand))]
+    [NotifyCanExecuteChangedFor(nameof(SaveCommand))]
+    private bool _hasChanges;
 
-    protected BaseEditableViewModel()
+    protected BaseEditableViewModel(INotificationService notificationService)
     {
-        PropertyChanged += OnPropertyChanged;
+        ArgumentNullException.ThrowIfNull(notificationService);
+        _notificationService = notificationService;
+
+        base.PropertyChanged += OnPropertyChanged;
     }
 
     protected virtual void OnPropertyChanged(object? sender, PropertyChangedEventArgs e)
@@ -33,15 +35,29 @@ internal abstract partial class BaseEditableViewModel<TSnapshot> : BaseViewModel
         return base.OnDestroyAsync();
     }
 
-    [RelayCommand]
-    private void SaveCommand()
+    [RelayCommand(CanExecute = nameof(HasChanges))]
+    private async Task SaveAsync()
     {
-        this.ApplyChanges();
-        this.CommitSnapshot();
+        base.ValidateAllProperties();
+        if (base.HasErrors)
+        {
+            _notificationService.Show("Please fix the validation errors before saving.", ENotificationType.Warning);
+            return;
+        }
+        OperationResult result = await this.ApplyChangesAsync().ConfigureAwait(false);
+        if (result.IsFailed)
+        {
+            _notificationService.Show("An error occurred while saving changes." + result.ErrorMessage, ENotificationType.Error);
+        }
+        else
+        {
+            _notificationService.Show("Changes saved successfully.", ENotificationType.Success);
+            this.CommitSnapshot();
+        }
     }
 
-    [RelayCommand]
-    private void CancelCommand()
+    [RelayCommand(CanExecute = nameof(HasChanges))]
+    private void Cancel()
     {
         if (_snapshot != null)
         {
@@ -53,7 +69,7 @@ internal abstract partial class BaseEditableViewModel<TSnapshot> : BaseViewModel
     /// <summary>
     /// Applies the changes made to the object's state.
     /// </summary>
-    protected abstract void ApplyChanges();
+    protected abstract Task<OperationResult> ApplyChangesAsync();
 
     /// <summary>
     /// Reverts any changes made to the current state.

@@ -97,7 +97,42 @@ internal sealed class TimeEntryRepository : ITimeEntryRepository
     }
 
     /// <inheritdoc/>
-    public async Task<TimeEntry?> GetEntry(int id, CancellationToken cancellationToken = default)
+    public async Task<OperationResult> UpdateTimeEntryAsync(UpdateTimeEntryRequest request, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(request);
+
+        using DeavnoteDbContext context = await _contextFactory.CreateDbContextAsync(cancellationToken).ConfigureAwait(false);
+
+        TimeEntry? existingEntry = await context.TimeEntries
+            .Where(e => e.Id == request.Id)
+            .FirstOrDefaultAsync(cancellationToken)
+            .ConfigureAwait(false);
+
+        if (existingEntry == null)
+        {
+            return OperationResult.Failure($"Time entry with ID {request.Id} not found.");
+        }
+
+        existingEntry.Name = request.Name;
+        existingEntry.WorkDone = request.WorkDone;
+        existingEntry.Duration = request.Duration;
+        existingEntry.StartedAtUtc = request.StartedAtUtc;
+        existingEntry.UpdatedAtUtc = DateTime.UtcNow;
+
+        try
+        {
+            await context.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+        }
+        catch (DbUpdateException ex)
+        {
+            return OperationResult.Failure($"Failed to update time entry: {ex.InnerException?.Message}");
+        }
+
+        return OperationResult.Success();
+    }
+
+    /// <inheritdoc/>
+    public async Task<TimeEntry?> GetEntryAsync(int id, CancellationToken cancellationToken = default)
     {
         using (DeavnoteDbContext context = await _contextFactory.CreateDbContextAsync(cancellationToken).ConfigureAwait(false))
         {

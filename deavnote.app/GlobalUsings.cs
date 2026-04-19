@@ -32,6 +32,8 @@ global using System.Collections.ObjectModel;
 global using System.Runtime.CompilerServices;
 global using System.Globalization;
 global using System.Text;
+global using System.ComponentModel;
+global using System.ComponentModel.DataAnnotations;
 
 /// Avalonia
 global using Avalonia;

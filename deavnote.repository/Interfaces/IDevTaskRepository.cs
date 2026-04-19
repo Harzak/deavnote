@@ -14,5 +14,10 @@ public interface IDevTaskRepository
     /// <summary>
     /// Retrieves a DevTask entity by its identifier.
     /// </summary>
-    Task<DevTask?> GetTask(int id, CancellationToken cancellationToken = default);
+    Task<DevTask?> GetTaskAsync(int id, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Asynchronously updates an existing development task.
+    /// </summary>
+    Task<OperationResult> UpdateTaskAsync(UpdateDevTaskRequest request, CancellationToken cancellationToken = default);
 }

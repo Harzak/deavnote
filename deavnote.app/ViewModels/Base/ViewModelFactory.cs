@@ -79,18 +79,18 @@ internal sealed class ViewModelFactory : IViewModelFactory
     /// <inheritdoc/>
     public SearchViewModel CreateSearchViewModel()
     {
-        return new SearchViewModel(_searchRepository, _viewOrchestrator.Value, _timeEntryRepository, _taskRepository);
+        return new SearchViewModel(_searchRepository, _viewOrchestrator.Value);
     }
 
     /// <inheritdoc/>
-    public DevTaskDetailViewModel CreateDevTaskDetailViewModel(model.Entities.DevTask model)
+    public DevTaskDetailViewModel CreateDevTaskDetailViewModel(int id)
     {
-        return new DevTaskDetailViewModel(model);
+        return new DevTaskDetailViewModel(id, _taskRepository, _notificationService);
     }
 
     /// <inheritdoc/>
-    public TimeEntryDetailViewModel CreateTimeEntryDetailViewModel(model.Entities.TimeEntry model)
+    public TimeEntryDetailViewModel CreateTimeEntryDetailViewModel(int id)
     {
-        return new TimeEntryDetailViewModel(model);
+        return new TimeEntryDetailViewModel(id, _timeEntryRepository, factory: this, _notificationService);
     }
 }

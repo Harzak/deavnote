@@ -20,7 +20,12 @@ public interface ITimeEntryRepository
     Task<OperationResult> AddTimeEntryAsync(AddTimeEntryRequest request, CancellationToken cancellationToken = default);
 
     /// <summary>
+    /// Asynchronously updates an existing time entry.
+    /// </summary>
+    Task<OperationResult> UpdateTimeEntryAsync(UpdateTimeEntryRequest request, CancellationToken cancellationToken = default);
+
+    /// <summary>
     /// Retrieves a time entry by its unique identifier.
     /// </summary>
-    Task<TimeEntry?> GetEntry(int id, CancellationToken cancellationToken = default);
+    Task<TimeEntry?> GetEntryAsync(int id, CancellationToken cancellationToken = default);
 }

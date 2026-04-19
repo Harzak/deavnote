@@ -1,4 +1,5 @@
-﻿namespace deavnote.repository.Services;
+﻿
+namespace deavnote.repository.Services;
 
 /// <summary>
 /// Provides data access methods for <see cref="DevTask"/> entities
@@ -33,7 +34,7 @@ internal sealed class DevTaskRepository : IDevTaskRepository
     }
 
     /// <inheritdoc/>
-    public async Task<DevTask?> GetTask(int id, CancellationToken cancellationToken = default)
+    public async Task<DevTask?> GetTaskAsync(int id, CancellationToken cancellationToken = default)
     {
         using (DeavnoteDbContext context = await _contextFactory.CreateDbContextAsync(cancellationToken).ConfigureAwait(false))
         {
@@ -43,6 +44,41 @@ internal sealed class DevTaskRepository : IDevTaskRepository
               .FirstOrDefaultAsync(cancellationToken)
               .ConfigureAwait(false);
         }
+    }
+
+    /// <inheritdoc/>
+    public async Task<OperationResult> UpdateTaskAsync(UpdateDevTaskRequest request, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(request);
+
+        using DeavnoteDbContext context = await _contextFactory.CreateDbContextAsync(cancellationToken).ConfigureAwait(false);
+
+        DevTask? existingTask = await context.DevTasks
+            .Where(e => e.Id == request.Id)
+            .FirstOrDefaultAsync(cancellationToken)
+            .ConfigureAwait(false);
+
+        if (existingTask == null)
+        {
+            return OperationResult.Failure($"Development task with ID {request.Id} not found.");
+        }
+
+        existingTask.Code = request.Code;
+        existingTask.Name = request.Name;
+        existingTask.Description = request.Description;
+        existingTask.State = request.State;
+        existingTask.UpdatedAtUtc = DateTime.UtcNow;
+
+        try
+        {
+            await context.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+        }
+        catch (DbUpdateException ex)
+        {
+            return OperationResult.Failure($"Failed to update development task: {ex.InnerException?.Message}");
+        }
+
+        return OperationResult.Success();
     }
 }
 

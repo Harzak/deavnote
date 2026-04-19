@@ -152,10 +152,9 @@ internal sealed partial class JournalViewModel : BaseViewModel
     {
         if (value != null)
         {
-            model.Entities.TimeEntry model = _journal.TimeEntries.First(entry => entry.Id == value.Id);
             Task.Run(async () =>
             {
-                await _viewOrchestrator.NavigateToTimeEntryDetailAsync(model).ConfigureAwait(false);
+                await _viewOrchestrator.NavigateToTimeEntryDetailAsync(value.Id).ConfigureAwait(false);
             });
         }
     }
