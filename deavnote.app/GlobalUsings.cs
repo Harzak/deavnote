@@ -11,17 +11,22 @@ global using deavnote.app.Navigation;
 global using deavnote.app.Navigation.Context;
 global using deavnote.app.Navigation.Guards;
 global using deavnote.app.Enums;
+global using deavnote.app.Configuration;
 global using deavnote.core.Enums;
 global using deavnote.core.EvenArgs;
 global using deavnote.core.Configuration;
 global using deavnote.core.Interfaces;
 global using deavnote.model.Entities;
+global using deavnote.model.Configuration;
 global using deavnote.model.Enums;
 global using deavnote.repository.Dto;
+global using deavnote.repository;
+global using deavnote.repository.Configuration;
 global using deavnote.utils.Interfaces;
 global using deavnote.utils.Configuration;
 global using deavnote.utils.Results;
 global using deavnote.utils.Extensions;
+global using deavnote.utils;
 
 /// Repository
 global using deavnote.repository.Interfaces;
@@ -47,4 +52,6 @@ global using CommunityToolkit.Mvvm.ComponentModel;
 global using CommunityToolkit.Mvvm.Input;
 global using CommunityToolkit.Mvvm.Messaging.Messages;
 global using CommunityToolkit.Mvvm.Messaging;
+global using NLog;
+global using NLog.Extensions.Logging;
 

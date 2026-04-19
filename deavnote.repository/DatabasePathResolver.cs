@@ -5,7 +5,6 @@ namespace deavnote.repository;
 /// </summary>
 public static class DatabasePathResolver
 {
-    private const string APP_NAME = "deavnote";
     private const string DATABASE_NAME = "deavnote.db";
     private static readonly CompositeFormat SQLITE_CONNECTION_FORMAT = CompositeFormat.Parse("Data Source={0}");
 
@@ -14,11 +13,7 @@ public static class DatabasePathResolver
     /// </summary>
     public static string Resolve()
     {
-        string appDataFolder = Path.Combine(
-            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-            APP_NAME);
-
-        Directory.CreateDirectory(appDataFolder);
+        string appDataFolder = ApplicationEnvironment.ResolveAppDataFolder();
 
         string dbPath = Path.Combine(appDataFolder, DATABASE_NAME);
 
