@@ -24,7 +24,7 @@
                     <Button Name="PART_ClearButton"
                             Grid.Column="1"
                             Margin="4,0,0,0" VerticalAlignment="Center"
-                            Classes="SmallIconButton"
+                            Classes="IconButton"
                             IsVisible="{TemplateBinding Text,
                                                         Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
                             ToolTip.Tip="Clear search">

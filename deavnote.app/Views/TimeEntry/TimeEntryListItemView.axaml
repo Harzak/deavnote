@@ -24,8 +24,7 @@
 
         <WrapPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
                    ItemSpacing="5" Orientation="Horizontal">
-            <SelectableTextBlock Classes="CardTitle"
-                                 Foreground="{StaticResource Violet1Brush}"
+            <SelectableTextBlock Classes="CardTitle Code"
                                  Text="{Binding TaskCode}"
                                  TextWrapping="Wrap" />
             <SelectableTextBlock Classes="CardTitle"
@@ -40,7 +39,7 @@
 
         <Button Grid.Row="2" Grid.Column="0"
                 HorizontalAlignment="Right" VerticalAlignment="Top"
-                Classes="SmallIconButton"
+                Classes="IconButton"
                 Command="{Binding CopyToClipboardCommand}"
                 ToolTip.Tip="Copy time entry">
             <ic:FluentIcon Icon="Copy" />
