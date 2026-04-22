@@ -35,9 +35,8 @@
 
         <TextBox Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
                  MinHeight="200"
-                 AcceptsReturn="True"
-                 Text="{Binding Description}"
-                 Watermark="Enter a task description here..." />
+                 AcceptsReturn="True" PlaceholderText="Enter a task description here..."
+                 Text="{Binding Description}" />
 
         <StackPanel Grid.Row="3" Grid.Column="1"
                     Orientation="Horizontal">

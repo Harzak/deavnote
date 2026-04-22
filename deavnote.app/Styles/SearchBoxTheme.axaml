@@ -20,7 +20,7 @@
                              BorderBrush="{TemplateBinding BorderBrush}"
                              BorderThickness="{TemplateBinding BorderThickness}"
                              CornerRadius="{TemplateBinding CornerRadius}"
-                             Watermark="{TemplateBinding Watermark}" />
+                             PlaceholderText="{TemplateBinding Watermark}" />
                     <Button Name="PART_ClearButton"
                             Grid.Column="1"
                             Margin="4,0,0,0" VerticalAlignment="Center"

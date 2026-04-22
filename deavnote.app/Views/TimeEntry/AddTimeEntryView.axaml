@@ -24,11 +24,10 @@
                          Margin="0,0,0,8"
                          FilterMode="ContainsOrdinal"
                          ItemsSource="{Binding ExistingTasks}"
-                         MaxDropDownHeight="400" MinimumPrefixLength="0"
+                         MaxDropDownHeight="400" MinimumPrefixLength="0" PlaceholderText="e.g. DEV-168"
                          SelectedItem="{Binding SelectedTask}"
                          Text="{Binding SearchTaskCode}"
-                         ValueMemberBinding="{Binding Code}"
-                         Watermark="e.g. DEV-168" />
+                         ValueMemberBinding="{Binding Code}" />
 
         <TextBlock Grid.Row="2" Grid.Column="0"
                    Margin="0,0,12,8" VerticalAlignment="Center"
@@ -37,11 +36,10 @@
                          Margin="0,0,0,8"
                          FilterMode="Contains"
                          ItemsSource="{Binding ExistingTasks}"
-                         MaxDropDownHeight="400" MinimumPrefixLength="0"
+                         MaxDropDownHeight="400" MinimumPrefixLength="0" PlaceholderText="e.g. DO-896"
                          SelectedItem="{Binding SelectedTask}"
                          Text="{Binding SearchTaskName}"
-                         ValueMemberBinding="{Binding Name}"
-                         Watermark="e.g. DO-896" />
+                         ValueMemberBinding="{Binding Name}" />
 
         <ContentControl Grid.Row="3" Grid.Column="1"
                         Content="{Binding EntryTaskLink}">
@@ -90,8 +88,8 @@
                    Classes="Content" Text="Name" />
         <TextBox Grid.Row="5" Grid.Column="7"
                  Margin="0,0,0,8"
-                 Text="{Binding EntryName}"
-                 Watermark="Time entry name" />
+                 PlaceholderText="Time entry name"
+                 Text="{Binding EntryName}" />
 
         <TextBlock Grid.Row="6" Grid.Column="0"
                    Margin="0,0,12,8" VerticalAlignment="Center"
@@ -115,9 +113,8 @@
                    Classes="Content" Text="Work done" />
         <TextBox Grid.Row="8" Grid.Column="1"
                  MinHeight="100" MaxHeight="300"
-                 AcceptsReturn="True"
-                 Text="{Binding EntryWorkDone}"
-                 Watermark="Optional description" />
+                 AcceptsReturn="True" PlaceholderText="Optional description"
+                 Text="{Binding EntryWorkDone}" />
 
         <StackPanel Grid.Row="11" Grid.Column="0" Grid.ColumnSpan="2"
                     HorizontalAlignment="Right"

@@ -53,9 +53,8 @@
 
             <TextBox Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
                      MinHeight="200"
-                     AcceptsReturn="True"
-                     Text="{Binding WorkDone}"
-                     Watermark="Enter what was done for this time entry..." />
+                     AcceptsReturn="True" PlaceholderText="Enter what was done for this time entry..."
+                     Text="{Binding WorkDone}" />
 
             <StackPanel Grid.Row="3" Grid.Column="1"
                         HorizontalAlignment="Right"
