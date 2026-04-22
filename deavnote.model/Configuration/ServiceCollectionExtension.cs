@@ -32,9 +32,9 @@ public static class ServiceCollectionExtension
 
         IDbContextFactory<DeavnoteDbContext> factory = serviceProvider.GetRequiredService<IDbContextFactory<DeavnoteDbContext>>();
 
-        await using DeavnoteDbContext context = await factory.CreateDbContextAsync().ConfigureAwait(false);
-        await context.Database.MigrateAsync().ConfigureAwait(false);
+        using DeavnoteDbContext context = await factory.CreateDbContextAsync().ConfigureAwait(false);
 
+        await context.Database.MigrateAsync().ConfigureAwait(false);
         ClipboardFormatSeeder seeder = new(context);
         await seeder.SeedAsync().ConfigureAwait(false);
     }

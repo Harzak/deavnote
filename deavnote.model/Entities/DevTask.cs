@@ -14,6 +14,6 @@ public partial class DevTask
     public DateTime CreatedAtUtc { get; set; }
     public DateTime UpdatedAtUtc { get; set; }
 
-    public virtual ICollection<TimeEntry> TimeEntries { get; set; } = new List<TimeEntry>();
+    public virtual ICollection<TimeEntry> TimeEntries { get; } = [];
 }
 
