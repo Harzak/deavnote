@@ -8,19 +8,19 @@ internal sealed partial class TimeEntryListItemViewModel : BaseViewModel
     public int Id { get; }
 
     [ObservableProperty]
-    private string _taskCode;
+    public partial string TaskCode { get; set; }
 
     [ObservableProperty]
-    private string _taskName;
+    public partial string TaskName { get; set; }
 
     [ObservableProperty]
-    private string _entryName;
+    public partial string EntryName { get; set; }
 
     [ObservableProperty]
-    private TimeSpan _entryDuration;
+    public partial TimeSpan EntryDuration { get; set; }
 
     [ObservableProperty]
-    private EDevTaskState _taskState;
+    public partial EDevTaskState TaskState { get; set; }
 
     public TimeEntryListItemViewModel(
         model.Entities.TimeEntry timeEntry, 
@@ -34,11 +34,11 @@ internal sealed partial class TimeEntryListItemViewModel : BaseViewModel
         _clipboard = clipboard;
         _notification = notification;
 
-        _taskCode = timeEntry.DevTask.Code;
-        _taskName = timeEntry.DevTask.Name;
-        _entryName = timeEntry.Name;
-        _taskState = timeEntry.DevTask.State;
-        _entryDuration = timeEntry.Duration;
+        this.TaskCode = timeEntry.DevTask.Code;
+        this.TaskName = timeEntry.DevTask.Name;
+        this.EntryName = timeEntry.Name;
+        this.TaskState = timeEntry.DevTask.State;
+        this.EntryDuration = timeEntry.Duration;
         this.Id = timeEntry.Id;
     }
 

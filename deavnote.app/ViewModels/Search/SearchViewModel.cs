@@ -12,16 +12,16 @@ internal sealed partial class SearchViewModel : BaseViewModel, IDisposable
     private static readonly TimeSpan SearchDelay = TimeSpan.FromMilliseconds(700);
 
     [ObservableProperty]
-    private  string? _searchTerms;
+    public partial string? SearchTerms { get; set; }
 
     [ObservableProperty]
-    private SearchResultItem? _selectedItem;
+    public partial SearchResultItem? SelectedItem { get; set; }
 
     [ObservableProperty]
-    private bool _hasResults;
+    public partial bool HasResults { get; set; }
 
     [ObservableProperty]
-    private ObservableCollection<SearchResultItem> _searchResults;
+    public partial ObservableCollection<SearchResultItem> SearchResults { get; set; }
 
     public SearchViewModel(
         ISearchRepository repository,
@@ -42,7 +42,7 @@ internal sealed partial class SearchViewModel : BaseViewModel, IDisposable
         _devTaskRepository = devTaskRepository;
         _notification = notification;
 
-        _searchResults = [];
+        this.SearchResults = [];
     }
 
     partial void OnSearchTermsChanged(string? value)

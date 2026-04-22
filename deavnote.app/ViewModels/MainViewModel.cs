@@ -5,16 +5,16 @@ internal sealed partial class MainViewModel : BaseViewModel, IHostViewModel, IDi
     private readonly IViewOrchestrator _viewOrchestrator;
 
     [ObservableProperty]
-    private SearchViewModel _search;
+    public partial SearchViewModel Search { get; set; }
 
     [ObservableProperty]
-    private JournalViewModel _journal;
+    public partial JournalViewModel Journal { get; set; }
 
     [ObservableProperty]
-    private IEditableViewModel? _activeViewModel;
+    public partial IEditableViewModel? ActiveViewModel { get; set; }
 
     [ObservableProperty]
-    private bool _isBusy;
+    public partial bool IsBusy { get; set; }
 
     public INotificationService Notifications { get; }
 

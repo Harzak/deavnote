@@ -16,19 +16,19 @@ internal sealed partial class JournalViewModel : BaseViewModel
     private readonly IClipboardService _clipboard;
 
     [ObservableProperty]
-    private EJournalContext _viewType;
+    public partial EJournalContext ViewType { get; set; }
 
     [ObservableProperty]
-    private DateOnly _dateCursor;
+    public partial DateOnly DateCursor { get; set; }
 
     [ObservableProperty]
-    private bool _isLoading;
+    public partial bool IsLoading { get; set; }
 
     [ObservableProperty]
-    private ObservableCollection<TimeEntryListItemViewModel> _timeEntries;
+    public partial ObservableCollection<TimeEntryListItemViewModel> TimeEntries { get; set; }
 
     [ObservableProperty]
-    private TimeEntryListItemViewModel? _selectedTimeEntry;
+    public partial TimeEntryListItemViewModel? SelectedTimeEntry { get; set; }
 
     public JournalViewModel(
         IJournal journal,
@@ -57,8 +57,8 @@ internal sealed partial class JournalViewModel : BaseViewModel
 
         _journal.TimeEntriesChanged += OnJournalTimeEntriesChanged;
         _journal.CursorChanged += OnJournalCursorChanged;
-        _timeEntries = [];
-        _viewType = EJournalContext.DailyMultiple;
+        this.TimeEntries = [];
+        this.ViewType = EJournalContext.DailyMultiple;
     }
 
     public async override Task OnInitializedAsync()

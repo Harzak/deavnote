@@ -19,23 +19,23 @@ internal sealed partial class TimeEntryDetailViewModel
     [ObservableProperty]
     [Required(ErrorMessage = "Name is required.")]
     [NotifyDataErrorInfo]
-    private string _name;
+    public partial string Name { get; set; }
 
     [ObservableProperty]
-    private string _workDone;
+    public partial string WorkDone { get; set; }
 
     [ObservableProperty]
     [Required(ErrorMessage = "Start date is required.")]
     [NotifyDataErrorInfo]
-    private DateTimeOffset _startedAtUtc;
+    public partial DateTimeOffset StartedAtUtc { get; set; }
 
     [ObservableProperty]
     [Required(ErrorMessage = "Duration is required.")]
     [NotifyDataErrorInfo]
-    private TimeSpan _duration;
+    public partial TimeSpan Duration { get; set; }
 
     [ObservableProperty]
-    private DevTaskDetailViewModel? _relatedTask;
+    public partial DevTaskDetailViewModel? RelatedTask { get; set; }
 
     public TimeEntryDetailViewModel(
         model.Entities.TimeEntry model,
@@ -52,17 +52,17 @@ internal sealed partial class TimeEntryDetailViewModel
         _journal = journal;
         _factory = factory;
 
-        _name = _model.Name;
-        _workDone = _model.WorkDone ?? string.Empty;
-        _startedAtUtc = _model.StartedAtUtc;
-        _duration = _model.Duration;
+        this.Name = _model.Name;
+        this.WorkDone = _model.WorkDone ?? string.Empty;
+        this.StartedAtUtc = _model.StartedAtUtc;
+        this.Duration = _model.Duration;
     }
 
     public async override Task OnInitializedAsync()
     {
         await base.OnInitializedAsync().ConfigureAwait(false);
 
-        _relatedTask = _factory.CreateDevTaskDetailViewModel(_model.DevTask, isReadonly: true);
+        this.RelatedTask = _factory.CreateDevTaskDetailViewModel(_model.DevTask, isReadonly: true);
 
         base.ValidateAllProperties();
         base.CommitSnapshot();
@@ -111,7 +111,7 @@ internal sealed partial class TimeEntryDetailViewModel
     {
         if (disposing)
         {
-            _relatedTask?.Dispose();
+            this.RelatedTask?.Dispose();
         }
         base.Dispose(disposing);
     }
