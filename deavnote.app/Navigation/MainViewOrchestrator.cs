@@ -28,21 +28,21 @@ internal sealed class MainViewOrchestrator : IViewOrchestrator
     }
 
     /// <inheritdoc/>
-    public async Task NavigateToDevTaskDetailAsync(DevTask devTask)
+    public async Task<OperationResult> NavigateToDevTaskDetailAsync(DevTask devTask)
     {
         DevTaskDetailViewModel viewModel = _factory.CreateDevTaskDetailViewModel(devTask, isReadonly: false);
-        await this.NavigateToAsync(viewModel).ConfigureAwait(false);
+        return await this.NavigateToAsync(viewModel).ConfigureAwait(false);
     }
 
     /// <inheritdoc/>
-    public async Task NavigateToTimeEntryDetailAsync(TimeEntry timeEntry)
+    public async Task<OperationResult> NavigateToTimeEntryDetailAsync(TimeEntry timeEntry)
     {
         TimeEntryDetailViewModel viewModel = _factory.CreateTimeEntryDetailViewModel(timeEntry);
-        await this.NavigateToAsync(viewModel).ConfigureAwait(false);
+        return await this.NavigateToAsync(viewModel).ConfigureAwait(false);
     }
 
     /// <inheritdoc/>
-    public async Task NavigateToAsync(IEditableViewModel viewModel, NavigationParameters? parameters = null)
+    public async Task<OperationResult> NavigateToAsync(IEditableViewModel viewModel, NavigationParameters? parameters = null)
     {
         ArgumentNullException.ThrowIfNull(viewModel);
 
@@ -52,7 +52,7 @@ internal sealed class MainViewOrchestrator : IViewOrchestrator
             NavigationGuardResult result = await guard.CanNavigateAsync(ActiveViewModel, viewModel, context).ConfigureAwait(false);
             if (!result.CanNavigate)
             {
-                return;
+                return OperationResult.Failure();
             }
         }
 
@@ -68,5 +68,7 @@ internal sealed class MainViewOrchestrator : IViewOrchestrator
         await viewModel.OnInitializedAsync().ConfigureAwait(false);
 
         this.ActiveViewModelChanged?.Invoke(this, EventArgs.Empty);
+
+        return OperationResult.Success();   
     }
 }

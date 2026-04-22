@@ -61,11 +61,13 @@ internal sealed partial class JournalViewModel : BaseViewModel
         _viewType = EJournalContext.DailyMultiple;
     }
 
-    public async Task InitializedAsync()
+    public async override Task OnInitializedAsync()
     {
         this.IsLoading = true;
         await _journal.LoadDefaultCursorAsync().ConfigureAwait(false);
         this.IsLoading = false;
+
+        await base.OnInitializedAsync().ConfigureAwait(false);
     }
 
     [RelayCommand]

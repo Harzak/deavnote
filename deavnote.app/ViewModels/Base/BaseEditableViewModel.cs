@@ -90,6 +90,7 @@ internal abstract partial class BaseEditableViewModel<TSnapshot> : BaseViewModel
         {
             _disposed = true;
         }
+        base.PropertyChanged -= OnPropertyChanged;
     }
 
     public void Dispose()

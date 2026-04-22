@@ -18,7 +18,7 @@ internal sealed partial class JournalView : UserControl
 
         if (this.DataContext is JournalViewModel viewModel)
         {
-            await viewModel.InitializedAsync().ConfigureAwait(false);
+            await viewModel.OnInitializedAsync().ConfigureAwait(false);
         }
     }
 }

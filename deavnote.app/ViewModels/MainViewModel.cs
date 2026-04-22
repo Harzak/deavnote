@@ -1,6 +1,6 @@
 ﻿namespace deavnote.app.ViewModels;
 
-internal sealed partial class MainViewModel : BaseViewModel, IHostViewModel
+internal sealed partial class MainViewModel : BaseViewModel, IHostViewModel, IDisposable
 {
     private readonly IViewOrchestrator _viewOrchestrator;
 
@@ -19,7 +19,7 @@ internal sealed partial class MainViewModel : BaseViewModel, IHostViewModel
     public INotificationService Notifications { get; }
 
     public MainViewModel(
-        IViewModelFactory viewModelFactory, 
+        IViewModelFactory viewModelFactory,
         IViewOrchestrator viewOrchestrator,
         INotificationService notificationService)
     {
@@ -33,8 +33,8 @@ internal sealed partial class MainViewModel : BaseViewModel, IHostViewModel
         this.Journal = viewModelFactory.CreateJournalViewModel();
         this.Notifications = notificationService;
 
-        viewOrchestrator.ActiveViewModelChanging += OnActiveViewModelChanging;
-        viewOrchestrator.ActiveViewModelChanged += OnActiveViewModelChanged;
+        _viewOrchestrator.ActiveViewModelChanging += OnActiveViewModelChanging;
+        _viewOrchestrator.ActiveViewModelChanged += OnActiveViewModelChanged;
     }
 
     private void OnActiveViewModelChanging(object? sender, EventArgs e)
@@ -52,5 +52,14 @@ internal sealed partial class MainViewModel : BaseViewModel, IHostViewModel
             this.ActiveViewModel = _viewOrchestrator.ActiveViewModel;
             this.IsBusy = false;
         });
+    }
+
+    public void Dispose()
+    {
+        if (_viewOrchestrator != null)
+        {
+            _viewOrchestrator.ActiveViewModelChanging -= OnActiveViewModelChanging;
+            _viewOrchestrator.ActiveViewModelChanged -= OnActiveViewModelChanged;
+        }
     }
 }
