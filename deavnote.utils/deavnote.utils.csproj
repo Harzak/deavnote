@@ -12,7 +12,15 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <PackageReference Include="Meziantou.Analyzer" Version="3.0.52">
+	    <PrivateAssets>all</PrivateAssets>
+	    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+	  </PackageReference>
 	  <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.7" />
+	  <PackageReference Include="Roslynator.Analyzers" Version="4.15.0">
+	    <PrivateAssets>all</PrivateAssets>
+	    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+	  </PackageReference>
 	</ItemGroup>
 
 </Project>

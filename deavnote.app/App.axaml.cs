@@ -23,10 +23,7 @@ internal sealed partial class App : Application, IDisposable
 
             _serviceProvider = services.BuildServiceProvider();
 
-            Task.Run(async () =>
-            {
-                await _serviceProvider.GetRequiredService<IDatabaseInitializer>().InitializeAsync().ConfigureAwait(false);
-            });
+            _ = Task.Run(async () => await _serviceProvider.GetRequiredService<IDatabaseInitializer>().InitializeAsync().ConfigureAwait(false));
 
             desktop.MainWindow = new MainView
             {

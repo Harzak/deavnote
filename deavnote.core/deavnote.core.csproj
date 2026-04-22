@@ -15,4 +15,15 @@
 		<None Include="C:\Workspaces\deavnote\deavnote.core\.editorconfig" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <PackageReference Include="Meziantou.Analyzer" Version="3.0.52">
+	    <PrivateAssets>all</PrivateAssets>
+	    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+	  </PackageReference>
+	  <PackageReference Include="Roslynator.Analyzers" Version="4.15.0">
+	    <PrivateAssets>all</PrivateAssets>
+	    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+	  </PackageReference>
+	</ItemGroup>
+
 </Project>

@@ -21,29 +21,29 @@ internal sealed partial class JournalClipboardService : IClipboardService
         _clipboardFormatRepository = clipboardFormatRepository;
     }
 
-    public async Task SetDailyTimeEntryAsync(TimeEntry entry)
+    public async Task SetDailyTimeEntryAsync(TimeEntry entry, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(entry);
 
-        string text = await this.GetTextAsync(entry, EJournalContext.DailySingle).ConfigureAwait(false);
+        string text = await this.GetTextAsync(entry, EJournalContext.DailySingle, cancellationToken).ConfigureAwait(false);
 
         await _clipboardInterop.SetTextAsync(text).ConfigureAwait(false);
     }
 
-    public async Task SetDailyTimeEntriesAsync(IEnumerable<TimeEntry> entries)
+    public async Task SetDailyTimeEntriesAsync(IEnumerable<TimeEntry> entries, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(entries);
 
         StringBuilder builder = new();
         foreach (TimeEntry entry in entries)
         {
-            string entryText = await this.GetTextAsync(entry, EJournalContext.DailyMultiple).ConfigureAwait(false);
+            string entryText = await this.GetTextAsync(entry, EJournalContext.DailyMultiple, cancellationToken).ConfigureAwait(false);
             builder.AppendLine(entryText);
         }
         await _clipboardInterop.SetTextAsync(builder.ToString()).ConfigureAwait(false);
     }
 
-    public async Task SetWeeklyTimeEntriesAsync(IEnumerable<TimeEntry> entries)
+    public async Task SetWeeklyTimeEntriesAsync(IEnumerable<TimeEntry> entries, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(entries);
 
@@ -52,21 +52,21 @@ internal sealed partial class JournalClipboardService : IClipboardService
         builder.AppendLine(header);
         foreach (TimeEntry entry in entries)
         {
-            string entryText = await this.GetTextAsync(entry, EJournalContext.Weekly).ConfigureAwait(false);
+            string entryText = await this.GetTextAsync(entry, EJournalContext.Weekly, cancellationToken).ConfigureAwait(false);
             builder.AppendLine(entryText);
         }
 
         await _clipboardInterop.SetTextAsync(builder.ToString()).ConfigureAwait(false);
     }
 
-    private async Task<string> GetTextAsync(TimeEntry entry, EJournalContext context)
+    private async Task<string> GetTextAsync(TimeEntry entry, EJournalContext context, CancellationToken cancellationToken = default)
     {
-        string template = await _clipboardFormatRepository.GetTemplateAsync(context).ConfigureAwait(false);
+        string template = await _clipboardFormatRepository.GetTemplateAsync(context, cancellationToken).ConfigureAwait(false);
         Dictionary<string, string> placeholders = this.CreatePlaceholders(entry);
         return this.InterpolateTemplate(template, placeholders);
     }
 
-    [GeneratedRegex(@"\{(\w+)\}")]
+    [GeneratedRegex(@"\{(\w+)\}", RegexOptions.ExplicitCapture, matchTimeoutMilliseconds:1000)]
     private static partial Regex PlaceholderReplacementRegex();
 
     /// <summary>
@@ -84,7 +84,7 @@ internal sealed partial class JournalClipboardService : IClipboardService
 
     private Dictionary<string, string> CreatePlaceholders(TimeEntry entry)
     {
-        return new Dictionary<string, string>()
+        return new Dictionary<string, string>(StringComparer.Ordinal)
         {
             { TASK_NAME_PLACEHOLDER, string.IsNullOrWhiteSpace(entry.DevTask?.Name) ? "[Empty Task Name]" : entry.DevTask.Name },
             { TASK_CODE_PLACEHOLDER, string.IsNullOrWhiteSpace(entry.DevTask?.Code) ? "[Empty Task Code]" : entry.DevTask.Code },

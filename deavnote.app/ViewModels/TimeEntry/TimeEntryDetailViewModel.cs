@@ -5,7 +5,7 @@ internal sealed partial class TimeEntryDetailViewModel
     : BaseEditableViewModel<(
         string Name,
         string WorkDone,
-        DateTimeOffset StartedAtUtc,
+        DateTime StartedAtUtc,
         TimeSpan Duration)>
 {
 
@@ -27,7 +27,7 @@ internal sealed partial class TimeEntryDetailViewModel
     [ObservableProperty]
     [Required(ErrorMessage = "Start date is required.")]
     [NotifyDataErrorInfo]
-    public partial DateTimeOffset StartedAtUtc { get; set; }
+    public partial DateTime StartedAtUtc { get; set; }
 
     [ObservableProperty]
     [Required(ErrorMessage = "Duration is required.")]
@@ -75,8 +75,8 @@ internal sealed partial class TimeEntryDetailViewModel
             Id = _model.Id,
             Name = this.Name,
             WorkDone = this.WorkDone,
-            StartedAtUtc = this.StartedAtUtc.UtcDateTime,
-            Duration = this.Duration
+            StartedAtUtc = this.StartedAtUtc,
+            Duration = this.Duration,
         }, cancellationToken)
         .ConfigureAwait(false);
     }
@@ -84,7 +84,7 @@ internal sealed partial class TimeEntryDetailViewModel
     protected override void UndoChanges(
         (string Name,
          string WorkDone,
-         DateTimeOffset StartedAtUtc,
+         DateTime StartedAtUtc,
          TimeSpan Duration)
         snapshot)
     {
@@ -94,15 +94,15 @@ internal sealed partial class TimeEntryDetailViewModel
         this.Duration = snapshot.Duration;
     }
 
-    protected override (string Name, string WorkDone, DateTimeOffset StartedAtUtc, TimeSpan Duration) TakeSnapshot()
+    protected override (string Name, string WorkDone, DateTime StartedAtUtc, TimeSpan Duration) TakeSnapshot()
     {
         return (this.Name, this.WorkDone, this.StartedAtUtc, this.Duration);
     }
 
-    protected override bool SnapshotEquals((string Name, string WorkDone, DateTimeOffset StartedAtUtc, TimeSpan Duration) snapshot)
+    protected override bool SnapshotEquals((string Name, string WorkDone, DateTime StartedAtUtc, TimeSpan Duration) snapshot)
     {
-        return snapshot.Name == this.Name
-            && snapshot.WorkDone == this.WorkDone
+        return string.Equals(snapshot.Name, this.Name, StringComparison.Ordinal)
+            && string.Equals(snapshot.WorkDone, this.WorkDone, StringComparison.Ordinal)
             && snapshot.StartedAtUtc == this.StartedAtUtc
             && snapshot.Duration == this.Duration;
     }

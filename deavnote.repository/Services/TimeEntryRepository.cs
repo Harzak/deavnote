@@ -25,7 +25,7 @@ internal sealed class TimeEntryRepository : ITimeEntryRepository
     {
         if (startDateUtc > endDateUtc)
         {
-            throw new ArgumentException("Start date must be less than or equal to end date.");
+            throw new ArgumentException("Start date must be less than or equal to end date.", nameof(endDateUtc));
         }
 
         DateTime startDateTime = startDateUtc.ToDateTime(TimeOnly.MinValue);

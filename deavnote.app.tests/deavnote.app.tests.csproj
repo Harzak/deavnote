@@ -12,6 +12,14 @@
   <ItemGroup>
     <PackageReference Include="FakeItEasy" Version="9.0.1" />
     <PackageReference Include="FluentAssertions" Version="8.9.0" />
+    <PackageReference Include="Meziantou.Analyzer" Version="3.0.52">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Roslynator.Analyzers" Version="4.15.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 
   <ItemGroup>

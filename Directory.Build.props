@@ -4,6 +4,11 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <LangVersion>latest</LangVersion>
+		<Features>strict</Features>
+		<Deterministic>true</Deterministic>
+		<EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
+		<RunAnalyzersDuringBuild>true</RunAnalyzersDuringBuild>
+		<RunAnalyzersDuringLiveAnalysis>true</RunAnalyzersDuringLiveAnalysis>
         <AnalysisLevel>latest-all</AnalysisLevel>
         <AnalysisMode>AllEnabledByDefault</AnalysisMode>
         <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>

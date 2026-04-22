@@ -8,7 +8,3 @@ public abstract record DevTaskRequest
     public EDevTaskState State { get; init; }
 }
 
-public record UpdateDevTaskRequest : DevTaskRequest
-{
-    public required int Id { get; init; }
-}
