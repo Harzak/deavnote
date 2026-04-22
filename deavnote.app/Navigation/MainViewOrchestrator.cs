@@ -18,12 +18,13 @@ internal sealed class MainViewOrchestrator : IViewOrchestrator
     /// <inheritdoc/>
     public event EventHandler<EventArgs>? ActiveViewModelChanged;
 
-    public MainViewOrchestrator(IViewModelFactory factory)
+    public MainViewOrchestrator(IViewModelFactory factory, IEnumerable<INavigationGuard> navigationGuards)
     {
         ArgumentNullException.ThrowIfNull(factory);
+        ArgumentNullException.ThrowIfNull(navigationGuards);
 
         _factory = factory;
-        _navigationGuards = [new HasUnsavedChangeGuard()];
+        _navigationGuards = navigationGuards;
     }
 
     /// <inheritdoc/>

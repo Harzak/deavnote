@@ -19,6 +19,7 @@ internal static class ServiceCollectionExtension
         services.AddSingleton<IDialogService, DialogService>();
         services.AddSingleton<INotificationService, NotificationService>();
         services.AddSingleton<IClipboardInterop, ClipboardInterop>();
+        services.AddSingleton<INavigationGuard, HasUnsavedChangeGuard>();
         services.AddSingleton<IViewOrchestrator, MainViewOrchestrator>();
 
         return services;
