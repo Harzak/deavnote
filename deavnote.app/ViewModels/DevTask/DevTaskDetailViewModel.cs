@@ -10,7 +10,7 @@ internal sealed partial class DevTaskDetailViewModel : BaseEditableViewModel<(st
     public DateTime? UpdatedAtUtc => _model?.UpdatedAtUtc;
     public bool IsReadonly { get; private set; }
 
-    public string Code { get; private set;  }
+    public string Code { get; private set; }
 
     [ObservableProperty]
     public partial string Name { get; set; }
@@ -22,9 +22,9 @@ internal sealed partial class DevTaskDetailViewModel : BaseEditableViewModel<(st
     public partial EDevTaskState State { get; set; }
 
     public DevTaskDetailViewModel(
-        model.Entities.DevTask model, 
+        model.Entities.DevTask model,
         bool isReadonly,
-        IDevTaskRepository repository, 
+        IDevTaskRepository repository,
         INotificationService notificationService)
         : base(notificationService)
     {
@@ -76,8 +76,8 @@ internal sealed partial class DevTaskDetailViewModel : BaseEditableViewModel<(st
 
     protected override bool SnapshotEquals((string Name, string Description, EDevTaskState State) snapshot)
     {
-        return snapshot.Name == this.Name
-            && snapshot.Description == this.Description
+        return string.Equals(snapshot.Name, this.Name, StringComparison.Ordinal)
+            && string.Equals(snapshot.Description, this.Description, StringComparison.Ordinal)
             && snapshot.State == this.State;
     }
 }

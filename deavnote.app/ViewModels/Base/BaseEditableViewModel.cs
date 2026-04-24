@@ -24,7 +24,7 @@ internal abstract partial class BaseEditableViewModel<TSnapshot> : BaseViewModel
 
     protected virtual void OnPropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
-        if (e.PropertyName != nameof(this.HasChanges))
+        if (!string.Equals(e.PropertyName, nameof(this.HasChanges), StringComparison.Ordinal))
         {
             this.HasChanges = _snapshot != null && !this.SnapshotEquals(_snapshot);
         }

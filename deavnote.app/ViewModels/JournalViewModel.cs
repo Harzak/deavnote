@@ -137,18 +137,18 @@ internal sealed partial class JournalViewModel : BaseViewModel
     }
 
     [RelayCommand]
-    private void CopyToClipboard()
+    private async Task CopyToClipboard(CancellationToken cancellationToken)
     {
         switch (this.ViewType)
         {
             case EJournalContext.DailyMultiple:
-                _clipboard.SetDailyTimeEntriesAsync(_journal.TimeEntries).ConfigureAwait(false);
+                await _clipboard.SetDailyTimeEntriesAsync(_journal.TimeEntries, cancellationToken).ConfigureAwait(false);
                 break;
             case EJournalContext.Weekly:
-                _clipboard.SetWeeklyTimeEntriesAsync(_journal.TimeEntries).ConfigureAwait(false);
+                await _clipboard.SetWeeklyTimeEntriesAsync(_journal.TimeEntries, cancellationToken).ConfigureAwait(false);
                 break;
             default:
-                throw new NotImplementedException(this.ViewType.ToString());
+                throw new NotSupportedException(this.ViewType.ToString());
         }
         _notificationService.Show($"{_journal.TimeEntries.Count} time entries copied.", ENotificationType.Success);
     }

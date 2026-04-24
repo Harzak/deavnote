@@ -275,7 +275,7 @@ internal sealed class SearchBox : TemplatedControl
         if (change.Property == TextProperty && !_isSelecting && _textBox is not null)
         {
             string? newText = change.GetNewValue<string?>();
-            if (_textBox.Text != newText)
+            if (!string.Equals(_textBox.Text, newText, StringComparison.Ordinal))
             {
                 _textBox.Text = newText;
             }
