@@ -89,6 +89,16 @@ internal sealed class Journal : IJournal
         return result;
     }
 
+    public async Task<OperationResult> UpdateEntryAsync(UpdateTimeEntryRequest request, CancellationToken cancellationToken = default)
+    {
+        OperationResult result = await _repository.UpdateTimeEntryAsync(request, cancellationToken).ConfigureAwait(false);
+        if (result.IsSuccess)
+        {
+            await this.LoadEntriesInCursorAsync(hardReload: true, cancellationToken).ConfigureAwait(false);
+        }
+        return result;
+    }
+
     private async Task MoveDateCursorAsync(DateOnly to, CancellationToken cancellationToken = default)
     {
         if (this.TrySetDateCursor(to))

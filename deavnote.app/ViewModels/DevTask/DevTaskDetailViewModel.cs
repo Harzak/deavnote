@@ -1,45 +1,53 @@
-﻿namespace deavnote.app.ViewModels.DevTask;
+﻿using System.Security.Cryptography;
 
-internal sealed partial class DevTaskDetailViewModel : BaseEditableViewModel<(string? Name, string? Description, EDevTaskState State)>
+namespace deavnote.app.ViewModels.DevTask;
+
+internal sealed partial class DevTaskDetailViewModel : BaseEditableViewModel<(string Name, string Description, EDevTaskState State)>
 {
     private readonly IDevTaskRepository _repository;
-    private readonly int _id;
 
-    private model.Entities.DevTask? _model;
+    private readonly model.Entities.DevTask _model;
 
     public DateTime? CreatedAtUtc => _model?.CreatedAtUtc;
     public DateTime? UpdatedAtUtc => _model?.UpdatedAtUtc;
+    public bool IsReadonly { get; private set; }
 
     [ObservableProperty]
-    private string? _code;
+    private string _code;
 
     [ObservableProperty]
-    private string? _name;
+    private string _name;
 
     [ObservableProperty]
-    private string? _description;
+    private string _description;
 
     [ObservableProperty]
     private EDevTaskState _state;
 
-    public DevTaskDetailViewModel(int id, IDevTaskRepository repository, INotificationService notificationService)
+    public DevTaskDetailViewModel(
+        model.Entities.DevTask model, 
+        bool isReadonly,
+        IDevTaskRepository repository, 
+        INotificationService notificationService)
         : base(notificationService)
     {
+        ArgumentNullException.ThrowIfNull(model);
         ArgumentNullException.ThrowIfNull(repository);
-        _id = id;
+
+        _model = model;
         _repository = repository;
+
+        _code = _model.Code;
+        _name = _model.Name;
+        _description = _model.Description ?? string.Empty;
+        _state = _model.State;
+
+        this.IsReadonly = isReadonly;
     }
 
     public override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync().ConfigureAwait(false);
-
-        _model = await _repository.GetTaskAsync(_id).ConfigureAwait(false);
-        _code = _model?.Code ?? string.Empty;
-        _name = _model?.Name ?? string.Empty;
-        _description = _model?.Description ?? string.Empty;
-        _state = _model?.State ?? EDevTaskState.Unknown;
-
         base.CommitSnapshot();
     }
 
@@ -47,28 +55,28 @@ internal sealed partial class DevTaskDetailViewModel : BaseEditableViewModel<(st
     {
         return await _repository.UpdateTaskAsync(new UpdateDevTaskRequest
         {
-            Id = _id,
-            Name = this.Name ?? string.Empty,
-            Code = this.Code ?? string.Empty,
+            Id = _model.Id,
+            Name = this.Name,
+            Code = this.Code,
             Description = this.Description,
             State = this.State
         })
         .ConfigureAwait(false);
     }
 
-    protected override void UndoChanges((string? Name, string? Description, EDevTaskState State) snapshot)
+    protected override void UndoChanges((string Name, string Description, EDevTaskState State) snapshot)
     {
         this.Name = snapshot.Name;
         this.Description = snapshot.Description;
         this.State = snapshot.State;
     }
 
-    protected override (string? Name, string? Description, EDevTaskState State) TakeSnapshot()
+    protected override (string Name, string Description, EDevTaskState State) TakeSnapshot()
     {
         return (this.Name, this.Description, this.State);
     }
 
-    protected override bool SnapshotEquals((string? Name, string? Description, EDevTaskState State) snapshot)
+    protected override bool SnapshotEquals((string Name, string Description, EDevTaskState State) snapshot)
     {
         return snapshot.Name == this.Name
             && snapshot.Description == this.Description

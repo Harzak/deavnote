@@ -50,6 +50,11 @@ public interface IJournal
     Task<OperationResult> AddEntryAsync(AddTimeEntryRequest request, CancellationToken cancellationToken = default);
 
     /// <summary>
+    /// Asynchronously updates an existing time entry.
+    /// </summary>
+    Task<OperationResult> UpdateEntryAsync(UpdateTimeEntryRequest request, CancellationToken cancellationToken = default);
+
+    /// <summary>
     /// Occurs when the collection of time entries is modified.
     /// </summary>
     event EventHandler<TimeEntriesChangedEventArgs>? TimeEntriesChanged;

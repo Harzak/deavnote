@@ -42,14 +42,14 @@ internal sealed class ViewModelFactory : IViewModelFactory
     }
 
     /// <inheritdoc/>
-    public DevTaskDetailViewModel CreateDevTaskDetailViewModel(int id)
+    public DevTaskDetailViewModel CreateDevTaskDetailViewModel(model.Entities.DevTask model, bool isReadonly)
     {
-        return ActivatorUtilities.CreateInstance<DevTaskDetailViewModel>(_serviceProvider, id);
+        return ActivatorUtilities.CreateInstance<DevTaskDetailViewModel>(_serviceProvider, model, isReadonly);
     }
 
     /// <inheritdoc/>
-    public TimeEntryDetailViewModel CreateTimeEntryDetailViewModel(int id)
+    public TimeEntryDetailViewModel CreateTimeEntryDetailViewModel(model.Entities.TimeEntry model)
     {
-        return ActivatorUtilities.CreateInstance<TimeEntryDetailViewModel>(_serviceProvider, id);
+        return ActivatorUtilities.CreateInstance<TimeEntryDetailViewModel>(_serviceProvider, model);
     }
 }

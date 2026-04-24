@@ -27,16 +27,16 @@ internal sealed class MainViewOrchestrator : IViewOrchestrator
     }
 
     /// <inheritdoc/>
-    public async Task NavigateToDevTaskDetailAsync(int id)
+    public async Task NavigateToDevTaskDetailAsync(DevTask devTask)
     {
-        DevTaskDetailViewModel viewModel = _factory.CreateDevTaskDetailViewModel(id);
+        DevTaskDetailViewModel viewModel = _factory.CreateDevTaskDetailViewModel(devTask, isReadonly: false);
         await this.NavigateToAsync(viewModel).ConfigureAwait(false);
     }
 
     /// <inheritdoc/>
-    public async Task NavigateToTimeEntryDetailAsync(int id)
+    public async Task NavigateToTimeEntryDetailAsync(TimeEntry timeEntry)
     {
-        TimeEntryDetailViewModel viewModel = _factory.CreateTimeEntryDetailViewModel(id);
+        TimeEntryDetailViewModel viewModel = _factory.CreateTimeEntryDetailViewModel(timeEntry);
         await this.NavigateToAsync(viewModel).ConfigureAwait(false);
     }
 

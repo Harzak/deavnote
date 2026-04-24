@@ -3,6 +3,8 @@
 internal sealed partial class SearchViewModel : BaseViewModel, IDisposable
 {
     private readonly ISearchRepository _repository;
+    private readonly ITimeEntryRepository _timeEntryRepository;
+    private readonly IDevTaskRepository _devTaskRepository;
     private readonly IViewOrchestrator _viewOrchestrator;
     private CancellationTokenSource? _searchCts;
 
@@ -22,13 +24,19 @@ internal sealed partial class SearchViewModel : BaseViewModel, IDisposable
 
     public SearchViewModel(
         ISearchRepository repository,
-        IViewOrchestrator viewOrchestrator)
+          IViewOrchestrator viewOrchestrator,
+        ITimeEntryRepository timeEntryRepository,
+        IDevTaskRepository devTaskRepository)
     {
         ArgumentNullException.ThrowIfNull(repository);
         ArgumentNullException.ThrowIfNull(viewOrchestrator);
+        ArgumentNullException.ThrowIfNull(timeEntryRepository);
+        ArgumentNullException.ThrowIfNull(devTaskRepository);
 
         _repository = repository;
         _viewOrchestrator = viewOrchestrator;
+        _timeEntryRepository = timeEntryRepository;
+        _devTaskRepository = devTaskRepository;
 
         _searchResults = [];
     }
@@ -70,7 +78,7 @@ internal sealed partial class SearchViewModel : BaseViewModel, IDisposable
                 return;
             }
 
-            await Avalonia.Threading.Dispatcher.UIThread.InvokeAsync(() =>
+            await Dispatcher.UIThread.InvokeAsync(() =>
             {
                 this.SearchResults.Clear();
                 foreach (SearchResultItem item in results)
@@ -105,17 +113,26 @@ internal sealed partial class SearchViewModel : BaseViewModel, IDisposable
         switch (value.Type)
         {
             case ESearchResultItemType.DevTask:
-                Task.Run(async () =>
+                model.Entities.DevTask? devTask = _devTaskRepository.GetTaskAsync(id: value.Id).Result;
+                if (devTask != null)
                 {
-                    await _viewOrchestrator.NavigateToDevTaskDetailAsync(value.Id).ConfigureAwait(false);
-                });
+                    Task.Run(async () =>
+                    {
+                        await _viewOrchestrator.NavigateToDevTaskDetailAsync(devTask).ConfigureAwait(false);
+                    });
+                }
+
                 break;
 
             case ESearchResultItemType.TimeEntry:
-                Task.Run(async () =>
+                model.Entities.TimeEntry? timeEntry = _timeEntryRepository.GetEntryAsync(id: value.Id).Result;
+                if (timeEntry != null)
                 {
-                    await _viewOrchestrator.NavigateToTimeEntryDetailAsync(value.Id).ConfigureAwait(false);
-                });
+                    Task.Run(async () =>
+                    {
+                        await _viewOrchestrator.NavigateToTimeEntryDetailAsync(timeEntry).ConfigureAwait(false);
+                    });
+                }
                 break;
             default:
                 throw new NotImplementedException(value.Type.ToString());

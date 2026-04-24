@@ -1,6 +1,7 @@
 ﻿<UserControl x:Class="deavnote.app.Views.DevTask.DevTaskDetailView"
              xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:conv="using:deavnote.app.Converters"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:dd="using:deavnote.app.Design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -10,9 +11,15 @@
              x:DataType="viewmodels:DevTask.DevTaskDetailViewModel"
              mc:Ignorable="d">
 
+    <UserControl.Resources>
+        <conv:BoolToInverseConverter x:Key="BoolToInverseConverter" />
+    </UserControl.Resources>
+
+
     <Grid Margin="10"
-          ColumnDefinitions="*, Auto" ColumnSpacing="15" RowDefinitions="Auto,Auto, *, Auto"
-          RowSpacing="15">
+          ColumnDefinitions="*, Auto" ColumnSpacing="15"
+          IsEnabled="{Binding IsReadonly, Converter={StaticResource BoolToInverseConverter}}"
+          RowDefinitions="Auto,Auto, *, Auto" RowSpacing="15">
 
         <StackPanel Grid.Row="0" Grid.Column="0"
                     VerticalAlignment="Center"
