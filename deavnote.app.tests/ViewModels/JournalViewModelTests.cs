@@ -8,8 +8,8 @@ public class JournalViewModelTests
     private IViewModelFactory _viewModelFactory;
     private IDialogService _dialogService;
     private INotificationService _notificationService;
-    private IMessenger _messenger;
     private IClipboardService _clipboardService;
+    private IViewOrchestrator _viewOrchestrator;
 
     [TestInitialize]
     public void Initialize()
@@ -18,8 +18,8 @@ public class JournalViewModelTests
         _dateProvider = A.Fake<IDateProvider>();
         _viewModelFactory = A.Fake<IViewModelFactory>();
         _dialogService = A.Fake<IDialogService>();
+        _viewOrchestrator = A.Fake<IViewOrchestrator>();
         _notificationService = A.Fake<INotificationService>();
-        _messenger = A.Fake<IMessenger>();
         _clipboardService = A.Fake<IClipboardService>();
     }
 
@@ -32,8 +32,8 @@ public class JournalViewModelTests
             _dateProvider,
             _viewModelFactory,
             _dialogService,
+            _viewOrchestrator,
             _notificationService,
-            _messenger,
             _clipboardService);
 
         // Assert
