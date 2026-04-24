@@ -1,22 +1,30 @@
-﻿<UserControl x:Class="deavnote.app.Views.NotificationView"
-             xmlns="https://github.com/avaloniaui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:ic="using:FluentIcons.Avalonia"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:vm="using:deavnote.app.ViewModels"
-             d:DesignHeight="200"
-             d:DesignWidth="300"
-             x:DataType="vm:MainViewModel"
-             mc:Ignorable="d">
+﻿<UserControl
+    x:Class="deavnote.app.Views.NotificationView"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:ic="using:FluentIcons.Avalonia"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="using:deavnote.app.ViewModels"
+    d:DesignHeight="200"
+    d:DesignWidth="300"
+    x:DataType="vm:MainViewModel"
+    mc:Ignorable="d">
 
-    <ItemsControl MinWidth="300" MaxWidth="300"
-                  Margin="16" HorizontalAlignment="Right" VerticalAlignment="Top"
-                  ItemsSource="{Binding Notifications.Notifications, FallbackValue={x:Null}}">
+    <ItemsControl
+        MinWidth="300"
+        MaxWidth="300"
+        Margin="16"
+        HorizontalAlignment="Right"
+        VerticalAlignment="Top"
+        ItemsSource="{Binding Notifications.Notifications, FallbackValue={x:Null}}">
         <ItemsControl.ItemTemplate>
             <DataTemplate x:DataType="vm:NotificationViewModel">
-                <Border Margin="0,0,0,8" Padding="12,8"
-                        BorderThickness="1" CornerRadius="8">
+                <Border
+                    Margin="0,0,0,8"
+                    Padding="12,8"
+                    BorderThickness="1"
+                    CornerRadius="8">
                     <Border.Styles>
                         <Style Selector="Border">
                             <Setter Property="Background" Value="SlateGray" />
@@ -58,21 +66,27 @@
                         <Binding Path="Type" />
                     </Border.Tag>
                     <Grid ColumnDefinitions="Auto,*,Auto">
-                        <ic:FluentIcon x:Name="NotificationIcon"
-                                       Grid.Column="0"
-                                       Margin="10,0" VerticalAlignment="Center"
-                                       IconSize="Size24" />
-                        <TextBlock Grid.Column="1"
-                                   Classes="Content"
-                                   Text="{Binding Message}"
-                                   TextWrapping="Wrap" />
-                        <Button Grid.Column="2"
-                                Margin="8,0,0,0"
-                                Classes="SmallIconButton"
-                                Command="{Binding CloseCommand}">
-                            <ic:FluentIcon Grid.Column="0"
-                                           VerticalAlignment="Center"
-                                           Icon="DismissSquare" IconSize="Size20" />
+                        <ic:FluentIcon
+                            x:Name="NotificationIcon"
+                            Grid.Column="0"
+                            Margin="10,0"
+                            VerticalAlignment="Center"
+                            IconSize="Size24" />
+                        <TextBlock
+                            Grid.Column="1"
+                            Classes="Content"
+                            Text="{Binding Message}"
+                            TextWrapping="Wrap" />
+                        <Button
+                            Grid.Column="2"
+                            Margin="8,0,0,0"
+                            Classes="SmallIconButton"
+                            Command="{Binding CloseCommand}">
+                            <ic:FluentIcon
+                                Grid.Column="0"
+                                VerticalAlignment="Center"
+                                Icon="DismissSquare"
+                                IconSize="Size20" />
                         </Button>
                     </Grid>
                 </Border>

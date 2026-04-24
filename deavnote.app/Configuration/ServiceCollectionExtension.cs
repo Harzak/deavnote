@@ -21,6 +21,7 @@ internal static class ServiceCollectionExtension
         services.AddSingleton<IClipboardInterop, ClipboardInterop>();
         services.AddSingleton<INavigationGuard, HasUnsavedChangeGuard>();
         services.AddSingleton<IViewOrchestrator, MainViewOrchestrator>();
+        services.AddSingleton<ILocalizationService>(_ => LocalizationService.Instance);
 
         return services;
     }
