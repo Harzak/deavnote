@@ -16,6 +16,7 @@ public sealed class DeavnoteDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        ArgumentNullException.ThrowIfNull(modelBuilder);
         base.OnModelCreating(modelBuilder);
 
         ConfigureTask(modelBuilder);
