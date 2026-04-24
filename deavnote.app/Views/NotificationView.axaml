@@ -63,15 +63,13 @@
                                        Margin="10,0" VerticalAlignment="Center"
                                        IconSize="Size24" />
                         <TextBlock Grid.Column="1"
-                                   VerticalAlignment="Center"
-                                   Foreground="White"
+                                   Classes="Content"
                                    Text="{Binding Message}"
                                    TextWrapping="Wrap" />
                         <Button Grid.Column="2"
-                                Margin="8,0,0,0" Padding="4,2"
-                                Background="Transparent"
-                                Command="{Binding CloseCommand}"
-                                FontSize="10" Foreground="White" Opacity="0.6">
+                                Margin="8,0,0,0"
+                                Classes="SmallIconButton"
+                                Command="{Binding CloseCommand}">
                             <ic:FluentIcon Grid.Column="0"
                                            VerticalAlignment="Center"
                                            Icon="DismissSquare" IconSize="Size20" />

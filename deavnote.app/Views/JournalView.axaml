@@ -15,8 +15,7 @@
           ColumnDefinitions="Auto, Auto, Auto, 50,Auto, Auto" RowDefinitions="Auto,Auto, *">
 
         <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="6"
-                   HorizontalAlignment="Center"
-                   FontSize="15"
+                   Classes="SectionHeader"
                    Text="{Binding DateCursor, StringFormat='{}{0:dddd dd MMM}'}"
                    ToolTip.Tip="{Binding DateCursor, StringFormat='{}{0:d}'}" />
         <Button Grid.Row="1" Grid.Column="0"

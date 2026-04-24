@@ -17,9 +17,7 @@
         <StackPanel Grid.Row="0" Grid.Column="0"
                     VerticalAlignment="Center"
                     Orientation="Horizontal">
-            <SelectableTextBlock Classes="CardTitle"
-                                 Foreground="{StaticResource Violet1Brush}"
-                                 Text="{Binding Code}" />
+            <SelectableTextBlock Classes="CardTitle Code" Text="{Binding Code}" />
         </StackPanel>
 
         <TextBox Grid.Row="1" Grid.Column="0"
