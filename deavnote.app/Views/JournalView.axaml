@@ -1,88 +1,68 @@
-﻿<UserControl
-    x:Class="deavnote.app.Views.JournalView"
-    xmlns="https://github.com/avaloniaui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:ic="using:FluentIcons.Avalonia"
-    xmlns:loc="using:deavnote.app.Localization"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:teviews="using:deavnote.app.Views.TimeEntry"
-    xmlns:viewmodels="using:deavnote.app.ViewModels"
-    d:DesignHeight="800"
-    d:DesignWidth="400"
-    x:DataType="viewmodels:JournalViewModel"
-    mc:Ignorable="d">
+﻿<UserControl x:Class="deavnote.app.Views.JournalView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:ic="using:FluentIcons.Avalonia"
+             xmlns:loc="using:deavnote.app.Localization"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:teviews="using:deavnote.app.Views.TimeEntry"
+             xmlns:viewmodels="using:deavnote.app.ViewModels"
+             d:DesignHeight="800"
+             d:DesignWidth="400"
+             x:DataType="viewmodels:JournalViewModel"
+             mc:Ignorable="d">
 
-    <Grid
-        Margin="5"
-        ColumnDefinitions="Auto, Auto, Auto, 50,Auto, Auto"
-        RowDefinitions="Auto,Auto, *">
+    <Grid Margin="5"
+          ColumnDefinitions="Auto, Auto, Auto, 50,Auto, Auto" RowDefinitions="Auto,Auto, *">
 
-        <TextBlock
-            Grid.Row="0"
-            Grid.Column="0"
-            Grid.ColumnSpan="6"
-            Classes="SectionHeader"
-            Text="{Binding DateCursor, StringFormat='{}{0:dddd dd MMM}'}"
-            ToolTip.Tip="{Binding DateCursor, StringFormat='{}{0:d}'}" />
-        <Button
-            Grid.Row="1"
-            Grid.Column="0"
-            Classes="Icon"
-            Command="{Binding MoveDateCursorToPreviousDayCommand}"
-            ToolTip.Tip="{loc:Localize Key=JournalView_GoToPreviousDay_Tooltip}">
+        <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="6"
+                   Classes="SectionHeader"
+                   Text="{Binding DateCursor, StringFormat='{}{0:dddd dd MMM}'}"
+                   ToolTip.Tip="{Binding DateCursor, StringFormat='{}{0:d}'}" />
+        <Button Grid.Row="1" Grid.Column="0"
+                Classes="Icon"
+                Command="{Binding MoveDateCursorToPreviousDayCommand}"
+                ToolTip.Tip="{loc:Localize Key=JournalView_GoToPreviousDay_Tooltip}">
             <ic:FluentIcon Icon="ArrowLeft" IconSize="Size16" />
         </Button>
-        <Button
-            Grid.Row="1"
-            Grid.Column="1"
-            Classes="Icon"
-            Command="{Binding MoveDateCursorToNowCommand}"
-            ToolTip.Tip="{loc:Localize Key=JournalView_GoToToday_Tooltip}">
+        <Button Grid.Row="1" Grid.Column="1"
+                Classes="Icon"
+                Command="{Binding MoveDateCursorToNowCommand}"
+                ToolTip.Tip="{loc:Localize Key=JournalView_GoToToday_Tooltip}">
             <ic:FluentIcon Icon="CalendarClock" IconSize="Size20" />
         </Button>
-        <Button
-            Grid.Row="1"
-            Grid.Column="2"
-            Classes="Icon"
-            Command="{Binding MoveDateCursorToNextDayCommand}"
-            ToolTip.Tip="{loc:Localize Key=JournalView_GoToNextDay_Tooltip}">
+        <Button Grid.Row="1" Grid.Column="2"
+                Classes="Icon"
+                Command="{Binding MoveDateCursorToNextDayCommand}"
+                ToolTip.Tip="{loc:Localize Key=JournalView_GoToNextDay_Tooltip}">
             <ic:FluentIcon Icon="ArrowRight" IconSize="Size16" />
         </Button>
 
-        <Button
-            Grid.Row="1"
-            Grid.Column="4"
-            Classes="Icon"
-            Command="{Binding CopyToClipboardCommand}"
-            ToolTip.Tip="{loc:Localize Key=JournalView_CopyTodayEntries_Tooltip}">
+        <Button Grid.Row="1" Grid.Column="4"
+                Classes="Icon"
+                Command="{Binding CopyToClipboardCommand}"
+                ToolTip.Tip="{loc:Localize Key=JournalView_CopyTodayEntries_Tooltip}">
             <ic:FluentIcon Icon="Copy" />
         </Button>
-        <Button
-            Grid.Row="1"
-            Grid.Column="5"
-            Classes="Icon"
-            Command="{Binding AddTimeEntryCommand}"
-            ToolTip.Tip="{loc:Localize Key=JournalView_AddTimeEntry_Tooltip}">
+        <Button Grid.Row="1" Grid.Column="5"
+                Classes="Icon"
+                Command="{Binding AddTimeEntryCommand}"
+                ToolTip.Tip="{loc:Localize Key=JournalView_AddTimeEntry_Tooltip}">
             <ic:FluentIcon Icon="Add" />
         </Button>
 
-        <ListBox
-            Grid.Row="2"
-            Grid.Column="0"
-            Grid.ColumnSpan="6"
-            Classes="Journal"
-            ItemsSource="{Binding TimeEntries}"
-            SelectedItem="{Binding SelectedTimeEntry}"
-            SelectionMode="Single">
+        <ListBox Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="6"
+                 Classes="Journal"
+                 ItemsSource="{Binding TimeEntries}"
+                 SelectedItem="{Binding SelectedTimeEntry}"
+                 SelectionMode="Single">
             <ListBox.ItemContainerTheme>
                 <ControlTheme TargetType="ListBoxItem">
                     <Setter Property="Template">
                         <ControlTemplate>
-                            <ContentPresenter
-                                Padding="{TemplateBinding Padding}"
-                                Content="{TemplateBinding Content}"
-                                ContentTemplate="{TemplateBinding ContentTemplate}" />
+                            <ContentPresenter Padding="{TemplateBinding Padding}"
+                                              Content="{TemplateBinding Content}"
+                                              ContentTemplate="{TemplateBinding ContentTemplate}" />
                         </ControlTemplate>
                     </Setter>
                 </ControlTheme>

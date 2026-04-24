@@ -1,8 +1,7 @@
-﻿<Styles
-    xmlns="https://github.com/avaloniaui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:ic="using:FluentIcons.Avalonia"
-    xmlns:views="using:deavnote.app.Views.TimeEntry">
+﻿<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ic="using:FluentIcons.Avalonia"
+        xmlns:views="using:deavnote.app.Views.TimeEntry">
 
     <Style Selector="views|TimeEntryListItemView">
         <Setter Property="Background" Value="{StaticResource Grey2}" />
