@@ -5,22 +5,6 @@
 /// </summary>
 internal static class DesignData
 {
-    public static TimeEntryListItemViewModel TimeEntryViewModel { get; } = new(new TimeEntry()
-    {
-        Name = "Design Time Entry",
-        Task = new DevTask()
-        {
-            Name = "Design Data Task",
-            Code = "D456",
-            CreatedAtUtc = DateTime.Now,
-            Description = "This is a sample task used for design-time data in the Avalonia designer.",
-            Note = "This task is only for design purposes and does not represent real data."
-        },
-        Duration = TimeSpan.FromHours(2)
-    })
-    {
-    };
-
     public static TimeEntryDetailViewModel TimeEntryDetailViewModel { get; } = new(new TimeEntry()
     {
         Name = "Design Time Entry Detail",

@@ -9,6 +9,7 @@ public class JournalViewModelTests
     private IDialogService _dialogService;
     private INotificationService _notificationService;
     private IMessenger _messenger;
+    private IClipboardService _clipboardService;
 
     [TestInitialize]
     public void Initialize()
@@ -25,10 +26,17 @@ public class JournalViewModelTests
     public void Instanciation_ShouldInitialize()
     {
         // Arrange & Act
-        var viewModel = new JournalViewModel(_journal, _dateProvider, _viewModelFactory, _dialogService, _notificationService, _messenger);
+        var viewModel = new JournalViewModel(
+            _journal,
+            _dateProvider,
+            _viewModelFactory,
+            _dialogService,
+            _notificationService,
+            _messenger,
+            _clipboardService);
 
         // Assert
-        viewModel.TimeEntries.Should().NotBeNull();   
+        viewModel.TimeEntries.Should().NotBeNull();
         viewModel.IsLoading.Should().BeFalse();
         viewModel.HasErrors.Should().BeFalse();
     }

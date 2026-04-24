@@ -11,6 +11,7 @@ internal sealed class ViewModelFactory : IViewModelFactory
     private readonly IDialogService _dialogService;
     private readonly INotificationService _notificationService;
     private readonly IMessenger _messenger;
+    private readonly IClipboardService _clipboardService;
 
     public ViewModelFactory(
         IJournal journal,
@@ -18,7 +19,8 @@ internal sealed class ViewModelFactory : IViewModelFactory
         IDateProvider dateProvider,
         IDialogService dialogService,
         INotificationService notificationService,
-        IMessenger messenger)
+        IMessenger messenger,
+        IClipboardService clipboardService)
     {
         ArgumentNullException.ThrowIfNull(journal);
         ArgumentNullException.ThrowIfNull(taskRepository);
@@ -26,6 +28,7 @@ internal sealed class ViewModelFactory : IViewModelFactory
         ArgumentNullException.ThrowIfNull(dialogService);
         ArgumentNullException.ThrowIfNull(notificationService);
         ArgumentNullException.ThrowIfNull(messenger);
+        ArgumentNullException.ThrowIfNull(clipboardService);
 
         _journal = journal;
         _taskRepository = taskRepository;
@@ -33,12 +36,20 @@ internal sealed class ViewModelFactory : IViewModelFactory
         _dialogService = dialogService;
         _notificationService = notificationService;
         _messenger = messenger;
+        _clipboardService = clipboardService;
     }
 
     /// <inheritdoc/>
     public JournalViewModel CreateJournalViewModel()
     {
-        return new JournalViewModel(_journal, _dateProvider, viewModelFactory: this, _dialogService, _notificationService, _messenger);
+        return new JournalViewModel(
+            _journal,
+            _dateProvider,
+            viewModelFactory: this,
+            _dialogService,
+            _notificationService,
+            _messenger,
+            _clipboardService);
     }
 
     /// <inheritdoc/>
@@ -46,7 +57,7 @@ internal sealed class ViewModelFactory : IViewModelFactory
     {
         ArgumentNullException.ThrowIfNull(timeEntry);
 
-        return new TimeEntryListItemViewModel(timeEntry);
+        return new TimeEntryListItemViewModel(timeEntry, _clipboardService, _notificationService);
     }
 
     /// <inheritdoc/>
