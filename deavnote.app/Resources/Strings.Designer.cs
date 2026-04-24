@@ -61,6 +61,69 @@ namespace deavnote.app.Resources {
         }
 
         /// <summary>
+        ///   Looks up a localized string similar to Add time entry.
+        /// </summary>
+        internal static string AddTimeEntryViewModel_Title {
+            get {
+                return ResourceManager.GetString("AddTimeEntryViewModel_Title", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Please fix the validation errors before saving..
+        /// </summary>
+        internal static string BaseEditableViewModel_FixValidationErrors {
+            get {
+                return ResourceManager.GetString("BaseEditableViewModel_FixValidationErrors", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to An error occurred while saving changes. {0}.
+        /// </summary>
+        internal static string BaseEditableViewModel_Save_Failed_Format {
+            get {
+                return ResourceManager.GetString("BaseEditableViewModel_Save_Failed_Format", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Changes saved successfully..
+        /// </summary>
+        internal static string BaseEditableViewModel_Save_Success {
+            get {
+                return ResourceManager.GetString("BaseEditableViewModel_Save_Success", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot navigate with unsaved changes.
+        /// </summary>
+        internal static string HasUnsavedChangeGuard_Deny {
+            get {
+                return ResourceManager.GetString("HasUnsavedChangeGuard_Deny", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to add time entry..
+        /// </summary>
+        internal static string JournalViewModel_AddEntry_Failed {
+            get {
+                return ResourceManager.GetString("JournalViewModel_AddEntry_Failed", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to navigate to the selected item..
+        /// </summary>
+        internal static string SearchViewModel_Navigate_Failed {
+            get {
+                return ResourceManager.GetString("SearchViewModel_Navigate_Failed", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Looks up a localized string similar to Time entry name.
         /// </summary>
         internal static string AddTimeEntryView_EntryName_Placeholder {

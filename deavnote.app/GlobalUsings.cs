@@ -13,6 +13,7 @@ global using deavnote.app.Navigation.Guards;
 global using deavnote.app.Enums;
 global using deavnote.app.Configuration;
 global using deavnote.app.Localization;
+global using deavnote.app.Resources;
 global using deavnote.core.Enums;
 global using deavnote.core.EventArgs;
 global using deavnote.core.Configuration;

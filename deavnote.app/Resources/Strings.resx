@@ -58,6 +58,27 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AddTimeEntryViewModel_Title" xml:space="preserve">
+    <value>Add time entry</value>
+  </data>
+  <data name="BaseEditableViewModel_FixValidationErrors" xml:space="preserve">
+    <value>Please fix the validation errors before saving.</value>
+  </data>
+  <data name="BaseEditableViewModel_Save_Failed_Format" xml:space="preserve">
+    <value>An error occurred while saving changes. {0}</value>
+  </data>
+  <data name="BaseEditableViewModel_Save_Success" xml:space="preserve">
+    <value>Changes saved successfully.</value>
+  </data>
+  <data name="HasUnsavedChangeGuard_Deny" xml:space="preserve">
+    <value>Cannot navigate with unsaved changes</value>
+  </data>
+  <data name="JournalViewModel_AddEntry_Failed" xml:space="preserve">
+    <value>Failed to add time entry.</value>
+  </data>
+  <data name="SearchViewModel_Navigate_Failed" xml:space="preserve">
+    <value>Failed to navigate to the selected item.</value>
+  </data>
   <data name="AddTimeEntryView_EntryName_Placeholder" xml:space="preserve">
     <value>Time entry name</value>
   </data>
