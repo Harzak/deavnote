@@ -68,7 +68,7 @@ internal sealed partial class TimeEntryDetailViewModel
         base.ValidateAllProperties();
     }
 
-    protected override async Task<OperationResult> ApplyChangesAsync()
+    protected override async Task<OperationResult> ApplyChangesAsync(CancellationToken cancellationToken)
     {
         return await _journal.UpdateEntryAsync(new UpdateTimeEntryRequest
         {
@@ -77,7 +77,7 @@ internal sealed partial class TimeEntryDetailViewModel
             WorkDone = this.WorkDone,
             StartedAtUtc = this.StartedAtUtc.UtcDateTime,
             Duration = this.Duration
-        })
+        }, cancellationToken)
         .ConfigureAwait(false);
     }
 

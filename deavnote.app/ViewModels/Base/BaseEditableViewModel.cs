@@ -30,13 +30,8 @@ internal abstract partial class BaseEditableViewModel<TSnapshot> : BaseViewModel
         }
     }
 
-    public override Task OnDestroyAsync()
-    {
-        return base.OnDestroyAsync();
-    }
-
     [RelayCommand(CanExecute = nameof(HasChanges))]
-    private async Task SaveAsync()
+    private async Task SaveAsync(CancellationToken cancellationToken)
     {
         base.ValidateAllProperties();
         if (base.HasErrors)
@@ -44,7 +39,7 @@ internal abstract partial class BaseEditableViewModel<TSnapshot> : BaseViewModel
             _notificationService.Show("Please fix the validation errors before saving.", ENotificationType.Warning);
             return;
         }
-        OperationResult result = await this.ApplyChangesAsync().ConfigureAwait(false);
+        OperationResult result = await this.ApplyChangesAsync(cancellationToken).ConfigureAwait(false);
         if (result.IsFailed)
         {
             _notificationService.Show("An error occurred while saving changes." + result.ErrorMessage, ENotificationType.Error);
@@ -69,7 +64,7 @@ internal abstract partial class BaseEditableViewModel<TSnapshot> : BaseViewModel
     /// <summary>
     /// Applies the changes made to the object's state.
     /// </summary>
-    protected abstract Task<OperationResult> ApplyChangesAsync();
+    protected abstract Task<OperationResult> ApplyChangesAsync(CancellationToken cancellationToken);
 
     /// <summary>
     /// Reverts any changes made to the current state.
