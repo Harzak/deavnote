@@ -1,7 +1,7 @@
 namespace deavnote.repository.Interfaces;
 
 /// <summary>
-/// Defines a repository for accessing time entry data.
+/// Provides data access methods for <see cref="TimeEntry"/> entities
 /// </summary>
 public interface ITimeEntryRepository
 {
@@ -18,4 +18,9 @@ public interface ITimeEntryRepository
     /// Asynchronously adds a new time entry.
     /// </summary>
     Task<OperationResult> AddTimeEntryAsync(AddTimeEntryRequest request, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Retrieves a time entry by its unique identifier.
+    /// </summary>
+    Task<TimeEntry?> GetEntry(int id, CancellationToken cancellationToken = default);
 }

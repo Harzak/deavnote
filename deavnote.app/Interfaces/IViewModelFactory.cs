@@ -8,18 +8,10 @@ namespace deavnote.app.Interfaces;
 /// </summary>
 internal interface IViewModelFactory
 {
-    /// <summary>
-    /// Creates a view model representation of a time entry.
-    /// </summary>
-    /// <param name="timeEntry">The time entry to convert.</param>
     TimeEntryListItemViewModel CreateTimeEntryViewModel(TimeEntry timeEntry);
-    /// <summary>
-    /// Creates a new instance of the JournalViewModel.
-    /// </summary>
-    /// <returns>A JournalViewModel representing the journal data.</returns>
     JournalViewModel CreateJournalViewModel();
-    /// <summary>
-    /// Creates a new instance of the AddTimeEntryViewModel.
-    /// </summary>
     AddTimeEntryViewModel CreateAddTimeEntryViewModel();
-}
+    SearchViewModel CreateSearchViewModel();
+    DevTaskDetailViewModel CreateDevTaskDetailViewModel(DevTask model);
+    TimeEntryDetailViewModel CreateTimeEntryDetailViewModel(TimeEntry model);
+};

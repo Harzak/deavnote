@@ -19,7 +19,7 @@ internal sealed class ClipboardInterop : IClipboardInterop
     /// <inheritdoc />
     public async Task SetTextAsync(string text)
     {
-        if (!string.IsNullOrEmpty(text))
+        if (!string.IsNullOrWhiteSpace(text))
         {
             this.Initialize();
             await _clipboard!.SetTextAsync(text).ConfigureAwait(false);

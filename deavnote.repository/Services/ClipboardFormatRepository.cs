@@ -2,6 +2,9 @@
 
 namespace deavnote.repository.Services;
 
+/// <summary>
+/// Provides data access methods for <see cref="ClipboardFormat"/> entities
+/// </summary>
 internal sealed class ClipboardFormatRepository : IClipboardFormatRepository
 {
     private readonly IDbContextFactory<DeavnoteDbContext> _contextFactory;
@@ -11,7 +14,8 @@ internal sealed class ClipboardFormatRepository : IClipboardFormatRepository
         ArgumentNullException.ThrowIfNull(contextFactory);
         _contextFactory = contextFactory;
     }
-
+ 
+    /// <inheritdoc/>
     public async Task<string> GetTemplateAsync(EJournalContext context, CancellationToken cancellationToken = default)
     {
         using (DeavnoteDbContext dbContext = await _contextFactory.CreateDbContextAsync(cancellationToken).ConfigureAwait(false))

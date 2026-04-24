@@ -33,11 +33,13 @@ public sealed class DeavnoteDbContext : DbContext
 
             entity.Property(e => e.Code)
                   .IsRequired()
-                  .HasMaxLength(50);
+                  .HasMaxLength(50)
+                  .UseCollation("NOCASE");
 
             entity.Property(e => e.Name)
                   .IsRequired()
-                  .HasMaxLength(200);
+                  .HasMaxLength(200)
+                  .UseCollation("NOCASE");
 
             entity.Property(e => e.Description)
                   .HasMaxLength(2000);
@@ -69,7 +71,8 @@ public sealed class DeavnoteDbContext : DbContext
 
             entity.Property(e => e.Name)
                   .IsRequired()
-                  .HasMaxLength(200);
+                  .HasMaxLength(200)
+                  .UseCollation("NOCASE");
 
             entity.Property(e => e.WorkDone)
                   .HasMaxLength(4000);
@@ -88,11 +91,13 @@ public sealed class DeavnoteDbContext : DbContext
 
             entity.Property(e => e.Code)
                   .IsRequired()
-                  .HasMaxLength(50);
+                  .HasMaxLength(50)
+                  .UseCollation("NOCASE");
 
             entity.Property(e => e.Name)
                   .IsRequired()
-                  .HasMaxLength(200);
+                  .HasMaxLength(200)
+                  .UseCollation("NOCASE");
 
             entity.Property(e => e.Description)
                   .HasMaxLength(2000);

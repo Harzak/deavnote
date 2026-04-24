@@ -4,6 +4,7 @@ global using deavnote.app.Views;
 global using deavnote.app.ViewModels.Base;
 global using deavnote.app.ViewModels.TimeEntry;
 global using deavnote.app.ViewModels.DevTask;
+global using deavnote.app.ViewModels.Search;
 global using deavnote.app.Interfaces;
 global using deavnote.app.Services;
 global using deavnote.app.Enums;

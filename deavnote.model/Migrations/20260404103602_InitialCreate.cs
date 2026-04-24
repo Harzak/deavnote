@@ -16,8 +16,8 @@ namespace deavnote.model.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Code = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
-                    Name = table.Column<string>(type: "TEXT", maxLength: 200, nullable: false),
+                    Code = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false, collation: "NOCASE"),
+                    Name = table.Column<string>(type: "TEXT", maxLength: 200, nullable: false, collation: "NOCASE"),
                     Description = table.Column<string>(type: "TEXT", maxLength: 2000, nullable: true),
                     Note = table.Column<string>(type: "TEXT", maxLength: 4000, nullable: true),
                     State = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
@@ -35,8 +35,8 @@ namespace deavnote.model.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Code = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
-                    Name = table.Column<string>(type: "TEXT", maxLength: 200, nullable: false),
+                    Code = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false, collation: "NOCASE"),
+                    Name = table.Column<string>(type: "TEXT", maxLength: 200, nullable: false, collation: "NOCASE"),
                     Description = table.Column<string>(type: "TEXT", maxLength: 2000, nullable: true),
                     Note = table.Column<string>(type: "TEXT", maxLength: 4000, nullable: true),
                     CreatedAtUtc = table.Column<DateTime>(type: "TEXT", nullable: false),
@@ -53,7 +53,7 @@ namespace deavnote.model.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(type: "TEXT", maxLength: 200, nullable: false),
+                    Name = table.Column<string>(type: "TEXT", maxLength: 200, nullable: false, collation: "NOCASE"),
                     WorkDone = table.Column<string>(type: "TEXT", maxLength: 4000, nullable: true),
                     Duration = table.Column<long>(type: "INTEGER", nullable: false),
                     StartedAtUtc = table.Column<DateTime>(type: "TEXT", nullable: false),
@@ -100,17 +100,10 @@ namespace deavnote.model.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "TimeEntries");
-
-            migrationBuilder.DropTable(
-                name: "Todos");
-
-            migrationBuilder.DropTable(
-                name: "DevTasks");
-
-            migrationBuilder.DropTable(
-                name: "ClipboardFormats");
+            migrationBuilder.DropTable(name: "TimeEntries");
+            migrationBuilder.DropTable(name: "Todos");
+            migrationBuilder.DropTable(name: "DevTasks");
+            migrationBuilder.DropTable(name: "ClipboardFormats");
         }
     }
 }

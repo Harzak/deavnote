@@ -29,7 +29,7 @@ internal sealed class EnumDisplayNameConverter : IValueConverter
             if (field != null)
             {
                 DisplayAttribute? displayAttribute = field.GetCustomAttribute<DisplayAttribute>();
-                if (displayAttribute != null && !string.IsNullOrEmpty(displayAttribute.Name))
+                if (displayAttribute != null && !string.IsNullOrWhiteSpace(displayAttribute.Name))
                 {
                     return displayAttribute.Name;
                 }
@@ -42,6 +42,6 @@ internal sealed class EnumDisplayNameConverter : IValueConverter
 
     public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
-        throw new NotSupportedException("EnumDisplayNameConverter does not support two-way binding.");
+        throw new NotSupportedException($"{nameof(EnumDisplayNameConverter)} does not support two-way binding.");
     }
 }

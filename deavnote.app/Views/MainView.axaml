@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:seviews="using:deavnote.app.Views.Search"
         xmlns:teviews="using:deavnote.app.Views.TimeEntry"
         xmlns:views="using:deavnote.app.Views"
         xmlns:vm="using:deavnote.app.ViewModels"
@@ -15,11 +16,13 @@
         mc:Ignorable="d">
     <Panel>
 
-        <Grid ColumnDefinitions="Auto, *" RowDefinitions="*">
-            <views:JournalView Grid.Row="0" Grid.Column="0"
+        <Grid ColumnDefinitions="Auto, *" RowDefinitions="Auto, *">
+            <seviews:SearchView Grid.Row="0" Grid.Column="1"
+                                DataContext="{Binding Search}" />
+            <views:JournalView Grid.Row="0" Grid.RowSpan="2" Grid.Column="0"
                                DataContext="{Binding Journal}" />
 
-            <Panel Grid.Row="0" Grid.Column="1">
+            <Panel Grid.Row="1" Grid.Column="1">
                 <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
                            IsVisible="{Binding SelectedTimeEntry, Converter={x:Static ObjectConverters.IsNull}}"
                            Text="Select a time entry to view details." />

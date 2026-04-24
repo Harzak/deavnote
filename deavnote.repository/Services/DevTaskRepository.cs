@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace deavnote.repository.Services;
 
-namespace deavnote.repository.Services;
-
+/// <summary>
+/// Provides data access methods for <see cref="DevTask"/> entities
+/// </summary>
 internal sealed class DevTaskRepository : IDevTaskRepository
 {
     private readonly IDbContextFactory<DeavnoteDbContext> _contextFactory;
@@ -16,6 +13,7 @@ internal sealed class DevTaskRepository : IDevTaskRepository
         _contextFactory = contextFactory;
     }
 
+    /// <inheritdoc/>
     public async Task<IReadOnlyList<DevTaskLightDto>> GetAllLightDtoAsync(CancellationToken cancellationToken = default)
     {
         using (DeavnoteDbContext context = await _contextFactory.CreateDbContextAsync(cancellationToken).ConfigureAwait(false))
@@ -31,6 +29,19 @@ internal sealed class DevTaskRepository : IDevTaskRepository
                 .ToListAsync(cancellationToken)
                 .ConfigureAwait(false);
             return tasks.AsReadOnly();
+        }
+    }
+
+    /// <inheritdoc/>
+    public async Task<DevTask?> GetTask(int id, CancellationToken cancellationToken = default)
+    {
+        using (DeavnoteDbContext context = await _contextFactory.CreateDbContextAsync(cancellationToken).ConfigureAwait(false))
+        {
+            return await context.DevTasks
+              .Where(e => e.Id == id)
+              .AsNoTracking()
+              .FirstOrDefaultAsync(cancellationToken)
+              .ConfigureAwait(false);
         }
     }
 }
