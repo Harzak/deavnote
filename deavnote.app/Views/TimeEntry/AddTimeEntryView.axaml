@@ -1,54 +1,75 @@
-﻿<UserControl x:Class="deavnote.app.Views.TimeEntry.AddTimeEntryView"
-             xmlns="https://github.com/avaloniaui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:loc="using:deavnote.app.Localization"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:viewmodels="using:deavnote.app.ViewModels.TimeEntry"
-             d:DesignHeight="500"
-             d:DesignWidth="690"
-             x:DataType="viewmodels:AddTimeEntryViewModel"
-             Background="{DynamicResource CustomMainBackground}"
-             mc:Ignorable="d">
+﻿<UserControl
+    x:Class="deavnote.app.Views.TimeEntry.AddTimeEntryView"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:loc="using:deavnote.app.Localization"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewmodels="using:deavnote.app.ViewModels.TimeEntry"
+    d:DesignHeight="500"
+    d:DesignWidth="690"
+    x:DataType="viewmodels:AddTimeEntryViewModel"
+    Background="{DynamicResource CustomMainBackground}"
+    mc:Ignorable="d">
 
-    <Grid MinWidth="650" MaxWidth="650"
-          Margin="16"
-          ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,20,Auto">
+    <Grid
+        MinWidth="650"
+        MaxWidth="650"
+        Margin="16"
+        ColumnDefinitions="Auto,*"
+        RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,20,Auto">
 
-        <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
-                   Classes="Title"
-                   Text="{loc:Localize Key=AddTimeEntryView_RelatedTask_Title}" />
+        <TextBlock
+            Grid.Row="0"
+            Grid.Column="0"
+            Grid.ColumnSpan="2"
+            Classes="Title"
+            Text="{loc:Localize Key=AddTimeEntryView_RelatedTask_Title}" />
 
-        <TextBlock Grid.Row="1" Grid.Column="0"
-                   Margin="0,0,12,8" VerticalAlignment="Center"
-                   Classes="Content"
-                   Text="{loc:Localize Key=Common_Code}" />
-        <AutoCompleteBox Grid.Row="1" Grid.Column="1"
-                         Margin="0,0,0,8"
-                         FilterMode="ContainsOrdinal"
-                         ItemsSource="{Binding ExistingTasks}"
-                         MaxDropDownHeight="400" MinimumPrefixLength="0"
-                         PlaceholderText="{loc:Localize Key=AddTimeEntryView_TaskCode_Placeholder}"
-                         SelectedItem="{Binding SelectedTask}"
-                         Text="{Binding SearchTaskCode}"
-                         ValueMemberBinding="{Binding Code}" />
+        <TextBlock
+            Grid.Row="1"
+            Grid.Column="0"
+            Margin="0,0,12,8"
+            VerticalAlignment="Center"
+            Classes="Content"
+            Text="{loc:Localize Key=Common_Code}" />
+        <AutoCompleteBox
+            Grid.Row="1"
+            Grid.Column="1"
+            Margin="0,0,0,8"
+            FilterMode="ContainsOrdinal"
+            ItemsSource="{Binding ExistingTasks}"
+            MaxDropDownHeight="400"
+            MinimumPrefixLength="0"
+            PlaceholderText="{loc:Localize Key=AddTimeEntryView_TaskCode_Placeholder}"
+            SelectedItem="{Binding SelectedTask}"
+            Text="{Binding SearchTaskCode}"
+            ValueMemberBinding="{Binding Code}" />
 
-        <TextBlock Grid.Row="2" Grid.Column="0"
-                   Margin="0,0,12,8" VerticalAlignment="Center"
-                   Classes="Content"
-                   Text="{loc:Localize Key=Common_Name}" />
-        <AutoCompleteBox Grid.Row="2" Grid.Column="1"
-                         Margin="0,0,0,8"
-                         FilterMode="Contains"
-                         ItemsSource="{Binding ExistingTasks}"
-                         MaxDropDownHeight="400" MinimumPrefixLength="0"
-                         PlaceholderText="{loc:Localize Key=AddTimeEntryView_TaskName_Placeholder}"
-                         SelectedItem="{Binding SelectedTask}"
-                         Text="{Binding SearchTaskName}"
-                         ValueMemberBinding="{Binding Name}" />
+        <TextBlock
+            Grid.Row="2"
+            Grid.Column="0"
+            Margin="0,0,12,8"
+            VerticalAlignment="Center"
+            Classes="Content"
+            Text="{loc:Localize Key=Common_Name}" />
+        <AutoCompleteBox
+            Grid.Row="2"
+            Grid.Column="1"
+            Margin="0,0,0,8"
+            FilterMode="Contains"
+            ItemsSource="{Binding ExistingTasks}"
+            MaxDropDownHeight="400"
+            MinimumPrefixLength="0"
+            PlaceholderText="{loc:Localize Key=AddTimeEntryView_TaskName_Placeholder}"
+            SelectedItem="{Binding SelectedTask}"
+            Text="{Binding SearchTaskName}"
+            ValueMemberBinding="{Binding Name}" />
 
-        <ContentControl Grid.Row="3" Grid.Column="1"
-                        Content="{Binding EntryTaskLink}">
+        <ContentControl
+            Grid.Row="3"
+            Grid.Column="1"
+            Content="{Binding EntryTaskLink}">
             <ContentControl.Styles>
                 <Style Selector="ContentControl[Content=CreateNewTask]">
                     <Setter Property="ContentTemplate">
@@ -86,51 +107,79 @@
             </ContentControl.Styles>
         </ContentControl>
 
-        <TextBlock Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2"
-                   Classes="Title"
-                   Text="{loc:Localize Key=AddTimeEntryView_TimeEntry_Title}" />
+        <TextBlock
+            Grid.Row="4"
+            Grid.Column="0"
+            Grid.ColumnSpan="2"
+            Classes="Title"
+            Text="{loc:Localize Key=AddTimeEntryView_TimeEntry_Title}" />
 
-        <TextBlock Grid.Row="5" Grid.Column="0"
-                   Margin="0,0,12,8" VerticalAlignment="Center"
-                   Classes="Content"
-                   Text="{loc:Localize Key=Common_Name}" />
-        <TextBox Grid.Row="5" Grid.Column="7"
-                 Margin="0,0,0,8"
-                 PlaceholderText="{loc:Localize Key=AddTimeEntryView_EntryName_Placeholder}"
-                 Text="{Binding EntryName}" />
+        <TextBlock
+            Grid.Row="5"
+            Grid.Column="0"
+            Margin="0,0,12,8"
+            VerticalAlignment="Center"
+            Classes="Content"
+            Text="{loc:Localize Key=Common_Name}" />
+        <TextBox
+            Grid.Row="5"
+            Grid.Column="7"
+            Margin="0,0,0,8"
+            PlaceholderText="{loc:Localize Key=AddTimeEntryView_EntryName_Placeholder}"
+            Text="{Binding EntryName}" />
 
-        <TextBlock Grid.Row="6" Grid.Column="0"
-                   Margin="0,0,12,8" VerticalAlignment="Center"
-                   Classes="Content"
-                   Text="{loc:Localize Key=Common_Duration}" />
-        <MaskedTextBox Grid.Row="6" Grid.Column="1"
-                       Margin="0,0,0,8"
-                       Mask="00:00"
-                       Text="{Binding EntryDuration, UpdateSourceTrigger=LostFocus}" />
+        <TextBlock
+            Grid.Row="6"
+            Grid.Column="0"
+            Margin="0,0,12,8"
+            VerticalAlignment="Center"
+            Classes="Content"
+            Text="{loc:Localize Key=Common_Duration}" />
+        <MaskedTextBox
+            Grid.Row="6"
+            Grid.Column="1"
+            Margin="0,0,0,8"
+            Mask="00:00"
+            Text="{Binding EntryDuration, UpdateSourceTrigger=LostFocus}" />
 
 
 
-        <TextBlock Grid.Row="7" Grid.Column="0"
-                   Margin="0,0,12,8" VerticalAlignment="Center"
-                   Classes="Content"
-                   Text="{loc:Localize Key=Common_StartedAt}" />
-        <DatePicker Grid.Row="7" Grid.Column="1"
-                    Margin="0,0,0,8"
-                    SelectedDate="{Binding EntryStartedAt}" />
+        <TextBlock
+            Grid.Row="7"
+            Grid.Column="0"
+            Margin="0,0,12,8"
+            VerticalAlignment="Center"
+            Classes="Content"
+            Text="{loc:Localize Key=Common_StartedAt}" />
+        <DatePicker
+            Grid.Row="7"
+            Grid.Column="1"
+            Margin="0,0,0,8"
+            SelectedDate="{Binding EntryStartedAt}" />
 
-        <TextBlock Grid.Row="8" Grid.Column="0"
-                   Margin="0,4,12,0" VerticalAlignment="Top"
-                   Classes="Content"
-                   Text="{loc:Localize Key=Common_WorkDone}" />
-        <TextBox Grid.Row="8" Grid.Column="1"
-                 MinHeight="100" MaxHeight="300"
-                 AcceptsReturn="True"
-                 PlaceholderText="{loc:Localize Key=AddTimeEntryView_EntryWorkDone_Placeholder}"
-                 Text="{Binding EntryWorkDone}" />
+        <TextBlock
+            Grid.Row="8"
+            Grid.Column="0"
+            Margin="0,4,12,0"
+            VerticalAlignment="Top"
+            Classes="Content"
+            Text="{loc:Localize Key=Common_WorkDone}" />
+        <TextBox
+            Grid.Row="8"
+            Grid.Column="1"
+            MinHeight="100"
+            MaxHeight="300"
+            AcceptsReturn="True"
+            PlaceholderText="{loc:Localize Key=AddTimeEntryView_EntryWorkDone_Placeholder}"
+            Text="{Binding EntryWorkDone}" />
 
-        <StackPanel Grid.Row="11" Grid.Column="0" Grid.ColumnSpan="2"
-                    HorizontalAlignment="Right"
-                    Orientation="Horizontal" Spacing="8">
+        <StackPanel
+            Grid.Row="11"
+            Grid.Column="0"
+            Grid.ColumnSpan="2"
+            HorizontalAlignment="Right"
+            Orientation="Horizontal"
+            Spacing="8">
             <Button Command="{Binding ConfirmCommand}" Content="{loc:Localize Key=Common_Add}" />
             <Button Command="{Binding CancelCommand}" Content="{loc:Localize Key=Common_Cancel}" />
         </StackPanel>

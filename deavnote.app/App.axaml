@@ -1,9 +1,10 @@
-﻿<Application x:Class="deavnote.app.App"
-             xmlns="https://github.com/avaloniaui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:conv="using:deavnote.app.Converters"
-             xmlns:local="using:deavnote.app"
-             RequestedThemeVariant="Dark">
+﻿<Application
+    x:Class="deavnote.app.App"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:conv="using:deavnote.app.Converters"
+    xmlns:local="using:deavnote.app"
+    RequestedThemeVariant="Dark">
 
     <Application.Resources>
         <ResourceDictionary>
