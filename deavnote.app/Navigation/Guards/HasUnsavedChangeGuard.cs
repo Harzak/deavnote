@@ -12,7 +12,7 @@ internal sealed class HasUnsavedChangeGuard : INavigationGuard
         if (from != null && from.HasChanges)
         {
             // show a confirmation dialog to the user before denying navigation
-            return Task.FromResult(NavigationGuardResult.Deny("Cannot navigate with unsaved changes"));
+            return Task.FromResult(NavigationGuardResult.Deny(Strings.HasUnsavedChangeGuard_Deny));
         }
 
         return Task.FromResult(NavigationGuardResult.Allow());

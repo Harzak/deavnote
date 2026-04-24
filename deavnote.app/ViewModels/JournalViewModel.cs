@@ -107,7 +107,7 @@ internal sealed partial class JournalViewModel : BaseViewModel
         }
         else
         {
-            _notificationService.Show(result.ErrorMessage ?? "Failed to add time entry.", ENotificationType.Error, durationMs: 0);
+            _notificationService.Show(result.ErrorMessage ?? Strings.JournalViewModel_AddEntry_Failed, ENotificationType.Error, durationMs: 0);
         }
     }
 

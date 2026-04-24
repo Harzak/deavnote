@@ -1,43 +1,48 @@
-﻿<UserControl x:Class="deavnote.app.Views.Search.SearchView"
-             xmlns="https://github.com/avaloniaui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:conv="using:deavnote.app.Converters"
-             xmlns:ctrl="using:deavnote.app.Controls"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:dto="using:deavnote.repository.Dto"
-             xmlns:ic="using:FluentIcons.Avalonia"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:vm="using:deavnote.app.ViewModels"
-             d:DesignHeight="100"
-             d:DesignWidth="600"
-             x:DataType="vm:Search.SearchViewModel"
-             mc:Ignorable="d">
+﻿<UserControl
+    x:Class="deavnote.app.Views.Search.SearchView"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:conv="using:deavnote.app.Converters"
+    xmlns:ctrl="using:deavnote.app.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:dto="using:deavnote.repository.Dto"
+    xmlns:ic="using:FluentIcons.Avalonia"
+    xmlns:loc="using:deavnote.app.Localization"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="using:deavnote.app.ViewModels"
+    d:DesignHeight="100"
+    d:DesignWidth="600"
+    x:DataType="vm:Search.SearchViewModel"
+    mc:Ignorable="d">
 
     <UserControl.Resources>
         <conv:SearchResultItemTypeToIconConverter x:Key="ToIconConverter" />
     </UserControl.Resources>
 
     <Grid Margin="5" ColumnDefinitions="*">
-        <ctrl:SearchBox Grid.Column="0"
-                        VerticalAlignment="Center"
-                        ClearCommand="{Binding ClearSearchTermsCommand}"
-                        IsDropDownOpen="{Binding HasResults}"
-                        ItemsSource="{Binding SearchResults}"
-                        MaxDropDownHeight="1000"
-                        SelectedItem="{Binding SelectedItem}"
-                        Text="{Binding SearchTerms}"
-                        Watermark="Search...">
+        <ctrl:SearchBox
+            Grid.Column="0"
+            VerticalAlignment="Center"
+            ClearCommand="{Binding ClearSearchTermsCommand}"
+            IsDropDownOpen="{Binding HasResults}"
+            ItemsSource="{Binding SearchResults}"
+            MaxDropDownHeight="1000"
+            SelectedItem="{Binding SelectedItem}"
+            Text="{Binding SearchTerms}"
+            Watermark="{loc:Localize Key=SearchView_Watermark}">
             <ctrl:SearchBox.ItemTemplate>
                 <DataTemplate DataType="dto:SearchResultItem">
                     <Grid ColumnDefinitions="Auto, *, Auto" ColumnSpacing="15">
-                        <ic:FluentIcon Grid.Column="0"
-                                       Icon="{Binding Type, Converter={StaticResource ToIconConverter}}"
-                                       IconSize="Size16" />
+                        <ic:FluentIcon
+                            Grid.Column="0"
+                            Icon="{Binding Type, Converter={StaticResource ToIconConverter}}"
+                            IconSize="Size16" />
                         <TextBlock Grid.Column="1" Text="{Binding Name}" />
-                        <TextBlock Grid.Column="2"
-                                   HorizontalAlignment="Right"
-                                   Classes="Legend"
-                                   Text="{Binding Code}" />
+                        <TextBlock
+                            Grid.Column="2"
+                            HorizontalAlignment="Right"
+                            Classes="Legend"
+                            Text="{Binding Code}" />
                     </Grid>
                 </DataTemplate>
             </ctrl:SearchBox.ItemTemplate>
