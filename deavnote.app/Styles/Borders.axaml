@@ -1,0 +1,38 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!--  Banner base - shared layout and shape  -->
+    <Style Selector="Border.Banner">
+        <Setter Property="Opacity" Value="0.8" />
+        <Setter Property="CornerRadius" Value="8" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Padding" Value="10" />
+    </Style>
+
+    <!--  Banner color variants  -->
+    <Style Selector="Border.Banner.Blue">
+        <Setter Property="Background" Value="SteelBlue" />
+        <Setter Property="BorderBrush" Value="CadetBlue" />
+    </Style>
+
+    <Style Selector="Border.Banner.Violet">
+        <Setter Property="Background" Value="SlateBlue" />
+        <Setter Property="BorderBrush" Value="MediumSlateBlue" />
+    </Style>
+
+    <Style Selector="Border.Banner.Gray">
+        <Setter Property="Background" Value="SlateGray" />
+        <Setter Property="BorderBrush" Value="LightSlateGray" />
+    </Style>
+
+    <Style Selector="Border.Banner.Red">
+        <Setter Property="Background" Value="DarkRed" />
+        <Setter Property="BorderBrush" Value="Red" />
+    </Style>
+
+    <Style Selector="Border.Banner.Orange">
+        <Setter Property="Background" Value="DarkOrange" />
+        <Setter Property="BorderBrush" Value="Orange" />
+    </Style>
+
+</Styles>

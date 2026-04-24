@@ -29,4 +29,15 @@
     <Color x:Key="Violet1">#8373CD</Color>
     <SolidColorBrush x:Key="Violet1Brush" Color="{StaticResource Violet1}" />
 
+    <ResourceDictionary.ThemeDictionaries>
+        <ResourceDictionary x:Key="Light">
+            <SolidColorBrush x:Key="CustomLightBackground" Color="{StaticResource White1}" />
+            <SolidColorBrush x:Key="LightTimeEntryBackground" Color="{StaticResource White1}" />
+        </ResourceDictionary>
+        <ResourceDictionary x:Key="Dark">
+            <SolidColorBrush x:Key="CustomDarkBackground" Color="{StaticResource Grey1}" />
+            <SolidColorBrush x:Key="DarkTimeEntryBackground" Color="{StaticResource Grey2}" />
+        </ResourceDictionary>
+    </ResourceDictionary.ThemeDictionaries>
+
 </ResourceDictionary>

@@ -1,0 +1,60 @@
+﻿<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!--  TextBlock  -->
+    <Style Selector="TextBlock.Title">
+        <Setter Property="Foreground" Value="{StaticResource White1Brush}" />
+        <Setter Property="FontSize" Value="18" />
+        <Setter Property="FontWeight" Value="Regular" />
+        <Setter Property="Margin" Value="5,10" />
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+
+    <Style Selector="TextBlock.Content">
+        <Setter Property="Foreground" Value="{StaticResource White1Brush}" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+
+    <Style Selector="TextBlock.Legend">
+        <Setter Property="Foreground" Value="{StaticResource White1Brush}" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="Opacity" Value="0.6" />
+    </Style>
+
+    <Style Selector="TextBlock.CardLegend">
+        <Setter Property="Foreground" Value="{StaticResource White3Brush}" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="FontWeight" Value="Light" />
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+
+    <Style Selector="TextBlock.Banner">
+        <Setter Property="Foreground" Value="{StaticResource White1Brush}" />
+        <Setter Property="FontSize" Value="15" />
+        <Setter Property="FontWeight" Value="Normal" />
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+
+    <!--  SelectableTextBlock  -->
+    <Style Selector="SelectableTextBlock.CardContent">
+        <Setter Property="Foreground" Value="{StaticResource White1Brush}" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="FontWeight" Value="Medium" />
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+
+    <Style Selector="SelectableTextBlock.CardTitle">
+        <Setter Property="Foreground" Value="{StaticResource White2Brush}" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="FontWeight" Value="DemiBold" />
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+
+</Styles>

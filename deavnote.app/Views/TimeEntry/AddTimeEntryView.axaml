@@ -49,7 +49,7 @@
                 <Style Selector="ContentControl[Content=CreateNewTask]">
                     <Setter Property="ContentTemplate">
                         <DataTemplate>
-                            <Border Classes="BannerBlue">
+                            <Border Classes="Banner Blue">
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Classes="Banner" Text="The task will be created" />
                                 </StackPanel>
@@ -60,7 +60,7 @@
                 <Style Selector="ContentControl[Content=LinkToExistingTask]">
                     <Setter Property="ContentTemplate">
                         <DataTemplate>
-                            <Border Classes="BannerViolet">
+                            <Border Classes="Banner Violet">
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Classes="Banner" Text="the time entry will be linked to this task" />
                                 </StackPanel>
@@ -71,7 +71,7 @@
                 <Style Selector="ContentControl[Content=None]">
                     <Setter Property="ContentTemplate">
                         <DataTemplate>
-                            <Border Classes="BannerGray">
+                            <Border Classes="Banner Gray">
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Classes="Banner" Text="You can link this time entry to an existing task or create a new one" />
                                 </StackPanel>
