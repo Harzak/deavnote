@@ -2,7 +2,8 @@
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:ctrl="using:deavnote.app.Controls"
-    xmlns:ic="using:FluentIcons.Avalonia">
+    xmlns:ic="using:FluentIcons.Avalonia"
+    xmlns:loc="using:deavnote.app.Localization">
 
     <Style Selector="ctrl|SearchBox">
         <Setter Property="Focusable" Value="True" />
@@ -31,7 +32,7 @@
                         Classes="IconButton"
                         IsVisible="{TemplateBinding Text,
                                                     Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
-                        ToolTip.Tip="Clear search">
+                        ToolTip.Tip="{loc:Localize Key=SearchBox_Clear_Tooltip}">
                         <ic:FluentIcon Icon="Dismiss" IconSize="Size16" />
                     </Button>
 

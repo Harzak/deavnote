@@ -50,15 +50,17 @@ internal sealed class LocalizationService : ILocalizationService
         {
             ArgumentNullException.ThrowIfNull(value);
 
-            if (_currentCulture.Equals(value))
-            {
-                return;
-            }
+            bool changed = !_currentCulture.Equals(value);
 
             _currentCulture = value;
             Strings.Culture = value;
             CultureInfo.CurrentUICulture = value;
             CultureInfo.DefaultThreadCurrentUICulture = value;
+
+            if (!changed)
+            {
+                return;
+            }
 
             // Notify both the named property and the indexer so all
             // {loc:Localize ...} bindings refresh.

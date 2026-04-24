@@ -9,10 +9,9 @@ internal sealed class Program
     public static void Main(string[] args)
     {
         // Explicitly set the application UI culture. Only en-US is supported for now.
-        CultureInfo enUs = new("en-US");
-        CultureInfo.DefaultThreadCurrentUICulture = enUs;
-        CultureInfo.CurrentUICulture = enUs;
-        LocalizationService.Instance.CurrentCulture = enUs;
+        // Setting it on the localization service propagates to CultureInfo.CurrentUICulture
+        // and CultureInfo.DefaultThreadCurrentUICulture and refreshes any active bindings.
+        LocalizationService.Instance.CurrentCulture = new CultureInfo("en-US");
 
         BuildAvaloniaApp().StartWithClassicDesktopLifetime(args);
     }

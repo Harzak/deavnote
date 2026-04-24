@@ -286,6 +286,15 @@ namespace deavnote.app.Resources {
         }
 
         /// <summary>
+        ///   Looks up a localized string similar to Clear search.
+        /// </summary>
+        internal static string SearchBox_Clear_Tooltip {
+            get {
+                return ResourceManager.GetString("SearchBox_Clear_Tooltip", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Looks up a localized string similar to Search....
         /// </summary>
         internal static string SearchView_Watermark {
