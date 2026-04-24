@@ -1,0 +1,56 @@
+﻿<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ctrl="using:deavnote.app.Controls"
+        xmlns:ic="using:FluentIcons.Avalonia">
+
+    <Style Selector="ctrl|SearchBox">
+        <Setter Property="Focusable" Value="True" />
+        <Setter Property="Background" Value="{StaticResource Grey2}" />
+        <Setter Property="BorderBrush" Value="{StaticResource Grey3}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="CornerRadius" Value="4" />
+        <Setter Property="Padding" Value="4" />
+        <Setter Property="Template">
+            <ControlTemplate TargetType="ctrl:SearchBox">
+                <Grid ColumnDefinitions="*, Auto">
+                    <TextBox Name="PART_TextBox"
+                             Grid.Column="0"
+                             Padding="{TemplateBinding Padding}"
+                             Background="{TemplateBinding Background}"
+                             BorderBrush="{TemplateBinding BorderBrush}"
+                             BorderThickness="{TemplateBinding BorderThickness}"
+                             CornerRadius="{TemplateBinding CornerRadius}"
+                             Watermark="{TemplateBinding Watermark}" />
+                    <Button Name="PART_ClearButton"
+                            Grid.Column="1"
+                            Margin="4,0,0,0" VerticalAlignment="Center"
+                            Classes="SmallIconButton"
+                            IsVisible="{TemplateBinding Text,
+                                                        Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+                            ToolTip.Tip="Clear search">
+                        <ic:FluentIcon Icon="Dismiss" IconSize="Size16" />
+                    </Button>
+
+                    <Popup Name="PART_Popup"
+                           IsLightDismissEnabled="True"
+                           IsOpen="{TemplateBinding IsDropDownOpen,
+                                                    Mode=TwoWay}"
+                           Placement="BottomEdgeAlignedLeft"
+                           PlacementTarget="{Binding #PART_TextBox}">
+                        <Border Padding="2"
+                                Background="{DynamicResource CustomMainBackground}"
+                                BorderBrush="{StaticResource Grey3Brush}"
+                                BorderThickness="1" CornerRadius="4">
+                            <ListBox Name="PART_ListBox"
+                                     Width="{Binding #PART_TextBox.Bounds.Width}"
+                                     MaxHeight="{TemplateBinding MaxDropDownHeight}"
+                                     ItemTemplate="{TemplateBinding ItemTemplate}"
+                                     ItemsSource="{TemplateBinding ItemsSource}" />
+                        </Border>
+                    </Popup>
+                </Grid>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+
+</Styles>

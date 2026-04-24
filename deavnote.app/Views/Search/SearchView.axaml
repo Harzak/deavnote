@@ -2,6 +2,7 @@
              xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:conv="using:deavnote.app.Converters"
+             xmlns:ctrl="using:deavnote.app.Controls"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:dto="using:deavnote.repository.Dto"
              xmlns:ic="using:FluentIcons.Avalonia"
@@ -16,17 +17,17 @@
         <conv:SearchResultItemTypeToIconConverter x:Key="ToIconConverter" />
     </UserControl.Resources>
 
-    <Grid Margin="10" ColumnDefinitions="*, Auto">
-        <AutoCompleteBox Grid.Column="0"
-                         VerticalAlignment="Center"
-                         AsyncPopulator="{Binding AsyncPopulator}"
-                         FilterMode="ContainsOrdinal" MaxDropDownHeight="1000"
-                         MinimumPopulateDelay="{Binding SearchDelay}"
-                         MinimumPrefixLength="1"
-                         SelectedItem="{Binding SelectedItem}"
-                         Text="{Binding SearchTerms}"
-                         Watermark="Search...">
-            <AutoCompleteBox.ItemTemplate>
+    <Grid Margin="10" ColumnDefinitions="*">
+        <ctrl:SearchBox Grid.Column="0"
+                        VerticalAlignment="Center"
+                        ClearCommand="{Binding ClearSearchTermsCommand}"
+                        IsDropDownOpen="{Binding HasResults}"
+                        ItemsSource="{Binding SearchResults}"
+                        MaxDropDownHeight="1000"
+                        SelectedItem="{Binding SelectedItem}"
+                        Text="{Binding SearchTerms}"
+                        Watermark="Search...">
+            <ctrl:SearchBox.ItemTemplate>
                 <DataTemplate DataType="dto:SearchResultItem">
                     <Grid ColumnDefinitions="Auto, *, Auto" ColumnSpacing="15">
                         <ic:FluentIcon Grid.Column="0"
@@ -39,8 +40,8 @@
                                    Text="{Binding Code}" />
                     </Grid>
                 </DataTemplate>
-            </AutoCompleteBox.ItemTemplate>
-        </AutoCompleteBox>
+            </ctrl:SearchBox.ItemTemplate>
+        </ctrl:SearchBox>
     </Grid>
 
 </UserControl>

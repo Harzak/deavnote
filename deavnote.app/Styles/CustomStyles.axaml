@@ -161,13 +161,6 @@
         <Setter Property="BorderBrush" Value="{StaticResource White3}" />
     </Style>
 
-    <!--  AutoCompleteBox  -->
-    <Style Selector="AutoCompleteBox">
-        <Setter Property="Background" Value="{StaticResource Grey2}" />
-        <Setter Property="BorderBrush" Value="{StaticResource Grey3}" />
-    </Style>
-
-
     <!--  Custom Color Resources  -->
     <Styles.Resources>
         <ResourceDictionary>
