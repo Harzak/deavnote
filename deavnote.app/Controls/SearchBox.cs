@@ -140,7 +140,7 @@ internal sealed class SearchBox : TemplatedControl
         _listBox?.RemoveHandler(InputElement.PointerPressedEvent, OnListBoxPointerPressed);
     }
 
-    private void OnTextBoxGotFocus(object? sender, GotFocusEventArgs e)
+    private void OnTextBoxGotFocus(object? sender, FocusChangedEventArgs e)
     {
         this.IsDropDownOpen = true;
     }

@@ -18,8 +18,6 @@ internal sealed partial class App : Application, IDisposable
     {
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            DisableAvaloniaDataAnnotationValidation();
-
             ServiceCollection services = new();
             ConfigureServices(services);
 
@@ -58,15 +56,6 @@ internal sealed partial class App : Application, IDisposable
         services.AddRepositoryServiceDependencies();
         services.AddCoreServiceDependencies();
         services.AddAppServiceDependencies();
-    }
-
-    private static void DisableAvaloniaDataAnnotationValidation()
-    {
-        DataAnnotationsValidationPlugin[] dataValidationPluginsToRemove = BindingPlugins.DataValidators.OfType<DataAnnotationsValidationPlugin>().ToArray();
-        foreach (DataAnnotationsValidationPlugin plugin in dataValidationPluginsToRemove)
-        {
-            BindingPlugins.DataValidators.Remove(plugin);
-        }
     }
 
     private void OnShutdownRequested(object? sender, ShutdownRequestedEventArgs e)
