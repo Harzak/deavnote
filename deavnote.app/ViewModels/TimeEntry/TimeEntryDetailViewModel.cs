@@ -28,6 +28,6 @@ internal sealed partial class TimeEntryDetailViewModel : BaseViewModel
         _name = model.Name;
         _workDone = model.WorkDone ?? string.Empty;
         _duration = model.Duration;
-        _relatedTask = new DevTaskDetailViewModel(model.Task);
+        _relatedTask = new DevTaskDetailViewModel(model.DevTask);
     }
 }

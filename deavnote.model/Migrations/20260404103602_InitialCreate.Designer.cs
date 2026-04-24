@@ -145,7 +145,7 @@ namespace deavnote.model.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Task");
+                    b.Navigation("DevTask");
                 });
 
             modelBuilder.Entity("deavnote.model.Entities.DevTask", b =>

@@ -26,7 +26,7 @@ namespace deavnote.model.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Tasks", x => x.Id);
+                    table.PrimaryKey("PK_DevTasks", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -67,7 +67,7 @@ namespace deavnote.model.Migrations
                     table.ForeignKey(
                         name: "FK_TimeEntries_Tasks_TaskId",
                         column: x => x.TaskId,
-                        principalTable: "Tasks",
+                        principalTable: "DevTasks",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -76,6 +76,25 @@ namespace deavnote.model.Migrations
                 name: "IX_TimeEntries_TaskId",
                 table: "TimeEntries",
                 column: "TaskId");
+
+            migrationBuilder.CreateTable(
+                name: "ClipboardFormats",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Name = table.Column<string>(type: "TEXT", maxLength: 200, nullable: false),
+                    Context = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
+                    Template = table.Column<string>(type: "TEXT", nullable: false),
+                    IsDefault = table.Column<bool>(type: "INTEGER", nullable: false),
+                    IsActive = table.Column<bool>(type: "INTEGER", nullable: false),
+                    CreatedAtUtc = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    UpdatedAtUtc = table.Column<DateTime>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ClipboardFormats", x => x.Id);
+                });
         }
 
         /// <inheritdoc />
@@ -88,7 +107,10 @@ namespace deavnote.model.Migrations
                 name: "Todos");
 
             migrationBuilder.DropTable(
-                name: "Tasks");
+                name: "DevTasks");
+
+            migrationBuilder.DropTable(
+                name: "ClipboardFormats");
         }
     }
 }

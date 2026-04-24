@@ -9,7 +9,7 @@ public sealed class DeavnoteDbContext : DbContext
         ArgumentNullException.ThrowIfNull(options);
     }
 
-    public DbSet<DevTask> Tasks { get; set; } = null!;
+    public DbSet<DevTask> DevTasks { get; set; } = null!;
     public DbSet<TimeEntry> TimeEntries { get; set; } = null!;
     public DbSet<Todo> Todos { get; set; } = null!;
     public DbSet<ClipboardFormat> ClipboardFormats { get; set; } = null!;
@@ -21,13 +21,14 @@ public sealed class DeavnoteDbContext : DbContext
         ConfigureTask(modelBuilder);
         ConfigureTimeEntry(modelBuilder);
         ConfigureTodo(modelBuilder);
+        ConfigureClipboardFormat(modelBuilder);
     }
 
     private static void ConfigureTask(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<DevTask>(entity =>
         {
-            entity.ToTable("Tasks");
+            entity.ToTable("DevTasks");
             entity.HasKey(e => e.Id);
 
             entity.Property(e => e.Code)
@@ -49,7 +50,7 @@ public sealed class DeavnoteDbContext : DbContext
                   .HasMaxLength(50);
 
             entity.HasMany(e => e.TimeEntries)
-                  .WithOne(e => e.Task)
+                  .WithOne(e => e.DevTask)
                   .HasForeignKey(e => e.TaskId)
                   .OnDelete(DeleteBehavior.Cascade);
         });
@@ -98,6 +99,26 @@ public sealed class DeavnoteDbContext : DbContext
 
             entity.Property(e => e.Note)
                   .HasMaxLength(4000);
+        });
+    }
+
+    private static void ConfigureClipboardFormat(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<ClipboardFormat>(entity =>
+        {
+            entity.ToTable("ClipboardFormats");
+            entity.HasKey(e => e.Id);
+
+            entity.Property(e => e.Name)
+                  .IsRequired()
+                  .HasMaxLength(200);
+
+            entity.Property(e => e.Context)
+                  .HasConversion<string>()
+                  .HasMaxLength(50);
+
+            entity.Property(e => e.Template)
+                  .IsRequired();
         });
     }
 }

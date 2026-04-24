@@ -57,6 +57,7 @@ internal sealed partial class JournalViewModel : BaseViewModel
         _journal.TimeEntriesChanged += OnJournalTimeEntriesChanged;
         _timeEntries = [];
         _clipboard = clipboard;
+        _viewType = EJournalContext.DailyMultiple;
     }
 
     public async Task InitializedAsync()
@@ -137,7 +138,7 @@ internal sealed partial class JournalViewModel : BaseViewModel
     {
         switch(this.ViewType)
         {
-            case EJournalContext.Daily:
+            case EJournalContext.DailyMultiple:
                 _clipboard.SetDailyTimeEntriesAsync(_journal.TimeEntries).ConfigureAwait(false);
                 break;
             case EJournalContext.Weekly:

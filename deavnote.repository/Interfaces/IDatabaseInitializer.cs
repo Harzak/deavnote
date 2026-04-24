@@ -8,5 +8,5 @@ public interface IDatabaseInitializer
     /// <summary>
     /// Ensures the database schema is created and up-to-date.
     /// </summary>
-    void Initialize();
+    Task InitializeAsync();
 }

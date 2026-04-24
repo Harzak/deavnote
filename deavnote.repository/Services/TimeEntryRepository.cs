@@ -32,7 +32,7 @@ internal sealed class TimeEntryRepository : ITimeEntryRepository
         {
             List<TimeEntry> entries = await context.TimeEntries
               .Where(e => e.StartedAtUtc >= startDateTime && e.StartedAtUtc <= endDateTime)
-              .Include(e => e.Task)
+              .Include(e => e.DevTask)
               .AsNoTracking()
               .ToListAsync(cancellationToken)
               .ConfigureAwait(false);
@@ -64,14 +64,14 @@ internal sealed class TimeEntryRepository : ITimeEntryRepository
         {
             case AddTimeEntryRequest.ForExistingTask existing:
                 timeEntry.TaskId = existing.TaskId;
-                await context.Tasks
+                await context.DevTasks
                     .Where(t => t.Id == existing.TaskId)
                     .ExecuteUpdateAsync(s => s.SetProperty(t => t.UpdatedAtUtc, now), cancellationToken)
                     .ConfigureAwait(false);
                 break;
 
             case AddTimeEntryRequest.ForNewTask newTask:
-                timeEntry.Task = new DevTask
+                timeEntry.DevTask = new DevTask
                 {
                     Code = newTask.TaskCode,
                     Name = newTask.TaskName,

@@ -14,6 +14,6 @@ public partial class TimeEntry
     public DateTime UpdatedAtUtc { get; set; }
 
     public int TaskId { get; set; }
-    public virtual DevTask Task { get; set; } = null!;
+    public virtual DevTask DevTask { get; set; } = null!;
 }
 

@@ -31,9 +31,9 @@ internal sealed partial class TimeEntryListItemViewModel : BaseViewModel
         _clipboard = clipboard;
         _notification = notification;
 
-        _code = timeEntry.Task.Code;
+        _code = timeEntry.DevTask.Code;
         _title = timeEntry.Name;
-        _state = timeEntry.Task.State;
+        _state = timeEntry.DevTask.State;
         _duration = timeEntry.Duration;
         this.Id = timeEntry.Id;
     }

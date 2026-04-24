@@ -20,6 +20,7 @@ public class JournalViewModelTests
         _dialogService = A.Fake<IDialogService>();
         _notificationService = A.Fake<INotificationService>();
         _messenger = A.Fake<IMessenger>();
+        _clipboardService = A.Fake<IClipboardService>();
     }
 
     [TestMethod]
