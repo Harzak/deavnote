@@ -4,7 +4,7 @@ internal sealed partial class AddTimeEntryViewModel : DialogViewModel<AddTimeEnt
 {
     private readonly IDevTaskRepository _taskRepository;
 
-    internal override string Title => "Add time entry";
+    internal override string Title => Strings.AddTimeEntryViewModel_Title;
 
     [ObservableProperty]
     [NotifyDataErrorInfo]

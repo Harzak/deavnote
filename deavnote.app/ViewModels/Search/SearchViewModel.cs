@@ -146,7 +146,7 @@ internal sealed partial class SearchViewModel : BaseViewModel, IDisposable
 
         if (result == null || result.IsFailed) 
         { 
-            _notification.Show("Failed to navigate to the selected item.", ENotificationType.Error);
+            _notification.Show(Strings.SearchViewModel_Navigate_Failed, ENotificationType.Error);
         }
     }
 
