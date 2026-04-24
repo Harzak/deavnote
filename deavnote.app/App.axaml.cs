@@ -25,9 +25,13 @@ internal sealed partial class App : Application, IDisposable
 
             ServiceCollection services = new();
             ConfigureServices(services);
+
             _serviceProvider = services.BuildServiceProvider();
 
-            _serviceProvider.GetRequiredService<IDatabaseInitializer>().InitializeAsync().Wait();
+            Task.Run(async () =>
+            {
+                await _serviceProvider.GetRequiredService<IDatabaseInitializer>().InitializeAsync().ConfigureAwait(false);
+            });
 
             desktop.MainWindow = new MainView
             {

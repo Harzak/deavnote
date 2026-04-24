@@ -8,11 +8,14 @@
     <Color x:Key="Grey1">#1E1E1E</Color>
     <SolidColorBrush x:Key="Grey1Brush" Color="{StaticResource Grey1}" />
 
-    <Color x:Key="Grey2">#333333</Color>
+    <Color x:Key="Grey2">#2E2E2E</Color>
     <SolidColorBrush x:Key="Grey2Brush" Color="{StaticResource Grey2}" />
 
-    <Color x:Key="Grey3">#4D4D4D</Color>
+    <Color x:Key="Grey3">#303030</Color>
     <SolidColorBrush x:Key="Grey3Brush" Color="{StaticResource Grey3}" />
+
+    <Color x:Key="Grey4">#4D4D4D</Color>
+    <SolidColorBrush x:Key="Grey4Brush" Color="{StaticResource Grey4}" />
 
     <Color x:Key="White1">#FFFFF9</Color>
     <SolidColorBrush x:Key="White1Brush" Color="{StaticResource White1}" />
@@ -22,5 +25,8 @@
 
     <Color x:Key="White3">#DBDBD7</Color>
     <SolidColorBrush x:Key="White3Brush" Color="{StaticResource White3}" />
+
+    <Color x:Key="Violet1">#8373CD</Color>
+    <SolidColorBrush x:Key="Violet1Brush" Color="{StaticResource Violet1}" />
 
 </ResourceDictionary>

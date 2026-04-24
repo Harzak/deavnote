@@ -3,8 +3,7 @@
 internal sealed partial class SearchViewModel : BaseViewModel, IDisposable
 {
     private readonly ISearchRepository _repository;
-    private readonly IDialogService _dialogService;
-    private readonly IViewModelFactory _viewModelFactory;
+    private readonly IViewOrchestrator _viewOrchestrator;
     private readonly ITimeEntryRepository _timeEntryRepository;
     private readonly IDevTaskRepository _devTaskRepository;
     private CancellationTokenSource? _searchCts;
@@ -25,20 +24,17 @@ internal sealed partial class SearchViewModel : BaseViewModel, IDisposable
 
     public SearchViewModel(
         ISearchRepository repository,
-        IDialogService dialogService,
-        IViewModelFactory viewModelFactory,
+        IViewOrchestrator viewOrchestrator,
         ITimeEntryRepository timeEntryRepository,
         IDevTaskRepository devTaskRepository)
     {
         ArgumentNullException.ThrowIfNull(repository);
-        ArgumentNullException.ThrowIfNull(dialogService);
-        ArgumentNullException.ThrowIfNull(viewModelFactory);
+        ArgumentNullException.ThrowIfNull(viewOrchestrator);
         ArgumentNullException.ThrowIfNull(timeEntryRepository);
         ArgumentNullException.ThrowIfNull(devTaskRepository);
 
         _repository = repository;
-        _dialogService = dialogService;
-        _viewModelFactory = viewModelFactory;
+        _viewOrchestrator = viewOrchestrator;
         _timeEntryRepository = timeEntryRepository;
         _devTaskRepository = devTaskRepository;
 
@@ -120,8 +116,10 @@ internal sealed partial class SearchViewModel : BaseViewModel, IDisposable
                 model.Entities.DevTask? devTask = _devTaskRepository.GetTask(id: value.Id).Result;
                 if (devTask != null)
                 {
-                    DevTaskDetailViewModel taskVm = _viewModelFactory.CreateDevTaskDetailViewModel(devTask);
-                    _dialogService.ShowWindowAsync(taskVm);
+                    Task.Run(async () =>
+                    {
+                        await _viewOrchestrator.NavigateToDevTaskDetailAsync(devTask).ConfigureAwait(false);
+                    });
                 }
                 break;
 
@@ -129,8 +127,11 @@ internal sealed partial class SearchViewModel : BaseViewModel, IDisposable
                 model.Entities.TimeEntry? timeEntry = _timeEntryRepository.GetEntry(id: value.Id).Result;
                 if (timeEntry != null)
                 {
-                    TimeEntryDetailViewModel timeEntryVm = _viewModelFactory.CreateTimeEntryDetailViewModel(timeEntry);
-                    _dialogService.ShowWindowAsync(timeEntryVm);
+                    Task.Run(async () =>
+                    {
+                        await _viewOrchestrator.NavigateToTimeEntryDetailAsync(timeEntry).ConfigureAwait(false);
+                    });
+
                 }
                 break;
             default:

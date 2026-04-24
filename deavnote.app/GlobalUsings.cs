@@ -7,8 +7,9 @@ global using deavnote.app.ViewModels.DevTask;
 global using deavnote.app.ViewModels.Search;
 global using deavnote.app.Interfaces;
 global using deavnote.app.Services;
+global using deavnote.app.Navigation.Context;
+global using deavnote.app.Navigation.Guards;
 global using deavnote.app.Enums;
-global using deavnote.app.Messages;
 global using deavnote.core.Enums;
 global using deavnote.core.EvenArgs;
 global using deavnote.core.Configuration;
@@ -36,6 +37,7 @@ global using Avalonia;
 global using Avalonia.Controls;
 global using Avalonia.Controls.ApplicationLifetimes;
 global using Avalonia.Data.Core.Plugins;
+global using Avalonia.Threading;
 
 /// External libraries
 global using CommunityToolkit.Mvvm.ComponentModel;

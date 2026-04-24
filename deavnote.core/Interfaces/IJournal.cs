@@ -53,4 +53,6 @@ public interface IJournal
     /// Occurs when the collection of time entries is modified.
     /// </summary>
     event EventHandler<TimeEntriesChangedEventArgs>? TimeEntriesChanged;
+
+    event EventHandler<JournalCursorChangedEventArgs>? CursorChanged;
 }

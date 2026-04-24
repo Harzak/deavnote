@@ -13,8 +13,8 @@ internal sealed class ViewModelFactory : IViewModelFactory
     private readonly ITimeEntryRepository _timeEntryRepository;
     private readonly IDateProvider _dateProvider;
     private readonly IDialogService _dialogService;
+    private readonly Lazy<IViewOrchestrator> _viewOrchestrator;
     private readonly INotificationService _notificationService;
-    private readonly IMessenger _messenger;
     private readonly IClipboardService _clipboardService;
 
     public ViewModelFactory(
@@ -24,8 +24,8 @@ internal sealed class ViewModelFactory : IViewModelFactory
         ITimeEntryRepository timeEntryRepository,
         IDateProvider dateProvider,
         IDialogService dialogService,
+        Lazy<IViewOrchestrator> viewOrchestrator,
         INotificationService notificationService,
-        IMessenger messenger,
         IClipboardService clipboardService)
     {
         ArgumentNullException.ThrowIfNull(journal);
@@ -34,8 +34,8 @@ internal sealed class ViewModelFactory : IViewModelFactory
         ArgumentNullException.ThrowIfNull(timeEntryRepository);
         ArgumentNullException.ThrowIfNull(dateProvider);
         ArgumentNullException.ThrowIfNull(dialogService);
+        ArgumentNullException.ThrowIfNull(viewOrchestrator);
         ArgumentNullException.ThrowIfNull(notificationService);
-        ArgumentNullException.ThrowIfNull(messenger);
         ArgumentNullException.ThrowIfNull(clipboardService);
 
         _journal = journal;
@@ -44,8 +44,8 @@ internal sealed class ViewModelFactory : IViewModelFactory
         _timeEntryRepository = timeEntryRepository;
         _dateProvider = dateProvider;
         _dialogService = dialogService;
+        _viewOrchestrator = viewOrchestrator;
         _notificationService = notificationService;
-        _messenger = messenger;
         _clipboardService = clipboardService;
     }
 
@@ -57,8 +57,8 @@ internal sealed class ViewModelFactory : IViewModelFactory
             _dateProvider,
             viewModelFactory: this,
             _dialogService,
+            _viewOrchestrator.Value,
             _notificationService,
-            _messenger,
             _clipboardService);
     }
 
@@ -79,7 +79,7 @@ internal sealed class ViewModelFactory : IViewModelFactory
     /// <inheritdoc/>
     public SearchViewModel CreateSearchViewModel()
     {
-        return new SearchViewModel(_searchRepository, _dialogService, viewModelFactory: this, _timeEntryRepository, _taskRepository);
+        return new SearchViewModel(_searchRepository, _viewOrchestrator.Value, _timeEntryRepository, _taskRepository);
     }
 
     /// <inheritdoc/>

@@ -17,7 +17,7 @@
         <conv:SearchResultItemTypeToIconConverter x:Key="ToIconConverter" />
     </UserControl.Resources>
 
-    <Grid Margin="10" ColumnDefinitions="*">
+    <Grid Margin="5" ColumnDefinitions="*">
         <ctrl:SearchBox Grid.Column="0"
                         VerticalAlignment="Center"
                         ClearCommand="{Binding ClearSearchTermsCommand}"

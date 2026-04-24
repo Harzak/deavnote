@@ -6,12 +6,11 @@
              xmlns:ic="using:FluentIcons.Avalonia"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewmodels="using:deavnote.app.ViewModels.TimeEntry"
-             MinWidth="250"
-             MinHeight="130"
+             MinWidth="270"
+             MaxWidth="270"
              d:DesignHeight="130"
-             d:DesignWidth="250"
+             d:DesignWidth="270"
              x:DataType="viewmodels:TimeEntryListItemViewModel"
-             Background="{DynamicResource TimeEntryBackground}"
              mc:Ignorable="d">
 
     <UserControl.Resources>
@@ -21,33 +20,36 @@
     </UserControl.Resources>
 
     <Grid Margin="5"
-          ColumnDefinitions="Auto, *, Auto" RowDefinitions="Auto, *, Auto">
-        <Button Grid.Row="0" Grid.Column="3"
-                HorizontalAlignment="Right"
+          ColumnDefinitions="Auto, *, Auto" RowDefinitions="Auto, *, Auto" RowSpacing="10">
+
+        <WrapPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
+                   ItemSpacing="5" Orientation="Horizontal">
+            <SelectableTextBlock Classes="CardTitle"
+                                 Foreground="{StaticResource Violet1Brush}"
+                                 Text="{Binding TaskCode}"
+                                 TextWrapping="Wrap" />
+            <SelectableTextBlock Classes="CardTitle"
+                                 Text="{Binding TaskName}"
+                                 TextWrapping="Wrap" />
+        </WrapPanel>
+
+        <SelectableTextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"
+                             Classes="CardContent"
+                             Text="{Binding EntryName}"
+                             TextWrapping="Wrap" />
+
+        <Button Grid.Row="2" Grid.Column="0"
+                HorizontalAlignment="Right" VerticalAlignment="Top"
                 Classes="SmallIconButton"
                 Command="{Binding CopyToClipboardCommand}"
                 ToolTip.Tip="Copy time entry">
             <ic:FluentIcon Icon="Copy" />
         </Button>
 
-        <SelectableTextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3"
-                             Classes="CardTitle"
-                             Text="{Binding Code}" />
-
-        <SelectableTextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"
-                             Classes="CardContent"
-                             Text="{Binding Title}" />
-
-        <ic:FluentIcon Grid.Row="2" Grid.Column="0"
-                       Foreground="{Binding State, Converter={StaticResource DevTaskStateToColorConverter}}"
-                       Icon="{Binding State, Converter={StaticResource DevTaskStateToIconConverter}}"
-                       IconSize="Size12"
-                       ToolTip.Tip="{Binding State, Converter={StaticResource EnumDisplayNameConverter}}" />
-
         <TextBlock Grid.Row="2" Grid.Column="2"
                    HorizontalAlignment="Right"
                    Classes="CardLegend"
-                   Text="{Binding Duration, Converter={StaticResource TimeSpanToReadableDurationConverter}}" />
+                   Text="{Binding EntryDuration, Converter={StaticResource TimeSpanToReadableDurationConverter}}" />
 
     </Grid>
 

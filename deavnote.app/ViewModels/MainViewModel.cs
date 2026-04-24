@@ -1,7 +1,9 @@
 ﻿namespace deavnote.app.ViewModels;
 
-internal sealed partial class MainViewModel : BaseViewModel, IRecipient<TimeEntrySelectedMessage>
+internal sealed partial class MainViewModel : BaseViewModel, IHostViewModel
 {
+    private readonly IViewOrchestrator _viewOrchestrator;
+
     [ObservableProperty]
     private SearchViewModel _search;
 
@@ -9,28 +11,46 @@ internal sealed partial class MainViewModel : BaseViewModel, IRecipient<TimeEntr
     private JournalViewModel _journal;
 
     [ObservableProperty]
-    private TimeEntryDetailViewModel? _selectedTimeEntry;
+    private IEditableViewModel? _activeViewModel;
+
+    [ObservableProperty]
+    private bool _isBusy;
 
     public INotificationService Notifications { get; }
 
     public MainViewModel(
         IViewModelFactory viewModelFactory, 
-        INotificationService notificationService,
-        IMessenger messenger)
+        IViewOrchestrator viewOrchestrator,
+        INotificationService notificationService)
     {
         ArgumentNullException.ThrowIfNull(viewModelFactory);
+        ArgumentNullException.ThrowIfNull(viewOrchestrator);
         ArgumentNullException.ThrowIfNull(notificationService);
+
+        _viewOrchestrator = viewOrchestrator;
 
         this.Search = viewModelFactory.CreateSearchViewModel();
         this.Journal = viewModelFactory.CreateJournalViewModel();
         this.Notifications = notificationService;
 
-        messenger.Register(this);
+        viewOrchestrator.ActiveViewModelChanging += OnActiveViewModelChanging;
+        viewOrchestrator.ActiveViewModelChanged += OnActiveViewModelChanged;
     }
 
-    public void Receive(TimeEntrySelectedMessage message)
+    private void OnActiveViewModelChanging(object? sender, EventArgs e)
     {
-        ArgumentNullException.ThrowIfNull(message);
-        this.SelectedTimeEntry = new TimeEntryDetailViewModel(message.Value);
+        Dispatcher.UIThread.Invoke(() =>
+        {
+            this.IsBusy = true;
+        });
+    }
+
+    private void OnActiveViewModelChanged(object? sender, EventArgs e)
+    {
+        Dispatcher.UIThread.Invoke(() =>
+        {
+            this.ActiveViewModel = _viewOrchestrator.ActiveViewModel;
+            this.IsBusy = false;
+        });
     }
 }
