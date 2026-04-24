@@ -20,7 +20,6 @@ internal static class ServiceCollectionExtension
         services.AddSingleton<INotificationService, NotificationService>();
         services.AddSingleton<IClipboardInterop, ClipboardInterop>();
         services.AddSingleton<IViewOrchestrator, MainViewOrchestrator>();
-        services.AddSingleton(provider => new Lazy<IViewOrchestrator>(provider.GetRequiredService<IViewOrchestrator>));
 
         return services;
     }
