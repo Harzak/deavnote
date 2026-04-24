@@ -13,13 +13,13 @@ internal sealed partial class DevTaskDetailViewModel : BaseEditableViewModel<(st
     public string Code { get; private set;  }
 
     [ObservableProperty]
-    private string _name;
+    public partial string Name { get; set; }
 
     [ObservableProperty]
-    private string _description;
+    public partial string Description { get; set; }
 
     [ObservableProperty]
-    private EDevTaskState _state;
+    public partial EDevTaskState State { get; set; }
 
     public DevTaskDetailViewModel(
         model.Entities.DevTask model, 
@@ -34,9 +34,9 @@ internal sealed partial class DevTaskDetailViewModel : BaseEditableViewModel<(st
         _model = model;
         _repository = repository;
 
-        _name = _model.Name;
-        _description = _model.Description ?? string.Empty;
-        _state = _model.State;
+        this.Name = _model.Name;
+        this.Description = _model.Description ?? string.Empty;
+        this.State = _model.State;
 
         this.Code = _model.Code;
         this.IsReadonly = isReadonly;

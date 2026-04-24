@@ -10,32 +10,32 @@ internal sealed partial class AddTimeEntryViewModel : DialogViewModel<AddTimeEnt
     [NotifyDataErrorInfo]
     [NotifyCanExecuteChangedFor("ConfirmCommand")]
     [Required(ErrorMessage = "Name is required.")]
-    private string _entryName = string.Empty;
+    public partial string EntryName { get; set; }
 
     [ObservableProperty]
-    private string? _entryWorkDone;
+    public partial string? EntryWorkDone { get; set; }
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor("ConfirmCommand")]
-    private TimeSpan _entryDuration;
+    public partial TimeSpan EntryDuration { get; set; }
 
     [ObservableProperty]
-    private DateTimeOffset _entryStartedAt;
+    public partial DateTimeOffset EntryStartedAt { get; set; }
 
     [ObservableProperty]
-    private IEnumerable<DevTaskLightDto> _existingTasks;
+    public partial IEnumerable<DevTaskLightDto> ExistingTasks { get; set; }
 
     [ObservableProperty]
-    private DevTaskLightDto? _selectedTask;
+    public partial DevTaskLightDto? SelectedTask { get; set; }
 
     [ObservableProperty]
-    private string _searchTaskCode;
+    public partial string SearchTaskCode { get; set; }
 
     [ObservableProperty]
-    private string _searchTaskName;
+    public partial string SearchTaskName { get; set; }
 
     [ObservableProperty]
-    private ETimeEntryCreationTaskLink _entryTaskLink;
+    public partial ETimeEntryCreationTaskLink EntryTaskLink { get; set; }
 
     private bool CanConfirm
     {
@@ -55,11 +55,12 @@ internal sealed partial class AddTimeEntryViewModel : DialogViewModel<AddTimeEnt
         ArgumentNullException.ThrowIfNull(taskRepository);
         _taskRepository = taskRepository;
 
-        _existingTasks = [];
-        _entryStartedAt = DateTimeOffset.Now;
-        _entryDuration = TimeSpan.FromHours(1);
-        _searchTaskCode = string.Empty;
-        _searchTaskName = string.Empty;
+        this.ExistingTasks = [];
+        this.EntryStartedAt = DateTimeOffset.Now;
+        this.EntryDuration = TimeSpan.FromHours(1);
+        this.SearchTaskCode = string.Empty;
+        this.SearchTaskName = string.Empty;
+        this.EntryName = string.Empty;
     }
 
     public async Task InitializedAsync()
