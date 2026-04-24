@@ -13,16 +13,16 @@ internal interface IViewOrchestrator
     /// <summary>
     /// Navigates asynchronously to the detail view for the specified time entry.
     /// </summary>
-    Task NavigateToDevTaskDetailAsync(DevTask devTask);
+    Task<OperationResult> NavigateToDevTaskDetailAsync(DevTask devTask);
     /// <summary>
     /// Navigates asynchronously to the detail view for the specified development task.
     /// </summary>
-    Task NavigateToTimeEntryDetailAsync(TimeEntry timeEntry);
+    Task<OperationResult> NavigateToTimeEntryDetailAsync(TimeEntry timeEntry);
 
     /// <summary>
     /// Navigates to the specified view model after validating navigation guards and manages the lifecycle of the active view model.
     /// </summary>
-    Task NavigateToAsync(IEditableViewModel viewModel, NavigationParameters? parameters = null);
+    Task<OperationResult> NavigateToAsync(IEditableViewModel viewModel, NavigationParameters? parameters = null);
 
     /// <summary>
     /// Occurs when <see cref="ActiveViewModel"/> is about to change.

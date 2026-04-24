@@ -6,12 +6,13 @@ internal sealed partial class SearchViewModel : BaseViewModel, IDisposable
     private readonly ITimeEntryRepository _timeEntryRepository;
     private readonly IDevTaskRepository _devTaskRepository;
     private readonly IViewOrchestrator _viewOrchestrator;
+    private readonly INotificationService _notification;
     private CancellationTokenSource? _searchCts;
 
     private static readonly TimeSpan SearchDelay = TimeSpan.FromMilliseconds(700);
 
     [ObservableProperty]
-    private string? _searchTerms;
+    private  string? _searchTerms;
 
     [ObservableProperty]
     private SearchResultItem? _selectedItem;
@@ -20,23 +21,26 @@ internal sealed partial class SearchViewModel : BaseViewModel, IDisposable
     private bool _hasResults;
 
     [ObservableProperty]
-    public ObservableCollection<SearchResultItem> _searchResults;
+    private ObservableCollection<SearchResultItem> _searchResults;
 
     public SearchViewModel(
         ISearchRepository repository,
-          IViewOrchestrator viewOrchestrator,
+        IViewOrchestrator viewOrchestrator,
         ITimeEntryRepository timeEntryRepository,
-        IDevTaskRepository devTaskRepository)
+        IDevTaskRepository devTaskRepository,
+        INotificationService notification)
     {
         ArgumentNullException.ThrowIfNull(repository);
         ArgumentNullException.ThrowIfNull(viewOrchestrator);
         ArgumentNullException.ThrowIfNull(timeEntryRepository);
         ArgumentNullException.ThrowIfNull(devTaskRepository);
+        ArgumentNullException.ThrowIfNull(notification);
 
         _repository = repository;
         _viewOrchestrator = viewOrchestrator;
         _timeEntryRepository = timeEntryRepository;
         _devTaskRepository = devTaskRepository;
+        _notification = notification;
 
         _searchResults = [];
     }
@@ -110,32 +114,39 @@ internal sealed partial class SearchViewModel : BaseViewModel, IDisposable
             return;
         }
 
+        OperationResult? result = null;
+
         switch (value.Type)
         {
             case ESearchResultItemType.DevTask:
-                model.Entities.DevTask? devTask = _devTaskRepository.GetTaskAsync(id: value.Id).Result;
-                if (devTask != null)
+                Task.Run(async () =>
                 {
-                    Task.Run(async () =>
+                    model.Entities.DevTask? devTask = await _devTaskRepository.GetTaskAsync(id: value.Id);
+                    if (devTask != null)
                     {
-                        await _viewOrchestrator.NavigateToDevTaskDetailAsync(devTask).ConfigureAwait(false);
-                    });
-                }
+                        result = await _viewOrchestrator.NavigateToDevTaskDetailAsync(devTask).ConfigureAwait(false);
+                    }
+                });
 
                 break;
 
             case ESearchResultItemType.TimeEntry:
-                model.Entities.TimeEntry? timeEntry = _timeEntryRepository.GetEntryAsync(id: value.Id).Result;
-                if (timeEntry != null)
+                Task.Run(async () =>
                 {
-                    Task.Run(async () =>
+                    model.Entities.TimeEntry? timeEntry = await _timeEntryRepository.GetEntryAsync(id: value.Id);
+                    if (timeEntry != null)
                     {
-                        await _viewOrchestrator.NavigateToTimeEntryDetailAsync(timeEntry).ConfigureAwait(false);
-                    });
-                }
+                        result = await _viewOrchestrator.NavigateToTimeEntryDetailAsync(timeEntry).ConfigureAwait(false);
+                    }
+                });
                 break;
             default:
                 throw new NotImplementedException(value.Type.ToString());
+        }
+
+        if (result == null || result.IsFailed) 
+        { 
+            _notification.Show("Failed to navigate to the selected item.", ENotificationType.Error);
         }
     }
 

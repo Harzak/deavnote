@@ -1,5 +1,5 @@
 ﻿/// App
-global using deavnote.core.EvenArgs;
+global using deavnote.core.EventArgs;
 global using deavnote.core.Interfaces;
 global using deavnote.core.Configuration;
 global using deavnote.core.Services;

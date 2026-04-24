@@ -64,8 +64,8 @@ internal sealed partial class TimeEntryDetailViewModel
 
         _relatedTask = _factory.CreateDevTaskDetailViewModel(_model.DevTask, isReadonly: true);
 
-        base.CommitSnapshot();
         base.ValidateAllProperties();
+        base.CommitSnapshot();
     }
 
     protected override async Task<OperationResult> ApplyChangesAsync(CancellationToken cancellationToken)

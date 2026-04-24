@@ -1,5 +1,6 @@
 ﻿using deavnote.repository.Dto;
 using deavnote.utils.Results;
+using System.Collections.Concurrent;
 
 [assembly: InternalsVisibleTo("deavnote.core.tests")]
 
@@ -15,7 +16,7 @@ internal sealed class Journal : IJournal
 {
     private readonly ITimeEntryRepository _repository;
 
-    private readonly Dictionary<int, TimeEntry> _pool;
+    private readonly ConcurrentDictionary<int, TimeEntry> _pool;
     private readonly List<TimeEntry> _entriesInCursor;
     private readonly HashSet<DateOnly> _fetchedDates;
 
@@ -142,7 +143,7 @@ internal sealed class Journal : IJournal
 
         if (!_fetchedDates.Contains(from) || hardReload)
         {
-            await this.LoadEntriesBetweenASync(from, to, cancellationToken).ConfigureAwait(false);
+            await this.LoadEntriesBetweenAsync(from, to, cancellationToken).ConfigureAwait(false);
         }
 
         _entriesInCursor.Clear();
@@ -162,21 +163,21 @@ internal sealed class Journal : IJournal
         if (!_fetchedDates.Contains(prevFrom))
         {
             DateOnly to = prevFrom.AddDays(dayOffset);
-            Task previous = this.LoadEntriesBetweenASync(prevFrom, to, cancellationToken);
+            Task previous = this.LoadEntriesBetweenAsync(prevFrom, to, cancellationToken);
             prefetchTasks.Add(previous);
         }
 
         if (!_fetchedDates.Contains(nextFrom))
         {
             DateOnly to = nextFrom.AddDays(dayOffset);
-            Task next = this.LoadEntriesBetweenASync(nextFrom, to, cancellationToken);
+            Task next = this.LoadEntriesBetweenAsync(nextFrom, to, cancellationToken);
             prefetchTasks.Add(next);
         }
 
         await Task.WhenAll(prefetchTasks).ConfigureAwait(false);
     }
 
-    private async Task LoadEntriesBetweenASync(DateOnly from, DateOnly to, CancellationToken cancellationToken = default)
+    private async Task LoadEntriesBetweenAsync(DateOnly from, DateOnly to, CancellationToken cancellationToken = default)
     {
         IReadOnlyList<TimeEntry> entries = await _repository.GetEntriesBetweenAsync(from, to, cancellationToken).ConfigureAwait(false);
 
