@@ -1,4 +1,7 @@
-﻿[assembly: InternalsVisibleTo("deavnote.app.tests")]
+﻿using deavnote.repository.Interfaces;
+using Microsoft.Extensions.Logging;
+
+[assembly: InternalsVisibleTo("deavnote.app.tests")]
 
 namespace deavnote.app.ViewModels;
 
@@ -50,11 +53,11 @@ internal sealed partial class JournalViewModel : BaseViewModel
         _dialogService = dialogService;
         _viewOrchestrator = viewOrchestrator;
         _notificationService = notificationService;
+        _clipboard = clipboard;
 
         _journal.TimeEntriesChanged += OnJournalTimeEntriesChanged;
         _journal.CursorChanged += OnJournalCursorChanged;
         _timeEntries = [];
-        _clipboard = clipboard;
         _viewType = EJournalContext.DailyMultiple;
     }
 

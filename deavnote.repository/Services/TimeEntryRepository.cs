@@ -10,11 +10,14 @@ namespace deavnote.repository.Services;
 internal sealed class TimeEntryRepository : ITimeEntryRepository
 {
     private readonly IDbContextFactory<DeavnoteDbContext> _contextFactory;
+    private readonly ILogger<TimeEntryRepository> _logger;
 
-    public TimeEntryRepository(IDbContextFactory<DeavnoteDbContext> contextFactory)
+    public TimeEntryRepository(IDbContextFactory<DeavnoteDbContext> contextFactory, ILogger<TimeEntryRepository> logger)
     {
         ArgumentNullException.ThrowIfNull(contextFactory);
+        ArgumentNullException.ThrowIfNull(logger);
         _contextFactory = contextFactory;
+        _logger = logger;
     }
 
     /// <inheritdoc/>
@@ -28,17 +31,16 @@ internal sealed class TimeEntryRepository : ITimeEntryRepository
         DateTime startDateTime = startDateUtc.ToDateTime(TimeOnly.MinValue);
         DateTime endDateTime = endDateUtc.ToDateTime(TimeOnly.MaxValue);
 
-        using (DeavnoteDbContext context = await _contextFactory.CreateDbContextAsync(cancellationToken).ConfigureAwait(false))
-        {
-            List<TimeEntry> entries = await context.TimeEntries
-              .Where(e => e.StartedAtUtc >= startDateTime && e.StartedAtUtc <= endDateTime)
-              .Include(e => e.DevTask)
-              .AsNoTracking()
-              .ToListAsync(cancellationToken)
-              .ConfigureAwait(false);
+        using DeavnoteDbContext context = await _contextFactory.CreateDbContextAsync(cancellationToken).ConfigureAwait(false);
 
-            return entries.AsReadOnly();
-        }
+        List<TimeEntry> entries = await context.TimeEntries
+          .Where(e => e.StartedAtUtc >= startDateTime && e.StartedAtUtc <= endDateTime)
+          .Include(e => e.DevTask)
+          .AsNoTracking()
+          .ToListAsync(cancellationToken)
+          .ConfigureAwait(false);
+
+        return entries.AsReadOnly();
     }
 
     /// <inheritdoc/>
@@ -90,6 +92,7 @@ internal sealed class TimeEntryRepository : ITimeEntryRepository
         }
         catch (DbUpdateException ex)
         {
+            RepositoryLogMessages.LogFailedToAddTimeEntry(_logger, ex);
             return OperationResult.Failure($"Failed to add time entry: {ex.InnerException?.Message}");
         }
 
@@ -125,6 +128,7 @@ internal sealed class TimeEntryRepository : ITimeEntryRepository
         }
         catch (DbUpdateException ex)
         {
+            RepositoryLogMessages.LogFailedToUpdateTimeEntry(_logger, request.Id, ex);
             return OperationResult.Failure($"Failed to update time entry: {ex.InnerException?.Message}");
         }
 
@@ -134,14 +138,13 @@ internal sealed class TimeEntryRepository : ITimeEntryRepository
     /// <inheritdoc/>
     public async Task<TimeEntry?> GetEntryAsync(int id, CancellationToken cancellationToken = default)
     {
-        using (DeavnoteDbContext context = await _contextFactory.CreateDbContextAsync(cancellationToken).ConfigureAwait(false))
-        {
-            return await context.TimeEntries
-              .Where(e => e.Id == id)
-              .Include(e => e.DevTask)
-              .AsNoTracking()
-              .FirstOrDefaultAsync(cancellationToken)
-              .ConfigureAwait(false);
-        }
+        using DeavnoteDbContext context = await _contextFactory.CreateDbContextAsync(cancellationToken).ConfigureAwait(false);
+
+        return await context.TimeEntries
+          .Where(e => e.Id == id)
+          .Include(e => e.DevTask)
+          .AsNoTracking()
+          .FirstOrDefaultAsync(cancellationToken)
+          .ConfigureAwait(false);
     }
 }
