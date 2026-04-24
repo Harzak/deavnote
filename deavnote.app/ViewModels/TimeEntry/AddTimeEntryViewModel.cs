@@ -7,7 +7,9 @@ internal sealed partial class AddTimeEntryViewModel : DialogViewModel<AddTimeEnt
     internal override string Title => "Add time entry";
 
     [ObservableProperty]
+    [NotifyDataErrorInfo]
     [NotifyCanExecuteChangedFor("ConfirmCommand")]
+    [Required(ErrorMessage = "Name is required.")]
     private string _entryName = string.Empty;
 
     [ObservableProperty]

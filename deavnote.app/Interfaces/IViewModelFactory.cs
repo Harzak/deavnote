@@ -12,6 +12,6 @@ internal interface IViewModelFactory
     JournalViewModel CreateJournalViewModel();
     AddTimeEntryViewModel CreateAddTimeEntryViewModel();
     SearchViewModel CreateSearchViewModel();
-    DevTaskDetailViewModel CreateDevTaskDetailViewModel(DevTask model);
-    TimeEntryDetailViewModel CreateTimeEntryDetailViewModel(TimeEntry model);
+    DevTaskDetailViewModel CreateDevTaskDetailViewModel(int id);
+    TimeEntryDetailViewModel CreateTimeEntryDetailViewModel(int id);
 };
