@@ -7,7 +7,9 @@ internal sealed partial class SearchViewModel : BaseViewModel, IDisposable
     private readonly IDevTaskRepository _devTaskRepository;
     private readonly IViewOrchestrator _viewOrchestrator;
     private readonly INotificationService _notification;
+    private readonly DispatcherTimer _searchTimer;
     private CancellationTokenSource? _searchCts;
+    private string? _pendingSearchQuery;
 
     private static readonly TimeSpan SearchDelay = TimeSpan.FromMilliseconds(700);
 
@@ -42,6 +44,12 @@ internal sealed partial class SearchViewModel : BaseViewModel, IDisposable
         _devTaskRepository = devTaskRepository;
         _notification = notification;
 
+        _searchTimer = new DispatcherTimer
+        {
+            Interval = SearchDelay,
+        };
+        _searchTimer.Tick += OnSearchTimerTick;
+
         this.SearchResults = [];
     }
 
@@ -60,19 +68,34 @@ internal sealed partial class SearchViewModel : BaseViewModel, IDisposable
 
     private void ScheduleSearch(string? query)
     {
-        _searchCts?.Cancel();
-        _searchCts?.Dispose();
-        _searchCts = new CancellationTokenSource();
-
-        _ = ExecuteSearchAsync(query, _searchCts.Token);
+        _pendingSearchQuery = query;
+        _searchTimer.Stop();
+        _searchTimer.Start();
     }
 
-    private async Task ExecuteSearchAsync(string? query, CancellationToken cancellationToken)
+    private void OnSearchTimerTick(object? sender, EventArgs e)
     {
+        _searchTimer.Stop();
+        StartSearch(_pendingSearchQuery);
+    }
+
+    private void StartSearch(string? query)
+    {
+        CancellationTokenSource? previousSearchCts = _searchCts;
+        previousSearchCts?.Cancel();
+
+        CancellationTokenSource searchCts = new();
+        _searchCts = searchCts;
+
+        _ = ExecuteSearchAsync(query, searchCts);
+    }
+
+    private async Task ExecuteSearchAsync(string? query, CancellationTokenSource searchCts)
+    {
+        CancellationToken cancellationToken = searchCts.Token;
+
         try
         {
-            await Task.Delay(SearchDelay, cancellationToken).ConfigureAwait(false);
-
             IReadOnlyList<SearchResultItem> results = string.IsNullOrWhiteSpace(query)
                 ? await _repository.GetMostRecent(count: 15, cancellationToken).ConfigureAwait(false)
                 : await _repository.Search(query, count: 15, cancellationToken).ConfigureAwait(false);
@@ -92,10 +115,17 @@ internal sealed partial class SearchViewModel : BaseViewModel, IDisposable
                 this.HasResults = this.SearchResults.Count > 0;
             });
         }
-        catch (TaskCanceledException)
+        catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
         {
-            // a new search replaces a previous one
-            throw;
+        }
+        finally
+        {
+            if (ReferenceEquals(_searchCts, searchCts))
+            {
+                _searchCts = null;
+            }
+
+            searchCts.Dispose();
         }
     }
 
@@ -152,6 +182,8 @@ internal sealed partial class SearchViewModel : BaseViewModel, IDisposable
 
     public void Dispose()
     {
+        _searchTimer.Stop();
+        _searchTimer.Tick -= OnSearchTimerTick;
         _searchCts?.Cancel();
         _searchCts?.Dispose();
         _searchCts = null;
