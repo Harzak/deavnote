@@ -144,38 +144,37 @@ internal sealed partial class SearchViewModel : BaseViewModel, IDisposable
             return;
         }
 
+        _ = NavigateToSelectedItemAsync(value);
+    }
+
+    private async Task NavigateToSelectedItemAsync(SearchResultItem value)
+    {
         OperationResult? result = null;
 
         switch (value.Type)
         {
             case ESearchResultItemType.DevTask:
-                Task.Run(async () =>
+                model.Entities.DevTask? devTask = await _devTaskRepository.GetTaskAsync(id: value.Id).ConfigureAwait(false);
+                if (devTask != null)
                 {
-                    model.Entities.DevTask? devTask = await _devTaskRepository.GetTaskAsync(id: value.Id);
-                    if (devTask != null)
-                    {
-                        result = await _viewOrchestrator.NavigateToDevTaskDetailAsync(devTask).ConfigureAwait(false);
-                    }
-                });
+                    result = await _viewOrchestrator.NavigateToDevTaskDetailAsync(devTask).ConfigureAwait(false);
+                }
 
                 break;
 
             case ESearchResultItemType.TimeEntry:
-                Task.Run(async () =>
+                model.Entities.TimeEntry? timeEntry = await _timeEntryRepository.GetEntryAsync(id: value.Id).ConfigureAwait(false);
+                if (timeEntry != null)
                 {
-                    model.Entities.TimeEntry? timeEntry = await _timeEntryRepository.GetEntryAsync(id: value.Id);
-                    if (timeEntry != null)
-                    {
-                        result = await _viewOrchestrator.NavigateToTimeEntryDetailAsync(timeEntry).ConfigureAwait(false);
-                    }
-                });
+                    result = await _viewOrchestrator.NavigateToTimeEntryDetailAsync(timeEntry).ConfigureAwait(false);
+                }
                 break;
             default:
-                throw new NotImplementedException(value.Type.ToString());
+                throw new NotSupportedException(value.Type.ToString());
         }
 
-        if (result == null || result.IsFailed) 
-        { 
+        if (result?.IsFailed != false)
+        {
             _notification.Show(Strings.SearchViewModel_Navigate_Failed, ENotificationType.Error);
         }
     }

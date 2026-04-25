@@ -69,6 +69,6 @@ internal sealed class MainViewOrchestrator : IViewOrchestrator
 
         this.ActiveViewModelChanged?.Invoke(this, EventArgs.Empty);
 
-        return OperationResult.Success();   
+        return OperationResult.Success();
     }
 }

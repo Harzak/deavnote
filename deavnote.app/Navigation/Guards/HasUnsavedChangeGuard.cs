@@ -9,7 +9,7 @@ internal sealed class HasUnsavedChangeGuard : INavigationGuard
     public Task<NavigationGuardResult> CanNavigateAsync(IEditableViewModel? from, IEditableViewModel to, NavigationContext context)
     {
 
-        if (from != null && from.HasChanges)
+        if (from?.HasChanges == true)
         {
             // show a confirmation dialog to the user before denying navigation
             return Task.FromResult(NavigationGuardResult.Deny(Strings.HasUnsavedChangeGuard_Deny));
