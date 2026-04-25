@@ -1,7 +1,3 @@
-using deavnote.model.Entities;
-using deavnote.model.Enums;
-using Microsoft.EntityFrameworkCore;
-
 namespace deavnote.repository.Services;
 
 /// <summary>

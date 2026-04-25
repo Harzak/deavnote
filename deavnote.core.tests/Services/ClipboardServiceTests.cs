@@ -28,7 +28,7 @@ public class ClipboardServiceTests
         await service.SetDailyTimeEntryAsync(new TimeEntry
         {
             Name = "Refactor some stuff",
-            WorkDone = "a lot of works"
+            WorkDone = "a lot of works",
         })
         .ConfigureAwait(false);
 
@@ -55,8 +55,8 @@ public class ClipboardServiceTests
             DevTask = new DevTask()
             {
                 Name = "Task1",
-                Code = "Code1"
-            }
+                Code = "Code1",
+            },
         },
         new TimeEntry
         {
@@ -65,9 +65,9 @@ public class ClipboardServiceTests
             DevTask = new DevTask()
             {
                 Name = "Task2",
-                Code = "Code2"
-            }
-        }])
+                Code = "Code2",
+            },
+        },])
         .ConfigureAwait(false);
 
         // Assert
@@ -94,8 +94,8 @@ public class ClipboardServiceTests
             DevTask = new DevTask()
             {
                 Name = "Task1",
-                Code = "Code1"
-            }
+                Code = "Code1",
+            },
         },
         new TimeEntry
         {
@@ -104,9 +104,9 @@ public class ClipboardServiceTests
             DevTask = new DevTask()
             {
                 Name = "Task2",
-                Code = "Code2"
-            }
-        }])
+                Code = "Code2",
+            },
+        },])
         .ConfigureAwait(false);
 
         // Assert
@@ -130,7 +130,7 @@ public class ClipboardServiceTests
         await service.SetDailyTimeEntryAsync(new TimeEntry
         {
             Name = "Refactor some stuff",
-            WorkDone = "a lot of works"
+            WorkDone = "a lot of works",
         })
         .ConfigureAwait(false);
 
@@ -157,8 +157,8 @@ public class ClipboardServiceTests
             DevTask = new DevTask()
             {
                 Name = null!,
-                Code = null!
-            }
+                Code = null!,
+            },
         })
         .ConfigureAwait(false);
 

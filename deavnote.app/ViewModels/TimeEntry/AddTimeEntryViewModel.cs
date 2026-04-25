@@ -1,5 +1,4 @@
 using deavnote.app.Attributes.Validation;
-using deavnote.app.Attributes.Base;
 
 namespace deavnote.app.ViewModels.TimeEntry;
 
@@ -111,7 +110,7 @@ internal sealed partial class AddTimeEntryViewModel : DialogViewModel<AddTimeEnt
     }
 
     [RelayCommand]
-    private void Cancel() => base.Close(null);
+    private void Cancel() => base.Close(result: null);
     #endregion
 
     #region Property Change Handlers

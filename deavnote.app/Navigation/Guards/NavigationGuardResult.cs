@@ -13,7 +13,7 @@ internal sealed class NavigationGuardResult
     {
         return new()
         {
-            CanNavigate = true
+            CanNavigate = true,
         };
 
     }
@@ -23,7 +23,7 @@ internal sealed class NavigationGuardResult
         return new()
         {
             CanNavigate = false,
-            Reason = reason
+            Reason = reason,
         };
     }
 
@@ -33,7 +33,7 @@ internal sealed class NavigationGuardResult
         {
             CanNavigate = false,
             Reason = reason,
-            RedirectTo = redirectTo
+            RedirectTo = redirectTo,
         };
     }
 }

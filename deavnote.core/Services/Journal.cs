@@ -46,7 +46,7 @@ internal sealed class Journal : IJournal
         this.DefaultConfiguration = new JournalConfiguration
         {
             DateCursor = DateOnly.FromDateTime(DateTime.Today),
-            DayOffset = 1
+            DayOffset = 1,
         };
     }
 

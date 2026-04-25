@@ -21,7 +21,7 @@ public class JournalTests
         JournalConfiguration configuration = new()
         {
             DateCursor = new DateOnly(2026, 08, 10),
-            DayOffset = 1
+            DayOffset = 1,
         };
 
         //Act
@@ -43,7 +43,7 @@ public class JournalTests
         JournalConfiguration configuration = new()
         {
             DateCursor = new DateOnly(2026, 08, 10),
-            DayOffset = 1
+            DayOffset = 1,
         };
 
         //Act
@@ -71,7 +71,7 @@ public class JournalTests
         JournalConfiguration configuration = new()
         {
             DateCursor = new DateOnly(2026, 08, 10),
-            DayOffset = 1
+            DayOffset = 1,
         };
 
         //Act
@@ -94,12 +94,12 @@ public class JournalTests
         JournalConfiguration configuration1 = new()
         {
             DateCursor = new DateOnly(2026, 08, 10),
-            DayOffset = 1
+            DayOffset = 1,
         };
         JournalConfiguration configuration2 = new()
         {
             DateCursor = new DateOnly(2026, 08, 15),
-            DayOffset = 1
+            DayOffset = 1,
         };
 
         //Act
@@ -124,7 +124,7 @@ public class JournalTests
         JournalConfiguration configuration1 = new()
         {
             DateCursor = new DateOnly(2026, 08, 10),
-            DayOffset = 1
+            DayOffset = 1,
         };
         A.CallTo(() => _repository.GetEntriesBetweenAsync(
                 new DateOnly(2026, 08, 10),
@@ -132,12 +132,12 @@ public class JournalTests
                 A<CancellationToken>.Ignored))
             .Returns(new List<TimeEntry>()
             {
-                new TimeEntry()
+                new()
                 {
                     Id = 1,
                     Name = "Test Entry",
                     StartedAtUtc = new DateTime(2026, 08, 10, 8, 0, 0),
-                }
+                },
             }.AsReadOnly());
 
         //Act
@@ -159,7 +159,7 @@ public class JournalTests
         JournalConfiguration configuration1 = new()
         {
             DateCursor = new DateOnly(2026, 08, 10),
-            DayOffset = 1
+            DayOffset = 1,
         };
         A.CallTo(() => _repository.GetEntriesBetweenAsync(
                 new DateOnly(2026, 08, 10),
@@ -167,12 +167,12 @@ public class JournalTests
                 A<CancellationToken>.Ignored))
             .Returns(new List<TimeEntry>()
             {
-                new TimeEntry()
+                new()
                 {
                     Id = 1,
                     Name = "Test Entry",
                     StartedAtUtc = new DateTime(2026, 08, 10, 8, 0, 0),
-                }
+                },
             }.AsReadOnly());
 
         //Act

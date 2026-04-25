@@ -1,6 +1,5 @@
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using deavnote.model.Seed;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace deavnote.model.Configuration;
 

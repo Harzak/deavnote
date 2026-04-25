@@ -51,7 +51,7 @@ public abstract class ResultBase : IResult
         this.ErrorCode = string.Empty;
     }
 
-    protected ResultBase() : this(false)
+    protected ResultBase() : this(success: false)
     {
 
     }

@@ -14,9 +14,9 @@ internal class SearchResultItemTypeToIconConverter : IValueConverter
         {
             return state switch
             {
-                ESearchResultItemType.DevTask   => Icon.Note,
+                ESearchResultItemType.DevTask => Icon.Note,
                 ESearchResultItemType.TimeEntry => Icon.Timer,
-                ESearchResultItemType.Todo      => Icon.TaskList,
+                ESearchResultItemType.Todo => Icon.TaskList,
                 _ => Icon.QuestionCircle,
             };
         }

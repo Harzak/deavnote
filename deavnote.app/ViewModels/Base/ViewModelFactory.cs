@@ -1,5 +1,4 @@
-﻿using deavnote.app.ViewModels.Search;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 
 namespace deavnote.app.ViewModels.Base;
 

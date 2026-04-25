@@ -11,7 +11,7 @@ public class TimeSpanToReadableDurationConverterTests
         var timeSpan = new TimeSpan(1, 2, 30, 45); // 1 day, 2 hours, 30 minutes, 45 seconds
 
         // Act
-        var result = converter.Convert(timeSpan, typeof(string), null, CultureInfo.InvariantCulture);
+        var result = converter.Convert(timeSpan, typeof(string), parameter: null, CultureInfo.InvariantCulture);
 
         // Assert
         Assert.AreEqual("1d 2h 30m 45s", result);
@@ -25,7 +25,7 @@ public class TimeSpanToReadableDurationConverterTests
         var timeSpan = new TimeSpan(0, 0, 0, 0); // 0 days, 0 hours, 0 minutes, 0 seconds
 
         // Act
-        var result = converter.Convert(timeSpan, typeof(string), null, CultureInfo.InvariantCulture);
+        var result = converter.Convert(timeSpan, typeof(string), parameter: null, CultureInfo.InvariantCulture);
 
         // Assert
         Assert.AreEqual("0", result);
@@ -39,7 +39,7 @@ public class TimeSpanToReadableDurationConverterTests
         var timeSpan = new TimeSpan(0, 2, 30, 0); // 0 days, 0 hours, 0 minutes, 0 seconds
 
         // Act
-        var result = converter.Convert(timeSpan, typeof(string), null, CultureInfo.InvariantCulture);
+        var result = converter.Convert(timeSpan, typeof(string), parameter: null, CultureInfo.InvariantCulture);
 
         // Assert
         Assert.AreEqual("2h 30m", result);

@@ -16,11 +16,11 @@ internal sealed class DevTaskStateToIconConverter : IValueConverter
             {
                 EDevTaskState.NotStarted => Icon.Circle,
                 EDevTaskState.InProgress => Icon.ArrowClockwise,
-                EDevTaskState.Completed  => Icon.CheckmarkCircle,
-                EDevTaskState.Merged     => Icon.Merge,
-                EDevTaskState.Tested     => Icon.Beaker,
-                EDevTaskState.Rejected   => Icon.DismissCircle,
-                _                        => Icon.QuestionCircle,
+                EDevTaskState.Completed => Icon.CheckmarkCircle,
+                EDevTaskState.Merged => Icon.Merge,
+                EDevTaskState.Tested => Icon.Beaker,
+                EDevTaskState.Rejected => Icon.DismissCircle,
+                _ => Icon.QuestionCircle,
             };
         }
 

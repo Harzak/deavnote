@@ -1,5 +1,4 @@
-﻿using deavnote.core.Services;
-using deavnote.repository.Dto;
+﻿using deavnote.repository.Dto;
 using deavnote.utils.Results;
 
 namespace deavnote.core.Interfaces;

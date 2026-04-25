@@ -1,5 +1,3 @@
-using deavnote.app.Attributes.Base;
-
 namespace deavnote.app.Attributes.Validation;
 
 [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Parameter, AllowMultiple = false)]

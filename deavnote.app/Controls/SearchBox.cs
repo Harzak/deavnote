@@ -1,9 +1,9 @@
-using System.Windows.Input;
-using System.Collections;
 using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Templates;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using System.Collections;
+using System.Windows.Input;
 
 namespace deavnote.app.Controls;
 
@@ -114,10 +114,7 @@ internal sealed class SearchBox : TemplatedControl
             _textBox.PropertyChanged += OnTextBoxPropertyChanged;
         }
 
-        if (_clearButton is not null)
-        {
-            _clearButton.Click += OnClearButtonClick;
-        }
+        _clearButton?.Click += OnClearButtonClick;
 
         _listBox?.AddHandler(InputElement.PointerPressedEvent, OnListBoxPointerPressed, RoutingStrategies.Bubble, handledEventsToo: true);
     }
@@ -132,10 +129,7 @@ internal sealed class SearchBox : TemplatedControl
             _textBox.PropertyChanged -= OnTextBoxPropertyChanged;
         }
 
-        if (_clearButton is not null)
-        {
-            _clearButton.Click -= OnClearButtonClick;
-        }
+        _clearButton?.Click -= OnClearButtonClick;
 
         _listBox?.RemoveHandler(InputElement.PointerPressedEvent, OnListBoxPointerPressed);
     }
@@ -219,7 +213,7 @@ internal sealed class SearchBox : TemplatedControl
         Dispatcher.UIThread.Post(() =>
         {
             CommitSelection();
-        }, 
+        },
         DispatcherPriority.Input);
     }
 
@@ -250,16 +244,13 @@ internal sealed class SearchBox : TemplatedControl
         try
         {
             this.Text = string.Empty;
-            if (_textBox is not null)
-            {
-                _textBox.Text = string.Empty;
-            }
+            _textBox?.Text = string.Empty;
             this.SelectedItem = null;
             this.IsDropDownOpen = false;
 
-            if (this.ClearCommand is not null && this.ClearCommand.CanExecute(null))
+            if (this.ClearCommand?.CanExecute(parameter: null) == true)
             {
-                this.ClearCommand.Execute(null);
+                this.ClearCommand.Execute(parameter: null);
             }
         }
         finally

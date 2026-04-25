@@ -9,7 +9,7 @@ public static class DateTimeExtensions
 
     public static bool IsInMonth(this DateTime date, DateOnly month)
     {
-         return date.Year == month.Year && date.Month == month.Month;
+        return date.Year == month.Year && date.Month == month.Month;
     }
 
     /// <summary>

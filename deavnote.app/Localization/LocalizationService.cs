@@ -1,6 +1,4 @@
-using System.ComponentModel;
 using System.Resources;
-using deavnote.app.Resources;
 
 namespace deavnote.app.Localization;
 

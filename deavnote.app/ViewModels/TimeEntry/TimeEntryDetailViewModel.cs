@@ -1,7 +1,7 @@
 ﻿namespace deavnote.app.ViewModels.TimeEntry;
 
 internal sealed partial class TimeEntryDetailViewModel
-    : BaseEditableViewModel<(string Name,string WorkDone, DateTimeOffset StartedAtUtc,TimeSpan Duration)>
+    : BaseEditableViewModel<(string Name, string WorkDone, DateTimeOffset StartedAtUtc, TimeSpan Duration)>
 {
 
     private readonly IJournal _journal;

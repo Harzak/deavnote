@@ -27,7 +27,7 @@ internal sealed class DevTaskRepository : IDevTaskRepository
             {
                 Id = x.Id,
                 Code = x.Code,
-                Name = x.Name
+                Name = x.Name,
             })
             .ToListAsync(cancellationToken)
             .ConfigureAwait(false);

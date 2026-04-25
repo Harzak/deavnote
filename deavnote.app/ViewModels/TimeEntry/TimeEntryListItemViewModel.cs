@@ -23,7 +23,7 @@ internal sealed partial class TimeEntryListItemViewModel : BaseViewModel
     public partial EDevTaskState TaskState { get; set; }
 
     public TimeEntryListItemViewModel(
-        model.Entities.TimeEntry timeEntry, 
+        model.Entities.TimeEntry timeEntry,
         IClipboardService clipboard,
         INotificationService notification)
     {

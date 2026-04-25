@@ -4,5 +4,5 @@ internal enum ETimeEntryCreationTaskLink
 {
     None = 0,
     LinkToExistingTask = 1,
-    CreateNewTask = 2
+    CreateNewTask = 2,
 }
