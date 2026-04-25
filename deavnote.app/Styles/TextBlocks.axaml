@@ -3,7 +3,7 @@
 
     <Design.PreviewWith>
         <Border Width="200" Height="50"
-                BorderBrush="DarkOrange" BorderThickness="1">
+                BorderBrush="Orange" BorderThickness="1">
             <TextBlock Foreground="DarkOrange">
                 some text
             </TextBlock>

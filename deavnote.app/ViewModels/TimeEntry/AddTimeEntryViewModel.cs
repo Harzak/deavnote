@@ -32,9 +32,6 @@ internal sealed partial class AddTimeEntryViewModel : DialogViewModel<AddTimeEnt
     public partial IEnumerable<DevTaskLightDto> ExistingTasks { get; set; }
 
     [ObservableProperty]
-    [NotifyDataErrorInfo]
-    [NotifyCanExecuteChangedFor(nameof(ConfirmCommand))]
-    [TimeEntryLinkedTaskRequired]
     public partial DevTaskLightDto? SelectedTask { get; set; }
 
     [ObservableProperty]
