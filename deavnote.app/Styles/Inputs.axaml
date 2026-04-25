@@ -7,7 +7,7 @@
     </Style>
 
     <Style Selector="TextBox:error /template/ Border, ComboBox:error /template/ Border, DatePicker:error /template/ Border, AutoCompleteBox:error /template/ Border, MaskedTextBox:error /template/ Border">
-        <Setter Property="BorderBrush" Value="Orange" />
+        <Setter Property="BorderBrush" Value="{StaticResource Error1Brush}" />
     </Style>
 
     <!--  ListBox  -->
