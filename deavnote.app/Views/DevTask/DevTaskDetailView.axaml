@@ -1,72 +1,55 @@
-﻿<UserControl
-    x:Class="deavnote.app.Views.DevTask.DevTaskDetailView"
-    xmlns="https://github.com/avaloniaui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:conv="using:deavnote.app.Converters"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:dd="using:deavnote.app.Design"
-    xmlns:loc="using:deavnote.app.Localization"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:viewmodels="using:deavnote.app.ViewModels"
-    d:DesignHeight="500"
-    d:DesignWidth="600"
-    x:DataType="viewmodels:DevTask.DevTaskDetailViewModel"
-    mc:Ignorable="d">
+﻿<UserControl x:Class="deavnote.app.Views.DevTask.DevTaskDetailView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:conv="using:deavnote.app.Converters"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:dd="using:deavnote.app.Design"
+             xmlns:loc="using:deavnote.app.Localization"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewmodels="using:deavnote.app.ViewModels"
+             d:DesignHeight="500"
+             d:DesignWidth="600"
+             x:DataType="viewmodels:DevTask.DevTaskDetailViewModel"
+             mc:Ignorable="d">
 
     <UserControl.Resources>
         <conv:BoolToInverseConverter x:Key="BoolToInverseConverter" />
     </UserControl.Resources>
 
 
-    <Grid
-        Margin="10"
-        ColumnDefinitions="*, Auto"
-        ColumnSpacing="15"
-        IsEnabled="{Binding IsReadonly, Converter={StaticResource BoolToInverseConverter}}"
-        RowDefinitions="Auto,Auto, *, Auto"
-        RowSpacing="15">
+    <Grid Margin="10"
+          ColumnDefinitions="*, Auto" ColumnSpacing="15"
+          IsEnabled="{Binding IsReadonly, Converter={StaticResource BoolToInverseConverter}}"
+          RowDefinitions="Auto,Auto, *, Auto" RowSpacing="15">
 
-        <StackPanel
-            Grid.Row="0"
-            Grid.Column="0"
-            VerticalAlignment="Center"
-            Orientation="Horizontal">
+        <StackPanel Grid.Row="0" Grid.Column="0"
+                    VerticalAlignment="Center"
+                    Orientation="Horizontal">
             <SelectableTextBlock Classes="CardTitle Code" Text="{Binding Code}" />
         </StackPanel>
 
-        <TextBox
-            Grid.Row="1"
-            Grid.Column="0"
-            Text="{Binding Name}" />
-        <ComboBox
-            Grid.Row="1"
-            Grid.Column="1"
-            DisplayMemberBinding="{Binding}"
-            SelectedValue="{Binding State}" />
+        <TextBox Grid.Row="1" Grid.Column="0"
+                 Text="{Binding Name}" />
+        <ComboBox Grid.Row="1" Grid.Column="1"
+                  DisplayMemberBinding="{Binding}"
+                  SelectedValue="{Binding State}" />
 
-        <TextBox
-            Grid.Row="2"
-            Grid.Column="0"
-            Grid.ColumnSpan="2"
-            MinHeight="200"
-            AcceptsReturn="True"
-            PlaceholderText="{loc:Localize Key=DevTaskDetailView_Description_Placeholder}"
-            Text="{Binding Description}" />
+        <TextBox Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
+                 MinHeight="200"
+                 AcceptsReturn="True"
+                 PlaceholderText="{loc:Localize Key=DevTaskDetailView_Description_Placeholder}"
+                 Text="{Binding Description}" />
 
-        <StackPanel
-            Grid.Row="3"
-            Grid.Column="1"
-            Orientation="Horizontal">
+        <StackPanel Grid.Row="3" Grid.Column="1"
+                    Orientation="Horizontal">
             <TextBlock Classes="Legend" Text="{loc:Localize Key=Common_CreatedAt}" />
-            <TextBlock
-                Margin="3,0,10,0"
-                Classes="Legend"
-                Text="{Binding CreatedAtUtc}" />
+            <TextBlock Margin="3,0,10,0"
+                       Classes="Legend"
+                       Text="{Binding CreatedAtUtc}" />
             <TextBlock Classes="Legend" Text="-" />
-            <TextBlock
-                Margin="10,0,3,0"
-                Classes="Legend"
-                Text="{loc:Localize Key=Common_ModifiedAt}" />
+            <TextBlock Margin="10,0,3,0"
+                       Classes="Legend"
+                       Text="{loc:Localize Key=Common_ModifiedAt}" />
             <TextBlock Classes="Legend" Text="{Binding UpdatedAtUtc}" />
         </StackPanel>
     </Grid>

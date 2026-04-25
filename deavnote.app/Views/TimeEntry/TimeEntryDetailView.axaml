@@ -1,68 +1,49 @@
-﻿<UserControl
-    x:Class="deavnote.app.Views.TimeEntry.TimeEntryDetailView"
-    xmlns="https://github.com/avaloniaui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:dd="using:deavnote.app.Design"
-    xmlns:dtviews="using:deavnote.app.Views.DevTask"
-    xmlns:ic="using:FluentIcons.Avalonia"
-    xmlns:loc="using:deavnote.app.Localization"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:viewmodels="using:deavnote.app.ViewModels.TimeEntry"
-    d:DesignHeight="450"
-    d:DesignWidth="800"
-    x:DataType="viewmodels:TimeEntryDetailViewModel"
-    mc:Ignorable="d">
+﻿<UserControl x:Class="deavnote.app.Views.TimeEntry.TimeEntryDetailView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:dd="using:deavnote.app.Design"
+             xmlns:dtviews="using:deavnote.app.Views.DevTask"
+             xmlns:ic="using:FluentIcons.Avalonia"
+             xmlns:loc="using:deavnote.app.Localization"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewmodels="using:deavnote.app.ViewModels.TimeEntry"
+             d:DesignHeight="450"
+             d:DesignWidth="800"
+             x:DataType="viewmodels:TimeEntryDetailViewModel"
+             mc:Ignorable="d">
     <ScrollViewer HorizontalScrollBarVisibility="Disabled">
-        <Grid
-            Margin="10"
-            ColumnDefinitions="*, Auto"
-            RowDefinitions="Auto, Auto, *, Auto, Auto"
-            RowSpacing="15">
+        <Grid Margin="10"
+              ColumnDefinitions="*, Auto" RowDefinitions="Auto, Auto, *, Auto, Auto" RowSpacing="15">
 
-            <TextBox
-                Grid.Row="0"
-                Grid.Column="0"
-                HorizontalAlignment="Stretch"
-                VerticalAlignment="Center"
-                Text="{Binding Name}" />
+            <TextBox Grid.Row="0" Grid.Column="0"
+                     HorizontalAlignment="Stretch" VerticalAlignment="Center"
+                     Text="{Binding Name}" />
 
-            <StackPanel
-                Grid.Row="0"
-                Grid.RowSpan="2"
-                Grid.Column="1"
-                HorizontalAlignment="Right"
-                Orientation="Horizontal"
-                Spacing="10">
-                <Button
-                    Classes="Icon"
-                    Command="{Binding SaveCommand}"
-                    ToolTip.Tip="{loc:Localize Key=TimeEntryDetailView_Save_Tooltip}">
+            <StackPanel Grid.Row="0" Grid.RowSpan="2" Grid.Column="1"
+                        HorizontalAlignment="Right"
+                        Orientation="Horizontal" Spacing="10">
+                <Button Classes="Icon"
+                        Command="{Binding SaveCommand}"
+                        ToolTip.Tip="{loc:Localize Key=TimeEntryDetailView_Save_Tooltip}">
                     <ic:FluentIcon Icon="Save" IconSize="Size16" />
                 </Button>
-                <Button
-                    Classes="Icon"
-                    Command="{Binding CancelCommand}"
-                    ToolTip.Tip="{loc:Localize Key=TimeEntryDetailView_Cancel_Tooltip}">
+                <Button Classes="Icon"
+                        Command="{Binding CancelCommand}"
+                        ToolTip.Tip="{loc:Localize Key=TimeEntryDetailView_Cancel_Tooltip}">
                     <ic:FluentIcon Icon="DismissCircle" IconSize="Size16" />
                 </Button>
             </StackPanel>
 
-            <StackPanel
-                Grid.Row="1"
-                Grid.Column="0"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Center"
-                Orientation="Horizontal"
-                Spacing="10">
-                <DatePicker
-                    Grid.Row="1"
-                    HorizontalAlignment="Left"
-                    SelectedDate="{Binding StartedAtUtc}" />
-                <MaskedTextBox
-                    VerticalAlignment="Bottom"
-                    Mask="00:00"
-                    Text="{Binding Duration, UpdateSourceTrigger=LostFocus}" />
+            <StackPanel Grid.Row="1" Grid.Column="0"
+                        HorizontalAlignment="Left" VerticalAlignment="Center"
+                        Orientation="Horizontal" Spacing="10">
+                <DatePicker Grid.Row="1"
+                            HorizontalAlignment="Left"
+                            SelectedDate="{Binding StartedAtUtc}" />
+                <MaskedTextBox VerticalAlignment="Bottom"
+                               Mask="00:00"
+                               Text="{Binding Duration, UpdateSourceTrigger=LostFocus}" />
                 <RepeatButton VerticalAlignment="Top" Click="OnClick">
                     <ic:FluentIcon Icon="SubtractCircle" IconSize="Size16" />
                 </RepeatButton>
@@ -71,41 +52,30 @@
                 </RepeatButton>
             </StackPanel>
 
-            <TextBox
-                Grid.Row="2"
-                Grid.Column="0"
-                Grid.ColumnSpan="2"
-                MinHeight="200"
-                AcceptsReturn="True"
-                PlaceholderText="{loc:Localize Key=TimeEntryDetailView_WorkDone_Placeholder}"
-                Text="{Binding WorkDone}" />
+            <TextBox Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
+                     MinHeight="200"
+                     AcceptsReturn="True"
+                     PlaceholderText="{loc:Localize Key=TimeEntryDetailView_WorkDone_Placeholder}"
+                     Text="{Binding WorkDone}" />
 
-            <StackPanel
-                Grid.Row="3"
-                Grid.Column="1"
-                HorizontalAlignment="Right"
-                Orientation="Horizontal">
+            <StackPanel Grid.Row="3" Grid.Column="1"
+                        HorizontalAlignment="Right"
+                        Orientation="Horizontal">
                 <TextBlock Classes="Legend" Text="{loc:Localize Key=Common_CreatedAt}" />
-                <TextBlock
-                    Margin="3,0,10,0"
-                    Classes="Legend"
-                    Text="{Binding CreatedAtUtc}" />
+                <TextBlock Margin="3,0,10,0"
+                           Classes="Legend"
+                           Text="{Binding CreatedAtUtc}" />
                 <TextBlock Classes="Legend" Text="-" />
-                <TextBlock
-                    Margin="10,0,3,0"
-                    Classes="Legend"
-                    Text="{loc:Localize Key=Common_ModifiedAt}" />
+                <TextBlock Margin="10,0,3,0"
+                           Classes="Legend"
+                           Text="{loc:Localize Key=Common_ModifiedAt}" />
                 <TextBlock Classes="Legend" Text="{Binding UpdatedAtUtc}" />
             </StackPanel>
 
-            <Border
-                Grid.Row="4"
-                Grid.Column="0"
-                Grid.ColumnSpan="2"
-                Margin="0,15,0,0"
-                BorderBrush="{StaticResource Grey3}"
-                BorderThickness="1"
-                CornerRadius="2">
+            <Border Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2"
+                    Margin="0,15,0,0"
+                    BorderBrush="{StaticResource Grey3}"
+                    BorderThickness="1" CornerRadius="2">
 
                 <dtviews:DevTaskDetailView DataContext="{Binding RelatedTask}" />
             </Border>

@@ -1,23 +1,22 @@
-﻿<Window
-    x:Class="deavnote.app.Views.MainView"
-    xmlns="https://github.com/avaloniaui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:conv="using:deavnote.app.Converters"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:loc="using:deavnote.app.Localization"
-    xmlns:local="using:deavnote.app"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:seviews="using:deavnote.app.Views.Search"
-    xmlns:teviews="using:deavnote.app.Views.TimeEntry"
-    xmlns:views="using:deavnote.app.Views"
-    xmlns:vm="using:deavnote.app.ViewModels"
-    Title="{loc:Localize Key=MainView_Title}"
-    d:DesignHeight="450"
-    d:DesignWidth="800"
-    x:DataType="vm:MainViewModel"
-    Background="{DynamicResource CustomMainBackground}"
-    Icon="/Assets/avalonia-logo.ico"
-    mc:Ignorable="d">
+﻿<Window x:Class="deavnote.app.Views.MainView"
+        xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:conv="using:deavnote.app.Converters"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:loc="using:deavnote.app.Localization"
+        xmlns:local="using:deavnote.app"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:seviews="using:deavnote.app.Views.Search"
+        xmlns:teviews="using:deavnote.app.Views.TimeEntry"
+        xmlns:views="using:deavnote.app.Views"
+        xmlns:vm="using:deavnote.app.ViewModels"
+        Title="{loc:Localize Key=MainView_Title}"
+        d:DesignHeight="450"
+        d:DesignWidth="800"
+        x:DataType="vm:MainViewModel"
+        Background="{DynamicResource CustomMainBackground}"
+        Icon="/Assets/avalonia-logo.ico"
+        mc:Ignorable="d">
 
     <Window.Resources>
         <conv:BoolToInverseConverter x:Key="BoolToInverseConverter" />
@@ -26,37 +25,25 @@
     <Panel>
 
         <Grid ColumnDefinitions="Auto, Auto,*" RowDefinitions="Auto,Auto, *">
-            <seviews:SearchView
-                Grid.Row="0"
-                Grid.Column="0"
-                Grid.ColumnSpan="3"
-                Width="700"
-                HorizontalAlignment="Center"
-                DataContext="{Binding Search}" />
+            <seviews:SearchView Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3"
+                                Width="700"
+                                HorizontalAlignment="Center"
+                                DataContext="{Binding Search}" />
 
-            <Border
-                Grid.Row="1"
-                Grid.Column="0"
-                Grid.ColumnSpan="3"
-                Margin="0,5,0,0"
-                BorderBrush="{StaticResource Grey4}"
-                BorderThickness="0,1,0,0" />
+            <Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"
+                    Margin="0,5,0,0"
+                    BorderBrush="{StaticResource Grey4}"
+                    BorderThickness="0,1,0,0" />
 
-            <views:JournalView
-                Grid.Row="2"
-                Grid.Column="0"
-                DataContext="{Binding Journal}" />
+            <views:JournalView Grid.Row="2" Grid.Column="0"
+                               DataContext="{Binding Journal}" />
 
-            <Border
-                Grid.Row="2"
-                Grid.Column="1"
-                BorderBrush="{StaticResource Grey4}"
-                BorderThickness="1,0,0,0" />
+            <Border Grid.Row="2" Grid.Column="1"
+                    BorderBrush="{StaticResource Grey4}"
+                    BorderThickness="1,0,0,0" />
 
-            <Panel
-                Grid.Row="2"
-                Grid.Column="2"
-                IsVisible="{Binding IsBusy, Converter={StaticResource BoolToInverseConverter}}">
+            <Panel Grid.Row="2" Grid.Column="2"
+                   IsVisible="{Binding IsBusy, Converter={StaticResource BoolToInverseConverter}}">
                 <ContentControl Content="{Binding ActiveViewModel}">
                     <ContentControl.DataTemplates>
                         <local:ViewLocator />
@@ -67,18 +54,13 @@
         </Grid>
 
         <!--  Loading State  -->
-        <ProgressBar
-            Grid.Row="2"
-            Grid.Column="3"
-            Width="100"
-            Height="100"
-            Margin="0,15,0,0"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center"
-            IsIndeterminate="True"
-            IsVisible="{Binding IsBusy}"
-            ShowProgressText="False"
-            Theme="{DynamicResource ProgressRing}" />
+        <ProgressBar Grid.Row="2" Grid.Column="3"
+                     Width="100" Height="100"
+                     Margin="0,15,0,0" HorizontalAlignment="Center" VerticalAlignment="Center"
+                     IsIndeterminate="True"
+                     IsVisible="{Binding IsBusy}"
+                     ShowProgressText="False"
+                     Theme="{DynamicResource ProgressRing}" />
 
         <views:NotificationView DataContext="{Binding}" />
     </Panel>
