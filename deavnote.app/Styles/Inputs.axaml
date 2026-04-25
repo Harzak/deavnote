@@ -1,10 +1,13 @@
 ﻿<Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-    <!--  Shared input background  -->
     <Style Selector="TextBox, ComboBox, DatePicker">
         <Setter Property="Background" Value="{StaticResource Grey3}" />
         <Setter Property="BorderBrush" Value="{StaticResource Grey4}" />
+    </Style>
+
+    <Style Selector="TextBox:error /template/ Border, ComboBox:error /template/ Border, DatePicker:error /template/ Border, AutoCompleteBox:error /template/ Border, MaskedTextBox:error /template/ Border">
+        <Setter Property="BorderBrush" Value="{StaticResource Error1Brush}" />
     </Style>
 
     <!--  ListBox  -->

@@ -29,6 +29,9 @@
     <Color x:Key="Violet1">#8373CD</Color>
     <SolidColorBrush x:Key="Violet1Brush" Color="{StaticResource Violet1}" />
 
+    <Color x:Key="Error1">#FF6B6B</Color>
+    <SolidColorBrush x:Key="Error1Brush" Color="DarkOrange" />
+
     <ResourceDictionary.ThemeDictionaries>
         <ResourceDictionary x:Key="Light">
             <SolidColorBrush x:Key="CustomLightBackground" Color="{StaticResource White1}" />
