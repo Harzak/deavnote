@@ -2,7 +2,7 @@
 
 namespace deavnote.app.Converters;
 
-internal class DateTimeOffsetUtcToLocal : IValueConverter
+internal sealed class DateTimeOffsetUtcToLocal : IValueConverter
 {
     public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {

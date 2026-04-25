@@ -6,7 +6,7 @@ namespace deavnote.app.Converters;
 /// <summary>
 /// Converts a search result item type to its corresponding icon for display in the UI.
 /// </summary>
-internal class SearchResultItemTypeToIconConverter : IValueConverter
+internal sealed class SearchResultItemTypeToIconConverter : IValueConverter
 {
     public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {

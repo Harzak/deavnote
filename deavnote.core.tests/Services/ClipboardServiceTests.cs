@@ -29,7 +29,7 @@ public class ClipboardServiceTests
         {
             Name = "Refactor some stuff",
             WorkDone = "a lot of works",
-        })
+        }, TestContext.CancellationToken)
         .ConfigureAwait(false);
 
         // Assert
@@ -67,7 +67,7 @@ public class ClipboardServiceTests
                 Name = "Task2",
                 Code = "Code2",
             },
-        },])
+        },], TestContext.CancellationToken)
         .ConfigureAwait(false);
 
         // Assert
@@ -106,7 +106,7 @@ public class ClipboardServiceTests
                 Name = "Task2",
                 Code = "Code2",
             },
-        },])
+        },], TestContext.CancellationToken)
         .ConfigureAwait(false);
 
         // Assert
@@ -131,8 +131,7 @@ public class ClipboardServiceTests
         {
             Name = "Refactor some stuff",
             WorkDone = "a lot of works",
-        })
-        .ConfigureAwait(false);
+        }, TestContext.CancellationToken).ConfigureAwait(false);
 
         // Assert
         string expected = "entry name is: {InvalidPlaceHolder} and work done is: a lot of works";
@@ -159,7 +158,7 @@ public class ClipboardServiceTests
                 Name = null!,
                 Code = null!,
             },
-        })
+        }, TestContext.CancellationToken)
         .ConfigureAwait(false);
 
         // Assert

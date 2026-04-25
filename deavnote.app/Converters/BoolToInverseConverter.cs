@@ -2,7 +2,7 @@
 
 namespace deavnote.app.Converters;
 
-internal class BoolToInverseConverter : IValueConverter
+internal sealed class BoolToInverseConverter : IValueConverter
 {
     public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
