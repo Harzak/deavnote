@@ -1,8 +1,13 @@
 ﻿namespace deavnote.app.Attributes.Validation;
 
 [AttributeUsage(AttributeTargets.Property, AllowMultiple = true)]
-internal sealed class NewTaskNameRequiredAttribute : ValidationAttribute
+internal sealed class NewDevTaskNameRequiredAttribute : LocalizedValidationAttribute
 {
+    public NewDevTaskNameRequiredAttribute()
+    {
+        base.ErrorMessageResourceName = "AddTimeEntryViewModel_NewTaskName_Required";
+    }
+
     protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
     {
         if (value is string name)
@@ -15,6 +20,6 @@ internal sealed class NewTaskNameRequiredAttribute : ValidationAttribute
             }
         }
 
-        return new ValidationResult("Task name is required.", [validationContext.MemberName ?? string.Empty]);
+        return new ValidationResult(base.GetErrorMessage(validationContext), [validationContext.MemberName ?? string.Empty]);
     }
 }

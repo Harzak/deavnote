@@ -1,8 +1,9 @@
 using deavnote.app.Attributes.Validation;
+using deavnote.app.Attributes.Base;
 
 namespace deavnote.app.ViewModels.TimeEntry;
 
-internal sealed partial class AddTimeEntryViewModel : DialogViewModel<AddTimeEntryRequest>
+internal sealed partial class AddTimeEntryViewModel : DialogViewModel<AddTimeEntryRequest>, ILocalizedValidationContext
 {
     private readonly IDevTaskRepository _taskRepository;
 
@@ -12,7 +13,7 @@ internal sealed partial class AddTimeEntryViewModel : DialogViewModel<AddTimeEnt
     [ObservableProperty]
     [NotifyDataErrorInfo]
     [NotifyCanExecuteChangedFor(nameof(ConfirmCommand))]
-    [Required(ErrorMessage = "Name is required.")]
+    [LocalizedRequired("AddTimeEntryViewModel_EntryName_Required")]
     public partial string EntryName { get; set; }
 
     [ObservableProperty]
@@ -45,18 +46,22 @@ internal sealed partial class AddTimeEntryViewModel : DialogViewModel<AddTimeEnt
     [ObservableProperty]
     [NotifyDataErrorInfo]
     [NotifyCanExecuteChangedFor(nameof(ConfirmCommand))]
-    [NewTaskNameRequired]
+    [NewDevTaskNameRequired]
     public partial string SearchTaskName { get; set; }
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(ConfirmCommand))]
     public partial ETimeEntryCreationTaskLink EntryTaskLink { get; set; }
+
+    public ILocalizationService LocalizationService { get; }
     #endregion
 
-    public AddTimeEntryViewModel(IDevTaskRepository taskRepository)
+    public AddTimeEntryViewModel(IDevTaskRepository taskRepository, ILocalizationService localizationService)
     {
         ArgumentNullException.ThrowIfNull(taskRepository);
+        ArgumentNullException.ThrowIfNull(localizationService);
         _taskRepository = taskRepository;
+        this.LocalizationService = localizationService;
 
         this.ExistingTasks = [];
         this.EntryStartedAt = DateTimeOffset.Now;

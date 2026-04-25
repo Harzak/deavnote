@@ -61,6 +61,21 @@
   <data name="AddTimeEntryViewModel_Title" xml:space="preserve">
     <value>Add time entry</value>
   </data>
+  <data name="AddTimeEntryViewModel_EntryName_Required" xml:space="preserve">
+    <value>Name is required.</value>
+  </data>
+  <data name="AddTimeEntryViewModel_EntryDuration_Positive" xml:space="preserve">
+    <value>Duration must be greater than zero.</value>
+  </data>
+  <data name="AddTimeEntryViewModel_LinkedTask_Required" xml:space="preserve">
+    <value>Task is required.</value>
+  </data>
+  <data name="AddTimeEntryViewModel_NewTaskCode_Required" xml:space="preserve">
+    <value>Task code is required.</value>
+  </data>
+  <data name="AddTimeEntryViewModel_NewTaskName_Required" xml:space="preserve">
+    <value>Task name is required.</value>
+  </data>
   <data name="BaseEditableViewModel_FixValidationErrors" xml:space="preserve">
     <value>Please fix the validation errors before saving.</value>
   </data>
