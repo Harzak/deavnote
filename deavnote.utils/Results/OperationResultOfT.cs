@@ -75,7 +75,7 @@ public class OperationResult<T> : OperationResult, IResult<T>
     /// </summary>
     public OperationResult<T> Affect<TDifferent>(OperationResult<TDifferent> operationResult)
     {
-        ArgumentNullException.ThrowIfNull(operationResult, nameof(operationResult));
+        ArgumentNullException.ThrowIfNull(operationResult);
         this.IsSuccess = operationResult.IsSuccess;
         this.ErrorMessage = operationResult.ErrorMessage;
         this.ErrorCode = operationResult.ErrorCode;
@@ -91,7 +91,7 @@ public class OperationResult<T> : OperationResult, IResult<T>
         return new OperationResult(this.IsSuccess)
         {
             ErrorMessage = this.ErrorMessage,
-            ErrorCode = this.ErrorCode
+            ErrorCode = this.ErrorCode,
         };
     }
 }

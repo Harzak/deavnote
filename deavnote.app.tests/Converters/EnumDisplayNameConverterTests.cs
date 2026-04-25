@@ -11,7 +11,7 @@ public class EnumDisplayNameConverterTests
         EDevTaskState value = EDevTaskState.InProgress;
 
         // Act
-        object? result = converter.Convert(value, typeof(string), null, CultureInfo.InvariantCulture);
+        object? result = converter.Convert(value, typeof(string), parameter: null, CultureInfo.InvariantCulture);
 
         // Assert
         result.Should().NotBeNull();

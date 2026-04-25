@@ -7,5 +7,5 @@ public enum EJournalMode
 {
     Day,
     Week,
-    Month
+    Month,
 }

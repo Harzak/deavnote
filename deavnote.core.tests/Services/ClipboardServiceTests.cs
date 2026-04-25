@@ -28,8 +28,8 @@ public class ClipboardServiceTests
         await service.SetDailyTimeEntryAsync(new TimeEntry
         {
             Name = "Refactor some stuff",
-            WorkDone = "a lot of works"
-        })
+            WorkDone = "a lot of works",
+        }, TestContext.CancellationToken)
         .ConfigureAwait(false);
 
         // Assert
@@ -55,8 +55,8 @@ public class ClipboardServiceTests
             DevTask = new DevTask()
             {
                 Name = "Task1",
-                Code = "Code1"
-            }
+                Code = "Code1",
+            },
         },
         new TimeEntry
         {
@@ -65,9 +65,9 @@ public class ClipboardServiceTests
             DevTask = new DevTask()
             {
                 Name = "Task2",
-                Code = "Code2"
-            }
-        }])
+                Code = "Code2",
+            },
+        },], TestContext.CancellationToken)
         .ConfigureAwait(false);
 
         // Assert
@@ -94,8 +94,8 @@ public class ClipboardServiceTests
             DevTask = new DevTask()
             {
                 Name = "Task1",
-                Code = "Code1"
-            }
+                Code = "Code1",
+            },
         },
         new TimeEntry
         {
@@ -104,9 +104,9 @@ public class ClipboardServiceTests
             DevTask = new DevTask()
             {
                 Name = "Task2",
-                Code = "Code2"
-            }
-        }])
+                Code = "Code2",
+            },
+        },], TestContext.CancellationToken)
         .ConfigureAwait(false);
 
         // Assert
@@ -130,9 +130,8 @@ public class ClipboardServiceTests
         await service.SetDailyTimeEntryAsync(new TimeEntry
         {
             Name = "Refactor some stuff",
-            WorkDone = "a lot of works"
-        })
-        .ConfigureAwait(false);
+            WorkDone = "a lot of works",
+        }, TestContext.CancellationToken).ConfigureAwait(false);
 
         // Assert
         string expected = "entry name is: {InvalidPlaceHolder} and work done is: a lot of works";
@@ -157,9 +156,9 @@ public class ClipboardServiceTests
             DevTask = new DevTask()
             {
                 Name = null!,
-                Code = null!
-            }
-        })
+                Code = null!,
+            },
+        }, TestContext.CancellationToken)
         .ConfigureAwait(false);
 
         // Assert

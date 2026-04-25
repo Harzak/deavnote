@@ -39,7 +39,7 @@ internal sealed class SearchRepository : ISearchRepository
                     Id = x.Id,
                     Name = x.Name,
                     Type = ESearchResultItemType.DevTask,
-                    Code = x.Code
+                    Code = x.Code,
                 })
                 .Take(tasksCount)
                 .ToListAsync(cancellationToken);
@@ -50,7 +50,7 @@ internal sealed class SearchRepository : ISearchRepository
                 {
                     Id = x.Id,
                     Name = x.Name,
-                    Type = ESearchResultItemType.TimeEntry
+                    Type = ESearchResultItemType.TimeEntry,
                 })
                 .Take(entriesCount)
                 .ToListAsync(cancellationToken);
@@ -61,7 +61,7 @@ internal sealed class SearchRepository : ISearchRepository
                 {
                     Id = x.Id,
                     Name = x.Name,
-                    Type = ESearchResultItemType.Todo
+                    Type = ESearchResultItemType.Todo,
                 })
                 .Take(todosCount)
                 .ToListAsync(cancellationToken);
@@ -95,7 +95,7 @@ internal sealed class SearchRepository : ISearchRepository
                     Id = x.Id,
                     Name = x.Name,
                     Type = ESearchResultItemType.DevTask,
-                    Code = x.Code
+                    Code = x.Code,
                 })
                 .Take(tasksCount)
                 .ToListAsync(cancellationToken);
@@ -105,7 +105,7 @@ internal sealed class SearchRepository : ISearchRepository
                 {
                     Id = x.Id,
                     Name = x.Name,
-                    Type = ESearchResultItemType.TimeEntry
+                    Type = ESearchResultItemType.TimeEntry,
                 })
                 .Take(entriesCount)
                 .ToListAsync(cancellationToken);
@@ -115,7 +115,7 @@ internal sealed class SearchRepository : ISearchRepository
                 {
                     Id = x.Id,
                     Name = x.Name,
-                    Type = ESearchResultItemType.Todo
+                    Type = ESearchResultItemType.Todo,
                 })
                 .Take(todosCount)
                 .ToListAsync(cancellationToken);

@@ -66,7 +66,7 @@ internal sealed partial class JournalClipboardService : IClipboardService
         return this.InterpolateTemplate(template, placeholders);
     }
 
-    [GeneratedRegex(@"\{(\w+)\}", RegexOptions.ExplicitCapture, matchTimeoutMilliseconds:1000)]
+    [GeneratedRegex(@"\{(\w+)\}", RegexOptions.ExplicitCapture, matchTimeoutMilliseconds: 1000)]
     private static partial Regex PlaceholderReplacementRegex();
 
     /// <summary>

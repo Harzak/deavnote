@@ -1,7 +1,4 @@
-﻿using deavnote.repository.Interfaces;
-using Microsoft.Extensions.Logging;
-
-[assembly: InternalsVisibleTo("deavnote.app.tests")]
+﻿[assembly: InternalsVisibleTo("deavnote.app.tests")]
 
 namespace deavnote.app.ViewModels;
 
@@ -119,17 +116,17 @@ internal sealed partial class JournalViewModel : BaseViewModel
             EJournalMode.Day => new JournalConfiguration()
             {
                 DateCursor = DateOnly.FromDateTime(DateTime.Today),
-                DayOffset = 1
+                DayOffset = 1,
             },
             EJournalMode.Week => new JournalConfiguration()
             {
                 DateCursor = _dateProvider.GetFirstDayOfWeek(from: DateTime.Today),
-                DayOffset = 7
+                DayOffset = 7,
             },
             EJournalMode.Month => new JournalConfiguration()
             {
                 DateCursor = _dateProvider.GetFirstDayOfMonth(from: DateTime.Today),
-                DayOffset = _dateProvider.GetDaysInMonth(from: DateTime.Today)
+                DayOffset = _dateProvider.GetDaysInMonth(from: DateTime.Today),
             },
             _ => _journal.DefaultConfiguration,
         };

@@ -52,7 +52,7 @@ public class OperationResult : ResultBase
     /// <returns>A new <see cref="OperationResult"/> instance representing a successful operation.</returns>
     public static OperationResult Success()
     {
-        return new OperationResult(true);
+        return new OperationResult(success: true);
     }
 
     /// <summary>
@@ -61,7 +61,7 @@ public class OperationResult : ResultBase
     /// <returns>A new <see cref="OperationResult"/> instance representing a failed operation.</returns>
     public static OperationResult Failure()
     {
-        return new OperationResult(false);
+        return new OperationResult(success: false);
     }
 
     /// <summary>
@@ -71,6 +71,6 @@ public class OperationResult : ResultBase
     /// <returns>A new <see cref="OperationResult"/> instance representing a failed operation with the specified error message.</returns>
     public static OperationResult Failure(string message)
     {
-        return new OperationResult(false).WithError(message);
+        return new OperationResult(success: false).WithError(message);
     }
 }

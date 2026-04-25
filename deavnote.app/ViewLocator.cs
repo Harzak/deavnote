@@ -1,6 +1,5 @@
-using System.Diagnostics.CodeAnalysis;
 using Avalonia.Controls.Templates;
-using deavnote.app.ViewModels.Base;
+using System.Diagnostics.CodeAnalysis;
 
 namespace deavnote.app;
 

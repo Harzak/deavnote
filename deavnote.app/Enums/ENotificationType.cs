@@ -6,5 +6,5 @@ internal enum ENotificationType
     Info,
     Warning,
     Error,
-    Success
+    Success,
 }

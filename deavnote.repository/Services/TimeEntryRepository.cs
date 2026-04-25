@@ -1,7 +1,3 @@
-using deavnote.model.Entities;
-using deavnote.model.Enums;
-using Microsoft.EntityFrameworkCore;
-
 namespace deavnote.repository.Services;
 
 /// <summary>
@@ -55,7 +51,7 @@ internal sealed class TimeEntryRepository : ITimeEntryRepository
             Name = request.Name,
             WorkDone = request.WorkDone,
             Duration = request.Duration,
-            StartedAtUtc = request.StartedAtUtc,
+            StartedAtUtc = request.StartedAt,
             CreatedAtUtc = now,
             UpdatedAtUtc = now,
         };
@@ -119,7 +115,7 @@ internal sealed class TimeEntryRepository : ITimeEntryRepository
         existingEntry.Name = request.Name;
         existingEntry.WorkDone = request.WorkDone;
         existingEntry.Duration = request.Duration;
-        existingEntry.StartedAtUtc = request.StartedAtUtc;
+        existingEntry.StartedAtUtc = request.StartedAt;
         existingEntry.UpdatedAtUtc = DateTime.UtcNow;
 
         try

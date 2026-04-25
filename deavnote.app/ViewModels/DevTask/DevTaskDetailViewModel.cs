@@ -6,8 +6,8 @@ internal sealed partial class DevTaskDetailViewModel : BaseEditableViewModel<(st
 
     private readonly model.Entities.DevTask _model;
 
-    public DateTime? CreatedAtUtc => _model?.CreatedAtUtc;
-    public DateTime? UpdatedAtUtc => _model?.UpdatedAtUtc;
+    public DateTime? CreatedAt => _model?.CreatedAtUtc;
+    public DateTime? UpdatedAt => _model?.UpdatedAtUtc;
     public bool IsReadonly { get; private set; }
 
     public string Code { get; private set; }
@@ -57,7 +57,7 @@ internal sealed partial class DevTaskDetailViewModel : BaseEditableViewModel<(st
             Name = this.Name,
             Code = this.Code,
             Description = this.Description,
-            State = this.State
+            State = this.State,
         }, cancellationToken)
         .ConfigureAwait(false);
     }

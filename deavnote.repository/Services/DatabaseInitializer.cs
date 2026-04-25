@@ -17,7 +17,7 @@ internal sealed class DatabaseInitializer : IDatabaseInitializer
     /// <inheritdoc/>
     public async Task InitializeAsync()
     {
-        using DeavnoteDbContext context = _factory.CreateDbContext();
+        using DeavnoteDbContext context = await _factory.CreateDbContextAsync().ConfigureAwait(false);
         await context.Database.MigrateAsync().ConfigureAwait(false);
 
         ClipboardFormatSeeder seeder = new(context);

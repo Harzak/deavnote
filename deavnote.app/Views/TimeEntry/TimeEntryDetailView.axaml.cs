@@ -6,8 +6,4 @@ internal sealed partial class TimeEntryDetailView : UserControl
     {
         InitializeComponent();
     }
-
-    private void OnClick(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
-    {
-    }
 }

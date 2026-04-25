@@ -1,6 +1,4 @@
-using System.ComponentModel;
 using System.Resources;
-using deavnote.app.Resources;
 
 namespace deavnote.app.Localization;
 
@@ -69,16 +67,15 @@ internal sealed class LocalizationService : ILocalizationService
         }
     }
 
-    public string this[string key]
+    public string GetString(string key)
     {
-        get
+        if (string.IsNullOrEmpty(key))
         {
-            if (string.IsNullOrEmpty(key))
-            {
-                return string.Empty;
-            }
-
-            return _resourceManager.GetString(key, _currentCulture) ?? key;
+            return string.Empty;
         }
+
+        return _resourceManager.GetString(key, _currentCulture) ?? key;
     }
+
+    public string this[string key] => this.GetString(key);
 }

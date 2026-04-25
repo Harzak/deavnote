@@ -11,7 +11,7 @@ public enum EDevTaskState
     Unknown = 0,
     [Display(Name = "Not started")]
     NotStarted = 1,
-    [Display(Name = "In progress")] 
+    [Display(Name = "In progress")]
     InProgress = 2,
     [Display(Name = "Completed")]
     Completed = 3,

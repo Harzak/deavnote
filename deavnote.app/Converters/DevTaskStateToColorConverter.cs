@@ -16,11 +16,11 @@ internal sealed class DevTaskStateToColorConverter : IValueConverter
             {
                 EDevTaskState.NotStarted => Brushes.WhiteSmoke,
                 EDevTaskState.InProgress => Brushes.Orange,
-                EDevTaskState.Completed  => Brushes.LightGreen,
-                EDevTaskState.Merged     => Brushes.LightSkyBlue,
-                EDevTaskState.Tested     => Brushes.DeepPink,
-                EDevTaskState.Rejected   => Brushes.OrangeRed,
-                _                        => Brushes.Gray,
+                EDevTaskState.Completed => Brushes.LightGreen,
+                EDevTaskState.Merged => Brushes.LightSkyBlue,
+                EDevTaskState.Tested => Brushes.DeepPink,
+                EDevTaskState.Rejected => Brushes.OrangeRed,
+                _ => Brushes.Gray,
             };
         }
 

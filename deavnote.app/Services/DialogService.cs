@@ -16,7 +16,7 @@ internal sealed class DialogService : IDialogService
         if (owner is null)
         {
             return default;
-        }   
+        }
 
         Window dialog = new()
         {

@@ -1,0 +1,19 @@
+﻿<UserControl x:Class="deavnote.app.Controls.DurationInput"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ic="using:FluentIcons.Avalonia">
+
+    <StackPanel HorizontalAlignment="Left"
+                Orientation="Horizontal" Spacing="10">
+        <MaskedTextBox x:Name="DurationTextBox"
+                       Width="60"
+                       VerticalAlignment="Bottom"
+                       Mask="00:00" />
+        <RepeatButton x:Name="DecreaseButton" VerticalAlignment="Top">
+            <ic:FluentIcon Icon="SubtractCircle" IconSize="Size16" />
+        </RepeatButton>
+        <RepeatButton x:Name="IncreaseButton" VerticalAlignment="Top">
+            <ic:FluentIcon Icon="AddCircle" IconSize="Size16" />
+        </RepeatButton>
+    </StackPanel>
+</UserControl>
