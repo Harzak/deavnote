@@ -92,7 +92,7 @@ internal sealed partial class AddTimeEntryViewModel : DialogViewModel<AddTimeEnt
                 Name = this.EntryName.Trim(),
                 WorkDone = string.IsNullOrWhiteSpace(this.EntryWorkDone) ? null : this.EntryWorkDone.Trim(),
                 Duration = this.EntryDuration,
-                StartedAtUtc = this.EntryStartedAt.UtcDateTime,
+                StartedAt = this.EntryStartedAt.UtcDateTime,
                 TaskId = this.SelectedTask!.Id,
             },
             _ => new AddTimeEntryRequest.ForNewTask()
@@ -100,7 +100,7 @@ internal sealed partial class AddTimeEntryViewModel : DialogViewModel<AddTimeEnt
                 Name = this.EntryName.Trim(),
                 WorkDone = string.IsNullOrWhiteSpace(this.EntryWorkDone) ? null : this.EntryWorkDone.Trim(),
                 Duration = this.EntryDuration,
-                StartedAtUtc = this.EntryStartedAt.UtcDateTime,
+                StartedAt = this.EntryStartedAt.UtcDateTime,
                 TaskCode = this.SearchTaskCode,
                 TaskName = this.SearchTaskName,
             },

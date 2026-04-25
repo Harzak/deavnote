@@ -1,15 +1,15 @@
 ﻿namespace deavnote.app.ViewModels.TimeEntry;
 
 internal sealed partial class TimeEntryDetailViewModel
-    : BaseEditableViewModel<(string Name, string WorkDone, DateTimeOffset StartedAtUtc, TimeSpan Duration)>
+    : BaseEditableViewModel<(string Name, string WorkDone, DateTimeOffset StartedAt, TimeSpan Duration)>
 {
 
     private readonly IJournal _journal;
     private readonly IViewModelFactory _factory;
     private readonly model.Entities.TimeEntry _model;
 
-    public DateTime CreatedAtUtc => _model.CreatedAtUtc;
-    public DateTime UpdatedAtUtc => _model.UpdatedAtUtc;
+    public DateTime CreatedAt => _model.CreatedAtUtc;
+    public DateTime UpdatedAt => _model.UpdatedAtUtc;
 
     [ObservableProperty]
     [Required(ErrorMessage = "Name is required.")]
@@ -22,7 +22,7 @@ internal sealed partial class TimeEntryDetailViewModel
     [ObservableProperty]
     [Required(ErrorMessage = "Start date is required.")]
     [NotifyDataErrorInfo]
-    public partial DateTimeOffset StartedAtUtc { get; set; }
+    public partial DateTimeOffset StartedAt { get; set; }
 
     [ObservableProperty]
     [Required(ErrorMessage = "Duration is required.")]
@@ -49,7 +49,8 @@ internal sealed partial class TimeEntryDetailViewModel
 
         this.Name = _model.Name;
         this.WorkDone = _model.WorkDone ?? string.Empty;
-        this.StartedAtUtc = new DateTimeOffset(_model.StartedAtUtc);
+        DateTime startedAtUtc = DateTime.SpecifyKind(_model.StartedAtUtc, DateTimeKind.Utc);
+        this.StartedAt = new DateTimeOffset(startedAtUtc);
         this.Duration = _model.Duration;
     }
 
@@ -70,7 +71,7 @@ internal sealed partial class TimeEntryDetailViewModel
             Id = _model.Id,
             Name = this.Name,
             WorkDone = this.WorkDone,
-            StartedAtUtc = this.StartedAtUtc.DateTime,
+            StartedAt = this.StartedAt.UtcDateTime,
             Duration = this.Duration,
         }, cancellationToken)
         .ConfigureAwait(false);
@@ -79,26 +80,26 @@ internal sealed partial class TimeEntryDetailViewModel
     protected override void UndoChanges(
         (string Name,
          string WorkDone,
-         DateTimeOffset StartedAtUtc,
+         DateTimeOffset StartedAt,
          TimeSpan Duration)
         snapshot)
     {
         this.Name = snapshot.Name;
         this.WorkDone = snapshot.WorkDone;
-        this.StartedAtUtc = snapshot.StartedAtUtc;
+        this.StartedAt = snapshot.StartedAt;
         this.Duration = snapshot.Duration;
     }
 
-    protected override (string Name, string WorkDone, DateTimeOffset StartedAtUtc, TimeSpan Duration) TakeSnapshot()
+    protected override (string Name, string WorkDone, DateTimeOffset StartedAt, TimeSpan Duration) TakeSnapshot()
     {
-        return (this.Name, this.WorkDone, this.StartedAtUtc, this.Duration);
+        return (this.Name, this.WorkDone, this.StartedAt, this.Duration);
     }
 
-    protected override bool SnapshotEquals((string Name, string WorkDone, DateTimeOffset StartedAtUtc, TimeSpan Duration) snapshot)
+    protected override bool SnapshotEquals((string Name, string WorkDone, DateTimeOffset StartedAt, TimeSpan Duration) snapshot)
     {
         return string.Equals(snapshot.Name, this.Name, StringComparison.Ordinal)
             && string.Equals(snapshot.WorkDone, this.WorkDone, StringComparison.Ordinal)
-            && snapshot.StartedAtUtc == this.StartedAtUtc
+            && snapshot.StartedAt == this.StartedAt
             && snapshot.Duration == this.Duration;
     }
 

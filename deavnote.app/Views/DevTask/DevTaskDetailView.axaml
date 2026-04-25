@@ -14,6 +14,7 @@
 
     <UserControl.Resources>
         <conv:BoolToInverseConverter x:Key="BoolToInverseConverter" />
+        <conv:DateTimeUtcToLocal x:Key="DateTimeUtcToLocal" />
     </UserControl.Resources>
 
 
@@ -45,12 +46,12 @@
             <TextBlock Classes="Legend" Text="{loc:Localize Key=Common_CreatedAt}" />
             <TextBlock Margin="3,0,10,0"
                        Classes="Legend"
-                       Text="{Binding CreatedAtUtc}" />
+                       Text="{Binding CreatedAt, Converter={StaticResource DateTimeUtcToLocal}}" />
             <TextBlock Classes="Legend" Text="-" />
             <TextBlock Margin="10,0,3,0"
                        Classes="Legend"
                        Text="{loc:Localize Key=Common_ModifiedAt}" />
-            <TextBlock Classes="Legend" Text="{Binding UpdatedAtUtc}" />
+            <TextBlock Classes="Legend" Text="{Binding UpdatedAt, Converter={StaticResource DateTimeUtcToLocal}}" />
         </StackPanel>
     </Grid>
 
