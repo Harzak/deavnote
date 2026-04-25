@@ -1,12 +1,7 @@
-﻿
-namespace deavnote.app.ViewModels.TimeEntry;
+﻿namespace deavnote.app.ViewModels.TimeEntry;
 
 internal sealed partial class TimeEntryDetailViewModel
-    : BaseEditableViewModel<(
-        string Name,
-        string WorkDone,
-        DateTime StartedAtUtc,
-        TimeSpan Duration)>
+    : BaseEditableViewModel<(string Name,string WorkDone, DateTimeOffset StartedAtUtc,TimeSpan Duration)>
 {
 
     private readonly IJournal _journal;
@@ -27,7 +22,7 @@ internal sealed partial class TimeEntryDetailViewModel
     [ObservableProperty]
     [Required(ErrorMessage = "Start date is required.")]
     [NotifyDataErrorInfo]
-    public partial DateTime StartedAtUtc { get; set; }
+    public partial DateTimeOffset StartedAtUtc { get; set; }
 
     [ObservableProperty]
     [Required(ErrorMessage = "Duration is required.")]
@@ -54,7 +49,7 @@ internal sealed partial class TimeEntryDetailViewModel
 
         this.Name = _model.Name;
         this.WorkDone = _model.WorkDone ?? string.Empty;
-        this.StartedAtUtc = _model.StartedAtUtc;
+        this.StartedAtUtc = new DateTimeOffset(_model.StartedAtUtc);
         this.Duration = _model.Duration;
     }
 
@@ -75,7 +70,7 @@ internal sealed partial class TimeEntryDetailViewModel
             Id = _model.Id,
             Name = this.Name,
             WorkDone = this.WorkDone,
-            StartedAtUtc = this.StartedAtUtc,
+            StartedAtUtc = this.StartedAtUtc.DateTime,
             Duration = this.Duration,
         }, cancellationToken)
         .ConfigureAwait(false);
@@ -84,7 +79,7 @@ internal sealed partial class TimeEntryDetailViewModel
     protected override void UndoChanges(
         (string Name,
          string WorkDone,
-         DateTime StartedAtUtc,
+         DateTimeOffset StartedAtUtc,
          TimeSpan Duration)
         snapshot)
     {
@@ -94,12 +89,12 @@ internal sealed partial class TimeEntryDetailViewModel
         this.Duration = snapshot.Duration;
     }
 
-    protected override (string Name, string WorkDone, DateTime StartedAtUtc, TimeSpan Duration) TakeSnapshot()
+    protected override (string Name, string WorkDone, DateTimeOffset StartedAtUtc, TimeSpan Duration) TakeSnapshot()
     {
         return (this.Name, this.WorkDone, this.StartedAtUtc, this.Duration);
     }
 
-    protected override bool SnapshotEquals((string Name, string WorkDone, DateTime StartedAtUtc, TimeSpan Duration) snapshot)
+    protected override bool SnapshotEquals((string Name, string WorkDone, DateTimeOffset StartedAtUtc, TimeSpan Duration) snapshot)
     {
         return string.Equals(snapshot.Name, this.Name, StringComparison.Ordinal)
             && string.Equals(snapshot.WorkDone, this.WorkDone, StringComparison.Ordinal)

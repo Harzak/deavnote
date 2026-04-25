@@ -1,8 +1,8 @@
 ﻿<UserControl x:Class="deavnote.app.Views.TimeEntry.TimeEntryDetailView"
              xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:conv="using:deavnote.app.Converters"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:dd="using:deavnote.app.Design"
              xmlns:dtviews="using:deavnote.app.Views.DevTask"
              xmlns:ic="using:FluentIcons.Avalonia"
              xmlns:loc="using:deavnote.app.Localization"
@@ -12,6 +12,10 @@
              d:DesignWidth="800"
              x:DataType="viewmodels:TimeEntryDetailViewModel"
              mc:Ignorable="d">
+    <UserControl.Resources>
+        <conv:DateTimeOffsetUtcToLocal x:Key="DateTimeOffsetUtcToLocal" />
+    </UserControl.Resources>
+
     <ScrollViewer HorizontalScrollBarVisibility="Disabled">
         <Grid Margin="10"
               ColumnDefinitions="*, Auto" RowDefinitions="Auto, Auto, *, Auto, Auto" RowSpacing="15">
@@ -40,7 +44,7 @@
                         Orientation="Horizontal" Spacing="10">
                 <DatePicker Grid.Row="1"
                             HorizontalAlignment="Left"
-                            SelectedDate="{Binding StartedAtUtc}" />
+                            SelectedDate="{Binding StartedAtUtc, Converter={StaticResource DateTimeOffsetUtcToLocal}}" />
                 <MaskedTextBox VerticalAlignment="Bottom"
                                Mask="00:00"
                                Text="{Binding Duration, UpdateSourceTrigger=LostFocus}" />
