@@ -10,7 +10,6 @@
         </Border>
     </Design.PreviewWith>
 
-    <!--  TextBlock  -->
     <Style Selector="TextBlock.Title">
         <Setter Property="Foreground" Value="{StaticResource White1Brush}" />
         <Setter Property="FontSize" Value="18" />
