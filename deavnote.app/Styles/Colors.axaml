@@ -17,6 +17,9 @@
     <Color x:Key="Grey4">#4D4D4D</Color>
     <SolidColorBrush x:Key="Grey4Brush" Color="{StaticResource Grey4}" />
 
+    <Color x:Key="Grey5">#7D7D7D</Color>
+    <SolidColorBrush x:Key="Grey5Brush" Color="{StaticResource Grey5}" />
+
     <Color x:Key="White1">#FFFFF9</Color>
     <SolidColorBrush x:Key="White1Brush" Color="{StaticResource White1}" />
 
