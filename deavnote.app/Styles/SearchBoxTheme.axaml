@@ -15,8 +15,8 @@
             <ControlTemplate TargetType="ctrl:SearchBox">
                 <Grid ColumnDefinitions="*, Auto">
                     <TextBox Name="PART_TextBox"
-                             Grid.Column="0"
-                             Padding="{TemplateBinding Padding}"
+                             Grid.ColumnSpan="2"
+                             Padding="4,4,32,4"
                              Background="{TemplateBinding Background}"
                              BorderBrush="{TemplateBinding BorderBrush}"
                              BorderThickness="{TemplateBinding BorderThickness}"
@@ -24,12 +24,12 @@
                              PlaceholderText="{TemplateBinding Watermark}" />
                     <Button Name="PART_ClearButton"
                             Grid.Column="1"
-                            Margin="4,0,0,0" VerticalAlignment="Center"
+                            Margin="0,0,4,0" HorizontalAlignment="Right" VerticalAlignment="Center"
                             Classes="IconButton"
                             IsVisible="{TemplateBinding Text,
                                                         Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
                             ToolTip.Tip="{loc:Localize Key=SearchBox_Clear_Tooltip}">
-                        <ic:FluentIcon Icon="Dismiss" IconSize="Size16" />
+                        <ic:FluentIcon FontSize="14" Icon="Dismiss" />
                     </Button>
 
                     <Popup Name="PART_Popup"
@@ -38,12 +38,10 @@
                                                     Mode=TwoWay}"
                            Placement="BottomEdgeAlignedLeft"
                            PlacementTarget="{Binding #PART_TextBox}">
-                        <Border Padding="2"
-                                Background="{DynamicResource CustomMainBackground}"
-                                BorderBrush="{StaticResource Grey3Brush}"
-                                BorderThickness="1" CornerRadius="4">
+                        <Border Width="{Binding #PART_TextBox.Bounds.Width}"
+                                Padding="2"
+                                Classes="Search Popup">
                             <ListBox Name="PART_ListBox"
-                                     Width="{Binding #PART_TextBox.Bounds.Width}"
                                      MaxHeight="{TemplateBinding MaxDropDownHeight}"
                                      ItemTemplate="{TemplateBinding ItemTemplate}"
                                      ItemsSource="{TemplateBinding ItemsSource}" />

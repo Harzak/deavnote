@@ -7,8 +7,6 @@
              xmlns:loc="using:deavnote.app.Localization"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewmodels="using:deavnote.app.ViewModels.TimeEntry"
-             MinWidth="270"
-             MaxWidth="270"
              d:DesignHeight="130"
              d:DesignWidth="270"
              x:DataType="viewmodels:TimeEntryListItemViewModel"
@@ -21,17 +19,21 @@
     </UserControl.Resources>
 
     <Grid Margin="5"
-          ColumnDefinitions="Auto, *, Auto" RowDefinitions="Auto, *, Auto" RowSpacing="10">
+          ColumnDefinitions="Auto,*,Auto" RowDefinitions="Auto,*,Auto" RowSpacing="10">
 
-        <WrapPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
-                   ItemSpacing="5" Orientation="Horizontal">
-            <SelectableTextBlock Classes="CardTitle Code"
-                                 Text="{Binding TaskCode}"
-                                 TextWrapping="Wrap" />
-            <SelectableTextBlock Classes="CardTitle"
+        <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3"
+              HorizontalAlignment="Stretch"
+              ColumnDefinitions="Auto,*" ColumnSpacing="5">
+            <SelectableTextBlock Grid.Column="0"
+                                 Classes="CardTitle Code"
+                                 Text="{Binding TaskCode}" />
+            <SelectableTextBlock Grid.Column="1"
+                                 HorizontalAlignment="Left"
+                                 Classes="CardTitle"
                                  Text="{Binding TaskName}"
-                                 TextWrapping="Wrap" />
-        </WrapPanel>
+                                 TextTrimming="CharacterEllipsis"
+                                 ToolTip.Tip="{Binding TaskName}" />
+        </Grid>
 
         <SelectableTextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"
                              Classes="CardContent"

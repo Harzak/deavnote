@@ -1,7 +1,6 @@
 ﻿<Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-    <!--  Button  -->
     <Style Selector="Button">
         <Setter Property="BorderThickness" Value="0,0,0,1" />
         <Setter Property="CornerRadius" Value="5" />
@@ -40,13 +39,19 @@
         <Setter Property="HorizontalContentAlignment" Value="Center" />
     </Style>
 
-    <!--  RepeatButton  -->
     <Style Selector="RepeatButton">
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="BorderThickness" Value="0" />
         <Setter Property="Padding" Value="5" />
         <Setter Property="HorizontalAlignment" Value="Center" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
+    </Style>
+
+    <Style Selector="Button:disabled /template/ ContentPresenter">
+        <Setter Property="Background" Value="{StaticResource Grey2}" />
+        <Setter Property="BorderBrush" Value="{StaticResource Grey4}" />
+        <Setter Property="CornerRadius" Value="5" />
+        <Setter Property="Opacity" Value="0.7" />
     </Style>
 
 </Styles>

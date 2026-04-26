@@ -7,7 +7,6 @@
         xmlns:local="using:deavnote.app"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:seviews="using:deavnote.app.Views.Search"
-        xmlns:teviews="using:deavnote.app.Views.TimeEntry"
         xmlns:views="using:deavnote.app.Views"
         xmlns:vm="using:deavnote.app.ViewModels"
         Title="{loc:Localize Key=MainView_Title}"
@@ -51,18 +50,16 @@
                 </ContentControl>
             </Panel>
 
+            <ProgressBar Grid.Row="2" Grid.Column="2"
+                         Width="150" Height="20"
+                         Margin="0,15,0,0" HorizontalAlignment="Center" VerticalAlignment="Center"
+                         IsIndeterminate="True"
+                         IsVisible="{Binding IsBusy}" />
+
         </Grid>
 
-        <!--  Loading State  -->
-        <ProgressBar Grid.Row="2" Grid.Column="3"
-                     Width="100" Height="100"
-                     Margin="0,15,0,0" HorizontalAlignment="Center" VerticalAlignment="Center"
-                     IsIndeterminate="True"
-                     IsVisible="{Binding IsBusy}"
-                     ShowProgressText="False"
-                     Theme="{DynamicResource ProgressRing}" />
-
         <views:NotificationView DataContext="{Binding}" />
+
     </Panel>
 
 </Window>

@@ -7,15 +7,17 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:teviews="using:deavnote.app.Views.TimeEntry"
              xmlns:viewmodels="using:deavnote.app.ViewModels"
+             Width="300"
              d:DesignHeight="800"
              d:DesignWidth="400"
              x:DataType="viewmodels:JournalViewModel"
              mc:Ignorable="d">
 
     <Grid Margin="5"
-          ColumnDefinitions="Auto, Auto, Auto, 50,Auto, Auto" RowDefinitions="Auto,Auto, *">
+          ColumnDefinitions="Auto, Auto, Auto, *, Auto, Auto" RowDefinitions="Auto,Auto, *">
 
         <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="6"
+                   Margin="0,5"
                    Classes="SectionHeader"
                    Text="{Binding DateCursor, StringFormat='{}{0:dddd dd MMM}'}"
                    ToolTip.Tip="{Binding DateCursor, StringFormat='{}{0:d}'}" />
@@ -61,6 +63,7 @@
                     <Setter Property="Template">
                         <ControlTemplate>
                             <ContentPresenter Padding="{TemplateBinding Padding}"
+                                              HorizontalAlignment="Stretch"
                                               Content="{TemplateBinding Content}"
                                               ContentTemplate="{TemplateBinding ContentTemplate}" />
                         </ControlTemplate>
@@ -69,7 +72,7 @@
             </ListBox.ItemContainerTheme>
             <ListBox.ItemTemplate>
                 <DataTemplate x:DataType="viewmodels:TimeEntry.TimeEntryListItemViewModel">
-                    <teviews:TimeEntryListItemView Margin="4,6" />
+                    <teviews:TimeEntryListItemView Margin="4,6" HorizontalAlignment="Stretch" />
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>

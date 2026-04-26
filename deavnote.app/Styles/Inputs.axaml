@@ -1,9 +1,30 @@
 ﻿<Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-    <Style Selector="TextBox, ComboBox, DatePicker">
-        <Setter Property="Background" Value="{StaticResource Grey3}" />
+    <Style Selector="TextBox, ComboBox, DatePicker, AutoCompleteBox">
+        <Setter Property="Background" Value="{StaticResource Grey2}" />
         <Setter Property="BorderBrush" Value="{StaticResource Grey4}" />
+        <Setter Property="CornerRadius" Value="5" />
+    </Style>
+
+    <Style Selector="TextBox:pointerover /template/ Border, ComboBox:pointerover /template/ Border, DatePicker:pointerover /template/ Border, AutoCompleteBox:pointerover /template/ Border">
+        <Setter Property="Background" Value="{StaticResource Grey2}" />
+        <Setter Property="BorderBrush" Value="{StaticResource Grey4}" />
+        <Setter Property="CornerRadius" Value="5" />
+
+    </Style>
+
+    <Style Selector="TextBox:focus-within /template/ Border, ComboBox:focus-within /template/ Border, DatePicker:focus-within /template/ Border, AutoCompleteBox:focus-within /template/ Border">
+        <Setter Property="Background" Value="{StaticResource Grey2}" />
+        <Setter Property="BorderBrush" Value="{StaticResource Grey5}" />
+        <Setter Property="CornerRadius" Value="5" />
+    </Style>
+
+    <Style Selector="TextBox:disabled /template/ Border, ComboBox:disabled /template/ Border, DatePicker:disabled /template/ Border, AutoCompleteBox:disabled /template/ Border">
+        <Setter Property="Background" Value="{StaticResource Grey2}" />
+        <Setter Property="BorderBrush" Value="{StaticResource Grey4}" />
+        <Setter Property="CornerRadius" Value="5" />
+        <Setter Property="Opacity" Value="0.7" />
     </Style>
 
     <Style Selector="TextBox:error /template/ Border, ComboBox:error /template/ Border, DatePicker:error /template/ Border, AutoCompleteBox:error /template/ Border, MaskedTextBox:error /template/ Border">
