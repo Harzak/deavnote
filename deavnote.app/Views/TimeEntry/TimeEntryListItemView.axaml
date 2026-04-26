@@ -19,15 +19,16 @@
     </UserControl.Resources>
 
     <Grid Margin="5"
-          ColumnDefinitions="Auto, *, Auto" RowDefinitions="Auto, *, Auto" RowSpacing="10">
+          ColumnDefinitions="Auto,*,Auto" RowDefinitions="Auto,*,Auto" RowSpacing="10">
 
         <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3"
-              HorizontalAlignment="Left"
-              ColumnDefinitions="*, Auto" ColumnSpacing="5">
+              HorizontalAlignment="Stretch"
+              ColumnDefinitions="Auto,*" ColumnSpacing="5">
             <SelectableTextBlock Grid.Column="0"
                                  Classes="CardTitle Code"
                                  Text="{Binding TaskCode}" />
             <SelectableTextBlock Grid.Column="1"
+                                 HorizontalAlignment="Left"
                                  Classes="CardTitle"
                                  Text="{Binding TaskName}"
                                  TextTrimming="CharacterEllipsis"
