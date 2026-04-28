@@ -23,7 +23,7 @@
               ColumnDefinitions="*, Auto" RowDefinitions="Auto, Auto, *, Auto, Auto" RowSpacing="15">
 
             <TextBox Grid.Row="0" Grid.Column="0"
-                     HorizontalAlignment="Stretch" VerticalAlignment="Center"
+                     HorizontalAlignment="Stretch" VerticalAlignment="Top"
                      Text="{Binding Name}" />
 
             <StackPanel Grid.Row="0" Grid.RowSpan="2" Grid.Column="1"

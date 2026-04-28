@@ -1,6 +1,7 @@
 ﻿namespace deavnote.app.ViewModels.DevTask;
 
-internal sealed partial class DevTaskDetailViewModel : BaseEditableViewModel<(string Name, string Description, EDevTaskState State)>
+internal sealed partial class DevTaskDetailViewModel 
+    : BaseEditableViewModel<(string Name, string Description, EDevTaskState State)>
 {
     private readonly IDevTaskRepository _repository;
 
@@ -13,6 +14,8 @@ internal sealed partial class DevTaskDetailViewModel : BaseEditableViewModel<(st
     public string Code { get; private set; }
 
     [ObservableProperty]
+    [Required(ErrorMessage = "Name is required.")]
+    [NotifyDataErrorInfo]
     public partial string Name { get; set; }
 
     [ObservableProperty]

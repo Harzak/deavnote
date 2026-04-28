@@ -9,4 +9,9 @@ internal interface IEditableViewModel : IViewModel, IDisposable
     /// Gets a value indicating whether the view model has unsaved changes.
     /// </summary>
     bool HasChanges { get; }
+
+    /// <summary>
+    /// Try to save the current state asynchronously.
+    /// </summary>
+    Task<OperationResult> TrySaveAsync(CancellationToken cancellationToken = default);
 }

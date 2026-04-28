@@ -141,8 +141,8 @@
   <data name="BaseEditableViewModel_Save_Success" xml:space="preserve">
     <value>Changes saved successfully.</value>
   </data>
-  <data name="HasUnsavedChangeGuard_Deny" xml:space="preserve">
-    <value>Cannot navigate with unsaved changes</value>
+  <data name="UserCancelledGuard" xml:space="preserve">
+    <value>Cancelled by the user</value>
   </data>
   <data name="JournalViewModel_AddEntry_Failed" xml:space="preserve">
     <value>Failed to add time entry.</value>
@@ -242,5 +242,8 @@
   </data>
   <data name="TimeEntryListItemView_Copy_Tooltip" xml:space="preserve">
     <value>Copy time entry</value>
+  </data>
+  <data name="AskUnsavedChanges" xml:space="preserve">
+    <value>You have unsaved changes. Would you like to save them before leaving?</value>
   </data>
 </root>

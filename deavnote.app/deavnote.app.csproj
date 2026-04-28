@@ -51,6 +51,9 @@
 	    <AutoGen>True</AutoGen>
 	    <DependentUpon>Strings.resx</DependentUpon>
 	  </Compile>
+	  <Compile Update="Views\ConfirmationView.axaml.cs">
+	    <DependentUpon>ConfirmationView.axaml</DependentUpon>
+	  </Compile>
 	  <EmbeddedResource Update="Resources\Strings.resx">
 	    <Generator>ResXFileCodeGenerator</Generator>
 	    <LastGenOutput>Strings.Designer.cs</LastGenOutput>

@@ -5,16 +5,44 @@
 /// </summary>
 internal sealed class HasUnsavedChangeGuard : INavigationGuard
 {
-    /// <inheritdoc/>
-    public Task<NavigationGuardResult> CanNavigateAsync(IEditableViewModel? from, IEditableViewModel to, NavigationContext context)
-    {
+    private readonly IDialogService _dialogService;
 
+    public HasUnsavedChangeGuard(IDialogService dialogService)
+    {
+        ArgumentNullException.ThrowIfNull(dialogService);
+
+        _dialogService = dialogService;
+    }
+
+    /// <inheritdoc/>
+    public async Task<NavigationGuardResult> CanNavigateAsync(IEditableViewModel? from, IEditableViewModel to, NavigationContext context)
+    {
         if (from?.HasChanges == true)
         {
-            // show a confirmation dialog to the user before denying navigation
-            return Task.FromResult(NavigationGuardResult.Deny(Strings.HasUnsavedChangeGuard_Deny));
+            ConfirmationViewModel vm = new(Strings.AskUnsavedChanges);
+            EConfirmationResult? result = await _dialogService.ShowWindowAsync(vm).ConfigureAwait(false);
+
+            switch (result)
+            {
+                case EConfirmationResult.Yes:
+                    OperationResult saveResult = await from.TrySaveAsync().ConfigureAwait(false);
+                    if (saveResult.IsSuccess)
+                    {
+                        return NavigationGuardResult.Allow();
+                    }
+                    return NavigationGuardResult.Deny(saveResult.ErrorMessage);
+
+                case EConfirmationResult.No:
+                    return NavigationGuardResult.Allow();
+                case EConfirmationResult.Cancel:
+                case null:
+                    return NavigationGuardResult.Cancel(Strings.UserCancelledGuard);
+                default:
+                    throw new NotSupportedException(result.ToString());
+            }
+
         }
 
-        return Task.FromResult(NavigationGuardResult.Allow());
+        return NavigationGuardResult.Allow();
     }
 }

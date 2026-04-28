@@ -187,6 +187,15 @@ namespace deavnote.app.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You have unsaved changes. Would you like to save them before leaving?.
+        /// </summary>
+        internal static string AskUnsavedChanges {
+            get {
+                return ResourceManager.GetString("AskUnsavedChanges", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please fix the validation errors before saving..
         /// </summary>
         internal static string BaseEditableViewModel_FixValidationErrors {
@@ -300,15 +309,6 @@ namespace deavnote.app.Resources {
         internal static string DevTaskDetailView_Description_Placeholder {
             get {
                 return ResourceManager.GetString("DevTaskDetailView_Description_Placeholder", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Cannot navigate with unsaved changes.
-        /// </summary>
-        internal static string HasUnsavedChangeGuard_Deny {
-            get {
-                return ResourceManager.GetString("HasUnsavedChangeGuard_Deny", resourceCulture);
             }
         }
         
@@ -435,6 +435,15 @@ namespace deavnote.app.Resources {
         internal static string TimeEntryListItemView_Copy_Tooltip {
             get {
                 return ResourceManager.GetString("TimeEntryListItemView_Copy_Tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cancelled by the user.
+        /// </summary>
+        internal static string UserCancelledGuard {
+            get {
+                return ResourceManager.GetString("UserCancelledGuard", resourceCulture);
             }
         }
     }

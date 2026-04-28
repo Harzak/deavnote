@@ -5,8 +5,7 @@
 /// </summary>
 internal abstract partial class BaseEditableViewModel<TSnapshot> : BaseViewModel, IEditableViewModel
 {
-    private static readonly System.Text.CompositeFormat _saveFailedFormat =
-        System.Text.CompositeFormat.Parse(Strings.BaseEditableViewModel_Save_Failed_Format);
+    private static readonly CompositeFormat _saveFailedFormat = CompositeFormat.Parse(Strings.BaseEditableViewModel_Save_Failed_Format);
 
     private readonly INotificationService _notificationService;
     private bool _disposed;
@@ -15,7 +14,11 @@ internal abstract partial class BaseEditableViewModel<TSnapshot> : BaseViewModel
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(CancelCommand))]
     [NotifyCanExecuteChangedFor(nameof(SaveCommand))]
-    private bool _hasChanges;
+    public partial bool HasChanges { get; set; }
+
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(SaveCommand))]
+    public partial bool CanSave { get; set; }
 
     protected BaseEditableViewModel(INotificationService notificationService)
     {
@@ -25,24 +28,39 @@ internal abstract partial class BaseEditableViewModel<TSnapshot> : BaseViewModel
         base.PropertyChanged += OnPropertyChanged;
     }
 
+    public async Task<OperationResult> TrySaveAsync(CancellationToken cancellationToken = default)
+    {
+        return await Dispatcher.UIThread.InvokeAsync(async ()
+            => await this.TrySaveInternalAsync(cancellationToken).ConfigureAwait(false)).ConfigureAwait(false);
+    }
+
     protected virtual void OnPropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
         if (!string.Equals(e.PropertyName, nameof(this.HasChanges), StringComparison.Ordinal))
         {
             this.HasChanges = _snapshot != null && !this.SnapshotEquals(_snapshot);
+            this.CanSave = this.HasChanges && !base.HasErrors;
         }
     }
 
-    [RelayCommand(CanExecute = nameof(HasChanges))]
+    [RelayCommand(CanExecute = nameof(CanSave))]
     private async Task SaveAsync(CancellationToken cancellationToken)
     {
+        _ = await this.TrySaveInternalAsync(cancellationToken).ConfigureAwait(false);
+    }
+
+    private async Task<OperationResult> TrySaveInternalAsync(CancellationToken cancellationToken)
+    {
         base.ValidateAllProperties();
+
         if (base.HasErrors)
         {
             _notificationService.Show(Strings.BaseEditableViewModel_FixValidationErrors, ENotificationType.Warning);
-            return;
+            return new OperationResult().WithError(Strings.BaseEditableViewModel_FixValidationErrors);
         }
+
         OperationResult result = await this.ApplyChangesAsync(cancellationToken).ConfigureAwait(false);
+
         if (result.IsFailed)
         {
             _notificationService.Show(string.Format(CultureInfo.CurrentCulture, _saveFailedFormat, result.ErrorMessage), ENotificationType.Error);
@@ -52,6 +70,8 @@ internal abstract partial class BaseEditableViewModel<TSnapshot> : BaseViewModel
             _notificationService.Show(Strings.BaseEditableViewModel_Save_Success, ENotificationType.Success);
             this.CommitSnapshot();
         }
+
+        return result;
     }
 
     [RelayCommand(CanExecute = nameof(HasChanges))]
@@ -83,6 +103,7 @@ internal abstract partial class BaseEditableViewModel<TSnapshot> : BaseViewModel
     {
         _snapshot = this.TakeSnapshot();
         this.HasChanges = false;
+        this.CanSave = false;
     }
 
     protected abstract bool SnapshotEquals(TSnapshot snapshot);

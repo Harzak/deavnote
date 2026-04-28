@@ -50,9 +50,13 @@ internal sealed class MainViewOrchestrator : IViewOrchestrator
         foreach (INavigationGuard guard in _navigationGuards)
         {
             NavigationGuardResult result = await guard.CanNavigateAsync(ActiveViewModel, viewModel, context).ConfigureAwait(false);
-            if (!result.CanNavigate)
+            if (result.IsDenied)
             {
-                return OperationResult.Failure();
+                return OperationResult.Failure(result.Reason ?? string.Empty);
+            }
+            if (result.IsCanceled)
+            {
+                return OperationResult.Success();
             }
         }
 

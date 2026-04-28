@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:conv="using:deavnote.app.Converters"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:dd="using:deavnote.app.Design"
+             xmlns:ic="using:FluentIcons.Avalonia"
              xmlns:loc="using:deavnote.app.Localization"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewmodels="using:deavnote.app.ViewModels"
@@ -32,8 +32,24 @@
         <TextBox Grid.Row="1" Grid.Column="0"
                  Text="{Binding Name}" />
         <ComboBox Grid.Row="1" Grid.Column="1"
+                  VerticalAlignment="Center"
                   DisplayMemberBinding="{Binding}"
                   SelectedValue="{Binding State}" />
+
+        <StackPanel Grid.Row="1" Grid.Column="1"
+                    HorizontalAlignment="Right"
+                    Orientation="Horizontal" Spacing="10">
+            <Button Classes="Icon"
+                    Command="{Binding SaveCommand}"
+                    ToolTip.Tip="{loc:Localize Key=TimeEntryDetailView_Save_Tooltip}">
+                <ic:FluentIcon Icon="Save" IconSize="Size16" />
+            </Button>
+            <Button Classes="Icon"
+                    Command="{Binding CancelCommand}"
+                    ToolTip.Tip="{loc:Localize Key=TimeEntryDetailView_Cancel_Tooltip}">
+                <ic:FluentIcon Icon="DismissCircle" IconSize="Size16" />
+            </Button>
+        </StackPanel>
 
         <TextBox Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
                  MinHeight="200"
