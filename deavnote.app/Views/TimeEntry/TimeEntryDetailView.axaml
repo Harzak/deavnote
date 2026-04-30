@@ -22,21 +22,6 @@
         <Grid Margin="10"
               ColumnDefinitions="*, Auto, Auto" RowDefinitions="Auto, Auto, Auto, Auto" RowSpacing="15">
 
-            <StackPanel Grid.Row="0" Grid.Column="2"
-                        HorizontalAlignment="Right"
-                        Orientation="Horizontal" Spacing="10">
-                <Button Classes="Icon"
-                        Command="{Binding SaveCommand}"
-                        ToolTip.Tip="{loc:Localize Key=TimeEntryDetailView_Save_Tooltip}">
-                    <ic:FluentIcon Icon="Save" IconSize="Size16" />
-                </Button>
-                <Button Classes="Icon"
-                        Command="{Binding CancelCommand}"
-                        ToolTip.Tip="{loc:Localize Key=TimeEntryDetailView_Cancel_Tooltip}">
-                    <ic:FluentIcon Icon="DismissCircle" IconSize="Size16" />
-                </Button>
-            </StackPanel>
-
             <TextBox Grid.Row="0" Grid.Column="0"
                      VerticalAlignment="Center"
                      Classes="Title"
@@ -50,7 +35,21 @@
                             SelectedDate="{Binding StartedAt, Converter={StaticResource DateTimeOffsetUtcToLocal}}" />
                 <ctrl:DurationInput Margin="0,0,100,0" VerticalAlignment="Center"
                                     Value="{Binding Duration}" />
+            </StackPanel>
 
+            <StackPanel Grid.Row="0" Grid.Column="2"
+                        HorizontalAlignment="Right"
+                        Orientation="Horizontal" Spacing="10">
+                <Button Classes="Icon"
+                        Command="{Binding SaveCommand}"
+                        ToolTip.Tip="{loc:Localize Key=TimeEntryDetailView_Save_Tooltip}">
+                    <ic:FluentIcon Icon="Save" IconSize="Size16" />
+                </Button>
+                <Button Classes="Icon"
+                        Command="{Binding CancelCommand}"
+                        ToolTip.Tip="{loc:Localize Key=TimeEntryDetailView_Cancel_Tooltip}">
+                    <ic:FluentIcon Icon="DismissCircle" IconSize="Size16" />
+                </Button>
             </StackPanel>
 
             <TextBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"
