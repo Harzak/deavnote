@@ -8,12 +8,12 @@
         <MaskedTextBox x:Name="DurationTextBox"
                        Width="60"
                        VerticalAlignment="Bottom"
-                       Mask="00:00" />
-        <RepeatButton x:Name="DecreaseButton" VerticalAlignment="Top">
-            <ic:FluentIcon Icon="SubtractCircle" IconSize="Size16" />
+                       Classes="Title" Mask="00:00" />
+        <RepeatButton x:Name="DecreaseButton" VerticalAlignment="Center">
+            <ic:FluentIcon FontSize="18" Icon="SubtractCircle" />
         </RepeatButton>
-        <RepeatButton x:Name="IncreaseButton" VerticalAlignment="Top">
-            <ic:FluentIcon Icon="AddCircle" IconSize="Size16" />
+        <RepeatButton x:Name="IncreaseButton" VerticalAlignment="Center">
+            <ic:FluentIcon FontSize="18" Icon="AddCircle" />
         </RepeatButton>
     </StackPanel>
 </UserControl>

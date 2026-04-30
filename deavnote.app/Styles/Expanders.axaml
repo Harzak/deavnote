@@ -1,0 +1,12 @@
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <SolidColorBrush x:Key="ExpanderHeaderBackground" Color="{StaticResource Grey2}" />
+    <SolidColorBrush x:Key="ExpanderHeaderBackgroundPointerOver" Color="{StaticResource Grey2}" />
+    <SolidColorBrush x:Key="ExpanderHeaderBackgroundPressed" Color="{StaticResource Grey2}" />
+    <SolidColorBrush x:Key="ExpanderHeaderBorderBrush" Color="{StaticResource Grey2}" />
+    <SolidColorBrush x:Key="ExpanderHeaderBorderBrushPointerOver" Color="{StaticResource Grey2}" />
+    <SolidColorBrush x:Key="ExpanderHeaderBorderBrushPressed" Color="{StaticResource Grey2}" />
+    <SolidColorBrush x:Key="ExpanderContentBackground" Color="Transparent" />
+
+</ResourceDictionary>

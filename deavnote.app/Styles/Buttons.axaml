@@ -1,5 +1,15 @@
 ﻿<Styles xmlns="https://github.com/avaloniaui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ic="using:FluentIcons.Avalonia">
+
+    <Design.PreviewWith>
+        <Border Width="200" Height="200"
+                Background="{DynamicResource CustomMainBackground}">
+            <Button Classes="Icon" Foreground="YellowGreen">
+                <ic:FluentIcon Icon="Save" IconSize="Size16" />
+            </Button>
+        </Border>
+    </Design.PreviewWith>
 
     <Style Selector="Button">
         <Setter Property="BorderThickness" Value="0,0,0,1" />
@@ -48,8 +58,9 @@
     </Style>
 
     <Style Selector="Button:disabled /template/ ContentPresenter">
-        <Setter Property="Background" Value="{StaticResource Grey2}" />
-        <Setter Property="BorderBrush" Value="{StaticResource Grey4}" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0,0,0,1" />
+        <Setter Property="Padding" Value="8,8" />
         <Setter Property="CornerRadius" Value="5" />
         <Setter Property="Opacity" Value="0.7" />
     </Style>

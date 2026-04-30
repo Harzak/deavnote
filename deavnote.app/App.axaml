@@ -10,6 +10,7 @@
 
             <ResourceDictionary.MergedDictionaries>
                 <ResourceInclude Source="/Styles/Colors.axaml" />
+                <ResourceInclude Source="/Styles/Expanders.axaml" />
             </ResourceDictionary.MergedDictionaries>
 
             <ResourceDictionary.ThemeDictionaries>

@@ -28,8 +28,8 @@
 
     <Style Selector="TextBlock.Legend">
         <Setter Property="Foreground" Value="{StaticResource White1Brush}" />
-        <Setter Property="FontSize" Value="14" />
-        <Setter Property="Opacity" Value="0.6" />
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="Opacity" Value="0.4" />
     </Style>
 
     <Style Selector="TextBlock.CardLegend">

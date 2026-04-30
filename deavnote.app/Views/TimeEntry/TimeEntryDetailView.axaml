@@ -20,13 +20,9 @@
 
     <ScrollViewer HorizontalScrollBarVisibility="Disabled">
         <Grid Margin="10"
-              ColumnDefinitions="*, Auto" RowDefinitions="Auto, Auto, *, Auto, Auto" RowSpacing="15">
+              ColumnDefinitions="*, Auto, Auto" RowDefinitions="Auto, Auto, Auto, Auto" RowSpacing="15">
 
-            <TextBox Grid.Row="0" Grid.Column="0"
-                     HorizontalAlignment="Stretch" VerticalAlignment="Top"
-                     Text="{Binding Name}" />
-
-            <StackPanel Grid.Row="0" Grid.RowSpan="2" Grid.Column="1"
+            <StackPanel Grid.Row="0" Grid.Column="2"
                         HorizontalAlignment="Right"
                         Orientation="Horizontal" Spacing="10">
                 <Button Classes="Icon"
@@ -41,23 +37,31 @@
                 </Button>
             </StackPanel>
 
-            <StackPanel Grid.Row="1" Grid.Column="0"
+            <TextBox Grid.Row="0" Grid.Column="0"
+                     VerticalAlignment="Center"
+                     Classes="Title"
+                     Text="{Binding Name}" />
+
+            <StackPanel Grid.Row="0" Grid.Column="1"
                         HorizontalAlignment="Left" VerticalAlignment="Center"
                         Orientation="Horizontal" Spacing="10">
-                <DatePicker Grid.Row="1"
-                            HorizontalAlignment="Left"
+
+                <DatePicker Margin="10,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center"
                             SelectedDate="{Binding StartedAt, Converter={StaticResource DateTimeOffsetUtcToLocal}}" />
-                <ctrl:DurationInput Value="{Binding Duration}" />
+                <ctrl:DurationInput Margin="0,0,100,0" VerticalAlignment="Center"
+                                    Value="{Binding Duration}" />
+
             </StackPanel>
 
-            <TextBox Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
-                     MinHeight="200"
+            <TextBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"
+                     Height="300"
+                     Margin="20,20,20,0"
                      AcceptsReturn="True"
                      PlaceholderText="{loc:Localize Key=TimeEntryDetailView_WorkDone_Placeholder}"
                      Text="{Binding WorkDone}" />
 
-            <StackPanel Grid.Row="3" Grid.Column="1"
-                        HorizontalAlignment="Right"
+            <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3"
+                        Margin="20,0" HorizontalAlignment="Right"
                         Orientation="Horizontal">
                 <TextBlock Classes="Legend" Text="{loc:Localize Key=Common_CreatedAt}" />
                 <TextBlock Margin="3,0,10,0"
@@ -70,14 +74,15 @@
                 <TextBlock Classes="Legend" Text="{Binding UpdatedAt, Converter={StaticResource DateTimeUtcToLocal}}" />
             </StackPanel>
 
-            <Border Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2"
-                    Margin="0,15,0,0"
-                    BorderBrush="{StaticResource Grey3}"
-                    BorderThickness="1" CornerRadius="2">
-
-                <dtviews:DevTaskDetailView DataContext="{Binding RelatedTask}" />
-            </Border>
-
+            <Expander Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3"
+                      Margin="0,15,0,0" HorizontalAlignment="Stretch" VerticalAlignment="Top">
+                <Expander.Header>
+                    Related Task
+                </Expander.Header>
+                <Grid>
+                    <dtviews:DevTaskDetailView DataContext="{Binding RelatedTask}" />
+                </Grid>
+            </Expander>
         </Grid>
     </ScrollViewer>
 </UserControl>
