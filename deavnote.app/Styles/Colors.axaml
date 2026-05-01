@@ -2,23 +2,29 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Design.PreviewWith>
         <Border Width="300" Height="300"
-                Background="{StaticResource Grey4Brush}" />
+                Background="{StaticResource Black1Brush}" />
     </Design.PreviewWith>
+
+    <Color x:Key="Black1">#171717</Color>
+    <SolidColorBrush x:Key="Black1Brush" Color="{StaticResource Black1}" />
 
     <Color x:Key="Grey1">#1E1E1E</Color>
     <SolidColorBrush x:Key="Grey1Brush" Color="{StaticResource Grey1}" />
 
-    <Color x:Key="Grey2">#2E2E2E</Color>
+    <Color x:Key="Grey2">#262626</Color>
     <SolidColorBrush x:Key="Grey2Brush" Color="{StaticResource Grey2}" />
 
-    <Color x:Key="Grey3">#303030</Color>
+    <Color x:Key="Grey3">#2E2E2E</Color>
     <SolidColorBrush x:Key="Grey3Brush" Color="{StaticResource Grey3}" />
 
-    <Color x:Key="Grey4">#4D4D4D</Color>
+    <Color x:Key="Grey4">#303030</Color>
     <SolidColorBrush x:Key="Grey4Brush" Color="{StaticResource Grey4}" />
 
-    <Color x:Key="Grey5">#7D7D7D</Color>
+    <Color x:Key="Grey5">#4D4D4D</Color>
     <SolidColorBrush x:Key="Grey5Brush" Color="{StaticResource Grey5}" />
+
+    <Color x:Key="Grey6">#7D7D7D</Color>
+    <SolidColorBrush x:Key="Grey6Brush" Color="{StaticResource Grey6}" />
 
     <Color x:Key="White1">#FFFFF9</Color>
     <SolidColorBrush x:Key="White1Brush" Color="{StaticResource White1}" />
@@ -41,7 +47,7 @@
             <SolidColorBrush x:Key="LightTimeEntryBackground" Color="{StaticResource White1}" />
         </ResourceDictionary>
         <ResourceDictionary x:Key="Dark">
-            <SolidColorBrush x:Key="CustomDarkBackground" Color="{StaticResource Grey1}" />
+            <SolidColorBrush x:Key="CustomDarkBackground" Color="{StaticResource Black1}" />
             <SolidColorBrush x:Key="DarkTimeEntryBackground" Color="{StaticResource Grey2}" />
         </ResourceDictionary>
     </ResourceDictionary.ThemeDictionaries>

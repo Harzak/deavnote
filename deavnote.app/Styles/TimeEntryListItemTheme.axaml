@@ -4,8 +4,8 @@
         xmlns:views="using:deavnote.app.Views.TimeEntry">
 
     <Style Selector="views|TimeEntryListItemView">
-        <Setter Property="Background" Value="{StaticResource Grey2}" />
-        <Setter Property="BorderBrush" Value="{StaticResource Grey4}" />
+        <Setter Property="Background" Value="{StaticResource Grey3}" />
+        <Setter Property="BorderBrush" Value="{StaticResource Grey5}" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="CornerRadius" Value="2" />
     </Style>

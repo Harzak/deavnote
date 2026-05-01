@@ -11,10 +11,14 @@ internal sealed partial class MainViewModel : BaseViewModel, IHostViewModel, IDi
     public partial JournalViewModel Journal { get; set; }
 
     [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(HasContent))]
     public partial IEditableViewModel? ActiveViewModel { get; set; }
 
     [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(HasContent))]
     public partial bool IsBusy { get; set; }
+
+    public bool HasContent => !this.IsBusy && this.ActiveViewModel != null;
 
     public INotificationService Notifications { get; }
 
