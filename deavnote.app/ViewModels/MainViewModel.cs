@@ -1,4 +1,6 @@
-﻿namespace deavnote.app.ViewModels;
+﻿using System.Reflection;
+
+namespace deavnote.app.ViewModels;
 
 internal sealed partial class MainViewModel : BaseViewModel, IHostViewModel, IDisposable
 {
@@ -20,6 +22,12 @@ internal sealed partial class MainViewModel : BaseViewModel, IHostViewModel, IDi
     [NotifyPropertyChangedFor(nameof(HasContent))]
     public partial bool IsBusy { get; set; }
 
+    [ObservableProperty]
+    public partial string AppVersion { get; set; }
+
+    [ObservableProperty]
+    public partial string StoragePath { get; set; }
+
     public bool HasContent => !this.IsBusy && this.ActiveViewModel != null;
 
     public INotificationService Notifications { get; }
@@ -39,6 +47,10 @@ internal sealed partial class MainViewModel : BaseViewModel, IHostViewModel, IDi
         this.Search = viewModelFactory.CreateSearchViewModel();
         this.Journal = viewModelFactory.CreateJournalViewModel();
         this.Notifications = notificationService;
+
+        // move to app configuration 
+        this.AppVersion = Assembly.GetEntryAssembly()?.GetName()?.Version?.ToStringInvariant() ?? new Version(0, 0, 0, 0).ToStringInvariant();
+        this.StoragePath = DatabasePathResolver.Resolve();
 
         _viewOrchestrator.ActiveViewModelChanging += OnActiveViewModelChanging;
         _viewOrchestrator.ActiveViewModelChanged += OnActiveViewModelChanged;

@@ -56,12 +56,15 @@
                          IsIndeterminate="True"
                          IsVisible="{Binding IsBusy}" />
 
-            <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
-                        HorizontalAlignment="Right" VerticalAlignment="Center"
-                        Orientation="Horizontal">
-                <TextBlock Margin="5,5,10,5"
-                           Classes="Legend" Text="1.0.0" />
-            </StackPanel>
+            <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
+                  Margin="15,0,15,10" VerticalAlignment="Center">
+                <SelectableTextBlock HorizontalAlignment="Left"
+                                     Classes="Legend"
+                                     Text="{Binding StoragePath}" />
+                <SelectableTextBlock HorizontalAlignment="Right"
+                                     Classes="Legend"
+                                     Text="{Binding AppVersion}" />
+            </Grid>
 
         </Grid>
 

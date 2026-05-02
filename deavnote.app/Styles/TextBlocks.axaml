@@ -80,4 +80,10 @@
         <Setter Property="Foreground" Value="{StaticResource Violet2Brush}" />
     </Style>
 
+    <Style Selector="SelectableTextBlock.Legend">
+        <Setter Property="Foreground" Value="{StaticResource White1Brush}" />
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="Opacity" Value="0.4" />
+    </Style>
+
 </Styles>
