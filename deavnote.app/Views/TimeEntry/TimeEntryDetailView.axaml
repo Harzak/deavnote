@@ -43,12 +43,12 @@
                 <Button Classes="Icon"
                         Command="{Binding SaveCommand}"
                         ToolTip.Tip="{loc:Localize Key=TimeEntryDetailView_Save_Tooltip}">
-                    <ic:FluentIcon Icon="Save" IconSize="Size16" />
+                    <ic:FluentIcon FontSize="26" Icon="Save" />
                 </Button>
                 <Button Classes="Icon"
                         Command="{Binding CancelCommand}"
                         ToolTip.Tip="{loc:Localize Key=TimeEntryDetailView_Cancel_Tooltip}">
-                    <ic:FluentIcon Icon="DismissCircle" IconSize="Size16" />
+                    <ic:FluentIcon FontSize="26" Icon="DismissCircle" />
                 </Button>
             </StackPanel>
 

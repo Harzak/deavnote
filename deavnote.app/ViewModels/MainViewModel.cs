@@ -4,6 +4,8 @@ internal sealed partial class MainViewModel : BaseViewModel, IHostViewModel, IDi
 {
     private readonly IViewOrchestrator _viewOrchestrator;
 
+    public override string Identifier { get ; }
+
     [ObservableProperty]
     public partial SearchViewModel Search { get; set; }
 
@@ -33,6 +35,7 @@ internal sealed partial class MainViewModel : BaseViewModel, IHostViewModel, IDi
 
         _viewOrchestrator = viewOrchestrator;
 
+        this.Identifier = Guid.NewGuid().ToString();
         this.Search = viewModelFactory.CreateSearchViewModel();
         this.Journal = viewModelFactory.CreateJournalViewModel();
         this.Notifications = notificationService;
@@ -41,7 +44,7 @@ internal sealed partial class MainViewModel : BaseViewModel, IHostViewModel, IDi
         _viewOrchestrator.ActiveViewModelChanged += OnActiveViewModelChanged;
     }
 
-    private void OnActiveViewModelChanging(object? sender, EventArgs e)
+    private void OnActiveViewModelChanging(object? sender, ViewModelChangeEventArg e)
     {
         Dispatcher.UIThread.Invoke(() =>
         {
@@ -49,7 +52,7 @@ internal sealed partial class MainViewModel : BaseViewModel, IHostViewModel, IDi
         });
     }
 
-    private void OnActiveViewModelChanged(object? sender, EventArgs e)
+    private void OnActiveViewModelChanged(object? sender, ViewModelChangeEventArg e)
     {
         Dispatcher.UIThread.Invoke(() =>
         {

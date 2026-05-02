@@ -58,6 +58,11 @@
                  ItemsSource="{Binding TimeEntries}"
                  SelectedItem="{Binding SelectedTimeEntry}"
                  SelectionMode="Single">
+            <ListBox.Styles>
+                <Style Selector="ListBoxItem:selected teviews|TimeEntryListItemView">
+                    <Setter Property="BorderBrush" Value="{StaticResource Violet1}" />
+                </Style>
+            </ListBox.Styles>
             <ListBox.ItemContainerTheme>
                 <ControlTheme TargetType="ListBoxItem">
                     <Setter Property="Template">

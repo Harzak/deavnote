@@ -13,7 +13,7 @@
 
     <Style Selector="TextBox, ComboBox, AutoCompleteBox">
         <Setter Property="Background" Value="{StaticResource Grey2}" />
-        <Setter Property="BorderBrush" Value="{StaticResource Grey4}" />
+        <Setter Property="BorderBrush" Value="{StaticResource Grey5}" />
         <Setter Property="CornerRadius" Value="5" />
     </Style>
 

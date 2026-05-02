@@ -11,6 +11,10 @@ internal abstract partial class BaseEditableViewModel<TSnapshot> : BaseViewModel
     private bool _disposed;
     private TSnapshot? _snapshot;
 
+    public override sealed string Identifier { get; }
+
+    public abstract string EditedElementIdentifier { get; }
+
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(CancelCommand))]
     [NotifyCanExecuteChangedFor(nameof(SaveCommand))]
@@ -25,6 +29,7 @@ internal abstract partial class BaseEditableViewModel<TSnapshot> : BaseViewModel
         ArgumentNullException.ThrowIfNull(notificationService);
         _notificationService = notificationService;
 
+        this.Identifier = Guid.NewGuid().ToString();
         base.PropertyChanged += OnPropertyChanged;
     }
 

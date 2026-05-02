@@ -12,6 +12,8 @@ internal sealed partial class JournalViewModel : BaseViewModel
     private readonly INotificationService _notificationService;
     private readonly IClipboardService _clipboard;
 
+    public override string Identifier { get; }
+
     [ObservableProperty]
     public partial EJournalContext ViewType { get; set; }
 
@@ -54,6 +56,9 @@ internal sealed partial class JournalViewModel : BaseViewModel
 
         _journal.TimeEntriesChanged += OnJournalTimeEntriesChanged;
         _journal.CursorChanged += OnJournalCursorChanged;
+        _viewOrchestrator.ActiveViewModelChanged += OnActiveViewModelChanged;
+
+        this.Identifier = Guid.NewGuid().ToString();
         this.TimeEntries = [];
         this.ViewType = EJournalContext.DailyMultiple;
     }
@@ -162,6 +167,11 @@ internal sealed partial class JournalViewModel : BaseViewModel
         }
     }
 
+    private void OnActiveViewModelChanged(object? sender, ViewModelChangeEventArg e)
+    {
+        this.TrySyncSelectedTimeEntryWith(e.ViewModel);
+    }
+
     private void OnJournalTimeEntriesChanged(object? sender, TimeEntriesChangedEventArgs e)
     {
         Dispatcher.UIThread.Post((Action)(() =>
@@ -175,6 +185,10 @@ internal sealed partial class JournalViewModel : BaseViewModel
                 TimeEntryListItemViewModel timeEntryViewModel = _viewModelFactory.CreateTimeEntryViewModel(entry);
                 this.TimeEntries.Add(timeEntryViewModel);
             }
+            if (_viewOrchestrator.ActiveViewModel != null)
+            {
+                this.TrySyncSelectedTimeEntryWith(_viewOrchestrator.ActiveViewModel);
+            }
         }));
     }
 
@@ -184,5 +198,20 @@ internal sealed partial class JournalViewModel : BaseViewModel
         {
             this.DateCursor = e.DateCursor;
         }));
+    }
+    private void TrySyncSelectedTimeEntryWith(IEditableViewModel viewModel)
+    {
+        if (viewModel is not TimeEntryDetailViewModel timeEntryDetailViewModel)
+        {
+            return;
+        }
+        TimeEntryListItemViewModel? matchingTimeEntry = this.TimeEntries
+            .FirstOrDefault(timeEntry => timeEntry.Id.ToStringInvariant().EqualsOrdinalIgnoreCase(timeEntryDetailViewModel.EditedElementIdentifier));
+
+        if (matchingTimeEntry == null || ReferenceEquals(this.SelectedTimeEntry, matchingTimeEntry))
+        {
+            return;
+        }
+        this.SelectedTimeEntry = matchingTimeEntry;
     }
 }

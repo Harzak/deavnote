@@ -13,6 +13,8 @@ internal sealed partial class SearchViewModel : BaseViewModel, IDisposable
 
     private static readonly TimeSpan SearchDelay = TimeSpan.FromMilliseconds(700);
 
+    public override string Identifier { get; }
+
     [ObservableProperty]
     public partial string? SearchTerms { get; set; }
 
@@ -50,6 +52,7 @@ internal sealed partial class SearchViewModel : BaseViewModel, IDisposable
         };
         _searchTimer.Tick += OnSearchTimerTick;
 
+        this.Identifier = Guid.NewGuid().ToString();
         this.SearchResults = [];
     }
 
@@ -73,7 +76,7 @@ internal sealed partial class SearchViewModel : BaseViewModel, IDisposable
         _searchTimer.Start();
     }
 
-    private void OnSearchTimerTick(object? sender, EventArgs e)
+    private void OnSearchTimerTick(object? sender, System.EventArgs e)
     {
         _searchTimer.Stop();
         StartSearch(_pendingSearchQuery);

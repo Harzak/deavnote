@@ -27,9 +27,9 @@ internal interface IViewOrchestrator
     /// <summary>
     /// Occurs when <see cref="ActiveViewModel"/> is about to change.
     /// </summary>
-    event EventHandler<EventArgs>? ActiveViewModelChanging;
+    event EventHandler<ViewModelChangeEventArg>? ActiveViewModelChanging;
     /// <summary>
     /// Occurs when the active <see cref="ActiveViewModel"/> changes.
     /// </summary>
-    event EventHandler<EventArgs>? ActiveViewModelChanged;
+    event EventHandler<ViewModelChangeEventArg>? ActiveViewModelChanged;
 }

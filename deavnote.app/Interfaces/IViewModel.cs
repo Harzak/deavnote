@@ -5,6 +5,8 @@
 /// </summary>
 internal interface IViewModel
 {
+    string Identifier { get; }
+
     /// <summary>
     /// Initializes the component asynchronously.
     /// </summary>

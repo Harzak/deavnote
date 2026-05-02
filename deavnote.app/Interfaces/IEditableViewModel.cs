@@ -6,6 +6,11 @@
 internal interface IEditableViewModel : IViewModel, IDisposable
 {
     /// <summary>
+    /// Gets the unique identifier of the element currently being edited.
+    /// </summary>
+    string EditedElementIdentifier { get; }
+
+    /// <summary>
     /// Gets a value indicating whether the view model has unsaved changes.
     /// </summary>
     bool HasChanges { get; }

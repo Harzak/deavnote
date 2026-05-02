@@ -1,4 +1,6 @@
-﻿namespace deavnote.app.Navigation;
+﻿using deavnote.app.EventArgs;
+
+namespace deavnote.app.Navigation;
 
 /// <summary>
 /// Orchestrates the main view and manages navigation between view models, ensuring navigation guards are
@@ -14,9 +16,9 @@ internal sealed class MainViewOrchestrator : IViewOrchestrator
     public IEditableViewModel? ActiveViewModel { get; private set; }
 
     /// <inheritdoc/>
-    public event EventHandler<EventArgs>? ActiveViewModelChanging;
+    public event EventHandler<ViewModelChangeEventArg>? ActiveViewModelChanging;
     /// <inheritdoc/>
-    public event EventHandler<EventArgs>? ActiveViewModelChanged;
+    public event EventHandler<ViewModelChangeEventArg>? ActiveViewModelChanged;
 
     public MainViewOrchestrator(IViewModelFactory factory, IEnumerable<INavigationGuard> navigationGuards)
     {
@@ -60,7 +62,7 @@ internal sealed class MainViewOrchestrator : IViewOrchestrator
             }
         }
 
-        this.ActiveViewModelChanging?.Invoke(this, EventArgs.Empty);
+        this.ActiveViewModelChanging?.Invoke(this, new ViewModelChangeEventArg(viewModel));
 
         if (this.ActiveViewModel != null)
         {
@@ -71,7 +73,7 @@ internal sealed class MainViewOrchestrator : IViewOrchestrator
         this.ActiveViewModel = viewModel;
         await viewModel.OnInitializedAsync().ConfigureAwait(false);
 
-        this.ActiveViewModelChanged?.Invoke(this, EventArgs.Empty);
+        this.ActiveViewModelChanged?.Invoke(this, new ViewModelChangeEventArg(viewModel));
 
         return OperationResult.Success();
     }

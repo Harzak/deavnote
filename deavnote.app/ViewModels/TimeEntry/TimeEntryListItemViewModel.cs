@@ -5,6 +5,8 @@ internal sealed partial class TimeEntryListItemViewModel : BaseViewModel
     private readonly INotificationService _notification;
     private readonly IClipboardService _clipboard;
     private readonly model.Entities.TimeEntry _model;
+
+    public override string Identifier { get; }
     public int Id { get; }
 
     [ObservableProperty]
@@ -34,6 +36,7 @@ internal sealed partial class TimeEntryListItemViewModel : BaseViewModel
         _clipboard = clipboard;
         _notification = notification;
 
+        this.Identifier = Guid.NewGuid().ToString();
         this.TaskCode = timeEntry.DevTask.Code;
         this.TaskName = timeEntry.DevTask.Name;
         this.EntryName = timeEntry.Name;

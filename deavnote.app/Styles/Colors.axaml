@@ -35,8 +35,11 @@
     <Color x:Key="White3">#DBDBD7</Color>
     <SolidColorBrush x:Key="White3Brush" Color="{StaticResource White3}" />
 
-    <Color x:Key="Violet1">#8373CD</Color>
+    <Color x:Key="Violet1">#7466B5</Color>
     <SolidColorBrush x:Key="Violet1Brush" Color="{StaticResource Violet1}" />
+
+    <Color x:Key="Violet2">#8373CD</Color>
+    <SolidColorBrush x:Key="Violet2Brush" Color="{StaticResource Violet2}" />
 
     <Color x:Key="Error1">#FFA500</Color>
     <SolidColorBrush x:Key="Error1Brush" Color="{StaticResource Error1}" />

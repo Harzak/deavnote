@@ -8,11 +8,14 @@ global using deavnote.repository.Interfaces;
 global using deavnote.repository.Services;
 global using deavnote.utils;
 global using deavnote.utils.Results;
-/// External libraries
-global using Microsoft.EntityFrameworkCore;
-global using Microsoft.Extensions.Logging;
+
 /// .NET
 global using System;
 global using System.Globalization;
 global using System.IO;
 global using System.Text;
+
+
+/// External libraries
+global using Microsoft.EntityFrameworkCore;
+global using Microsoft.Extensions.Logging;

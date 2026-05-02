@@ -4,8 +4,9 @@ internal sealed partial class DevTaskDetailViewModel
     : BaseEditableViewModel<(string Name, string Description, EDevTaskState State)>
 {
     private readonly IDevTaskRepository _repository;
-
     private readonly model.Entities.DevTask _model;
+
+    public override string EditedElementIdentifier { get; }
 
     public DateTime? CreatedAt => _model?.CreatedAtUtc;
     public DateTime? UpdatedAt => _model?.UpdatedAtUtc;
@@ -24,6 +25,7 @@ internal sealed partial class DevTaskDetailViewModel
     [ObservableProperty]
     public partial EDevTaskState State { get; set; }
 
+
     public DevTaskDetailViewModel(
         model.Entities.DevTask model,
         bool isReadonly,
@@ -37,10 +39,10 @@ internal sealed partial class DevTaskDetailViewModel
         _model = model;
         _repository = repository;
 
+        this.EditedElementIdentifier = _model.Id.ToString(CultureInfo.InvariantCulture);
         this.Name = _model.Name;
         this.Description = _model.Description ?? string.Empty;
         this.State = _model.State;
-
         this.Code = _model.Code;
         this.IsReadonly = isReadonly;
     }

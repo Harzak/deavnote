@@ -4,6 +4,7 @@ internal sealed partial class NotificationViewModel : BaseViewModel
 {
     private readonly Action<NotificationViewModel> _onClose;
 
+    public override string Identifier { get; }
     public ENotificationType Type { get; }
     public string Message { get; }
 
@@ -14,6 +15,7 @@ internal sealed partial class NotificationViewModel : BaseViewModel
         this.Type = type;
         this.Message = message;
         this._onClose = onClose;
+        this.Identifier = Guid.NewGuid().ToString();
     }
 
     [RelayCommand]

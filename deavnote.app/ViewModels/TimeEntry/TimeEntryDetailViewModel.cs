@@ -8,6 +8,7 @@ internal sealed partial class TimeEntryDetailViewModel
     private readonly IViewModelFactory _factory;
     private readonly model.Entities.TimeEntry _model;
 
+    public override string EditedElementIdentifier { get; } 
     public DateTime CreatedAt => _model.CreatedAtUtc;
     public DateTime UpdatedAt => _model.UpdatedAtUtc;
 
@@ -47,6 +48,7 @@ internal sealed partial class TimeEntryDetailViewModel
         _journal = journal;
         _factory = factory;
 
+        this.EditedElementIdentifier = _model.Id.ToString(CultureInfo.InvariantCulture);
         this.Name = _model.Name;
         this.WorkDone = _model.WorkDone ?? string.Empty;
         DateTime startedAtUtc = DateTime.SpecifyKind(_model.StartedAtUtc, DateTimeKind.Utc);

@@ -7,8 +7,14 @@ namespace deavnote.app.ViewModels.Base;
 /// <typeparam name="TResult">The type of result produced by the dialog.</typeparam>
 internal abstract class DialogViewModel<TResult> : BaseViewModel
 {
+    public override sealed string Identifier { get ; }
     internal abstract string Title { get; }
     internal Action<TResult?>? CloseDialog { get; set; }
 
     protected void Close(TResult? result = default) => CloseDialog?.Invoke(result);
+
+    protected DialogViewModel()
+    {
+        this.Identifier = Guid.NewGuid().ToString();
+    }
 }

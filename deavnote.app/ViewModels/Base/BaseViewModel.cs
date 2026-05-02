@@ -5,6 +5,8 @@
 /// </summary>
 internal abstract class BaseViewModel : ObservableValidator, IViewModel
 {
+    public abstract string Identifier { get; }
+
     /// <inheritdoc/>
     public virtual Task OnInitializedAsync()
     {
