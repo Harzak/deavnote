@@ -21,11 +21,11 @@ public class ClipboardServiceTests
         // Arrange
         JournalClipboardService service = new(_clipboard, _repository);
         A.CallTo(()
-            => _repository.GetTemplateAsync(model.Enums.EJournalContext.DailySingle, A<CancellationToken>.Ignored))
+            => _repository.GetTemplateAsync(model.Enums.EJournalMode.TimeEntry, A<CancellationToken>.Ignored))
             .Returns("entry name is: {EntryName} and work done is: {WorkDone}");
 
         // Act
-        await service.SetDailyTimeEntryAsync(new TimeEntry
+        await service.SetTimeEntryAsync(new TimeEntry
         {
             Name = "Refactor some stuff",
             WorkDone = "a lot of works",
@@ -44,7 +44,7 @@ public class ClipboardServiceTests
         // Arrange
         JournalClipboardService service = new(_clipboard, _repository);
         A.CallTo(()
-            => _repository.GetTemplateAsync(model.Enums.EJournalContext.DailyMultiple, A<CancellationToken>.Ignored))
+            => _repository.GetTemplateAsync(model.Enums.EJournalMode.Day, A<CancellationToken>.Ignored))
             .Returns("{EntryName}/{WorkDone}/{TaskName}/{TaskCode}");
 
         // Act
@@ -83,7 +83,7 @@ public class ClipboardServiceTests
         // Arrange
         JournalClipboardService service = new(_clipboard, _repository);
         A.CallTo(()
-            => _repository.GetTemplateAsync(model.Enums.EJournalContext.Weekly, A<CancellationToken>.Ignored))
+            => _repository.GetTemplateAsync(model.Enums.EJournalMode.Week, A<CancellationToken>.Ignored))
             .Returns("{EntryName}/{WorkDone}/{TaskName}/{TaskCode}");
 
         // Act
@@ -123,11 +123,11 @@ public class ClipboardServiceTests
         // Arrange
         JournalClipboardService service = new(_clipboard, _repository);
         A.CallTo(()
-            => _repository.GetTemplateAsync(model.Enums.EJournalContext.DailySingle, A<CancellationToken>.Ignored))
+            => _repository.GetTemplateAsync(model.Enums.EJournalMode.TimeEntry, A<CancellationToken>.Ignored))
             .Returns("entry name is: {InvalidPlaceHolder} and work done is: {WorkDone}");
 
         // Act
-        await service.SetDailyTimeEntryAsync(new TimeEntry
+        await service.SetTimeEntryAsync(new TimeEntry
         {
             Name = "Refactor some stuff",
             WorkDone = "a lot of works",
@@ -145,11 +145,11 @@ public class ClipboardServiceTests
         // Arrange
         JournalClipboardService service = new(_clipboard, _repository);
         A.CallTo(()
-            => _repository.GetTemplateAsync(model.Enums.EJournalContext.DailySingle, A<CancellationToken>.Ignored))
+            => _repository.GetTemplateAsync(model.Enums.EJournalMode.TimeEntry, A<CancellationToken>.Ignored))
             .Returns("task name: {TaskName}. task code: {TaskCode}. time entry name: {EntryName}. work done: {WorkDone}");
 
         // Act
-        await service.SetDailyTimeEntryAsync(new TimeEntry
+        await service.SetTimeEntryAsync(new TimeEntry
         {
             Name = string.Empty,
             WorkDone = null,

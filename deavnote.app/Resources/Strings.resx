@@ -246,4 +246,13 @@
   <data name="AskUnsavedChanges" xml:space="preserve">
     <value>You have unsaved changes. Would you like to save them before leaving?</value>
   </data>
+  <data name="JournalView_CopyWeekEntries_Tooltip" xml:space="preserve">
+    <value>Copy this week's time entries</value>
+  </data>
+  <data name="JournalView_SwitchToDayView_Tooltip" xml:space="preserve">
+    <value>Switch to day view</value>
+  </data>
+  <data name="JournalView_SwitchToWeekView_Tooltip" xml:space="preserve">
+    <value>Switch to week view</value>
+  </data>
 </root>

@@ -8,6 +8,7 @@ internal sealed partial class TimeEntryListItemViewModel : BaseViewModel
 
     public override string Identifier { get; }
     public int Id { get; }
+    public EJournalMode ViewType { get; }
 
     [ObservableProperty]
     public partial string TaskCode { get; set; }
@@ -19,13 +20,19 @@ internal sealed partial class TimeEntryListItemViewModel : BaseViewModel
     public partial string EntryName { get; set; }
 
     [ObservableProperty]
+    public partial DateOnly EntryDate { get; set; }
+
+    [ObservableProperty]
     public partial TimeSpan EntryDuration { get; set; }
 
     [ObservableProperty]
     public partial EDevTaskState TaskState { get; set; }
 
+ 
+
     public TimeEntryListItemViewModel(
         model.Entities.TimeEntry timeEntry,
+        EJournalMode journalMode,
         IClipboardService clipboard,
         INotificationService notification)
     {
@@ -39,16 +46,18 @@ internal sealed partial class TimeEntryListItemViewModel : BaseViewModel
         this.Identifier = Guid.NewGuid().ToString();
         this.TaskCode = timeEntry.DevTask.Code;
         this.TaskName = timeEntry.DevTask.Name;
-        this.EntryName = timeEntry.Name;
         this.TaskState = timeEntry.DevTask.State;
+        this.EntryName = timeEntry.Name;
+        this.EntryDate = DateOnly.FromDateTime(timeEntry.StartedAtUtc);
         this.EntryDuration = timeEntry.Duration;
+        this.ViewType = journalMode;
         this.Id = timeEntry.Id;
     }
 
     [RelayCommand]
     private async Task CopyToClipboard()
     {
-        await _clipboard.SetDailyTimeEntryAsync(_model).ConfigureAwait(false);
+        await _clipboard.SetTimeEntryAsync(_model).ConfigureAwait(false);
         _notification.Show($"[{_model.Name}] copied.", ENotificationType.Success);
     }
 }

@@ -4,7 +4,7 @@ public partial class ClipboardFormat
 {
     public int Id { get; set; }
     public required string Name { get; set; }
-    public EJournalContext Context { get; set; }
+    public EJournalMode Context { get; set; }
     public required string Template { get; set; }
     public bool IsDefault { get; set; }
     public bool IsActive { get; set; }

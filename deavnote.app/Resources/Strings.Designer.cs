@@ -331,6 +331,15 @@ namespace deavnote.app.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Copy this week&apos;s time entries.
+        /// </summary>
+        internal static string JournalView_CopyWeekEntries_Tooltip {
+            get {
+                return ResourceManager.GetString("JournalView_CopyWeekEntries_Tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Go to next day.
         /// </summary>
         internal static string JournalView_GoToNextDay_Tooltip {
@@ -354,6 +363,24 @@ namespace deavnote.app.Resources {
         internal static string JournalView_GoToToday_Tooltip {
             get {
                 return ResourceManager.GetString("JournalView_GoToToday_Tooltip", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Switch to day view.
+        /// </summary>
+        internal static string JournalView_SwitchToDayView_Tooltip {
+            get {
+                return ResourceManager.GetString("JournalView_SwitchToDayView_Tooltip", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Switch to week view.
+        /// </summary>
+        internal static string JournalView_SwitchToWeekView_Tooltip {
+            get {
+                return ResourceManager.GetString("JournalView_SwitchToWeekView_Tooltip", resourceCulture);
             }
         }
         

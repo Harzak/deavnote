@@ -15,6 +15,7 @@
     <UserControl.Resources>
         <conv:DevTaskStateToIconConverter x:Key="DevTaskStateToIconConverter" />
         <conv:DevTaskStateToColorConverter x:Key="DevTaskStateToColorConverter" />
+        <conv:JournalModeToEntryDateVisibilityConverter x:Key="JournalModeToEntryDateVisibilityConverter" />
         <conv:TimeSpanToReadableDurationConverter x:Key="TimeSpanToReadableDurationConverter" />
     </UserControl.Resources>
 
@@ -47,6 +48,12 @@
                 ToolTip.Tip="{loc:Localize Key=TimeEntryListItemView_Copy_Tooltip}">
             <ic:FluentIcon Icon="Copy" />
         </Button>
+
+        <TextBlock Grid.Row="2" Grid.Column="1"
+                   HorizontalAlignment="Center"
+                   Classes="CardLegend"
+                   IsVisible="{Binding ViewType, Converter={StaticResource JournalModeToEntryDateVisibilityConverter}}"
+                   Text="{Binding EntryDate}" />
 
         <TextBlock Grid.Row="2" Grid.Column="2"
                    HorizontalAlignment="Right"

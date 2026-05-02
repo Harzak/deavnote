@@ -14,13 +14,24 @@
              mc:Ignorable="d">
 
     <Grid Margin="5"
-          ColumnDefinitions="Auto, Auto, Auto, *, Auto, Auto" RowDefinitions="Auto,Auto, *">
+          ColumnDefinitions="Auto, Auto, Auto, *, Auto, Auto, Auto" RowDefinitions="Auto,Auto, *">
 
-        <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="6"
-                   Margin="0,5"
-                   Classes="SectionHeader"
-                   Text="{Binding DateCursor, StringFormat='{}{0:dddd dd MMM}'}"
-                   ToolTip.Tip="{Binding DateCursor, StringFormat='{}{0:d}'}" />
+        <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="7"
+                    Margin="0,5" HorizontalAlignment="Center" VerticalAlignment="Center"
+                    Orientation="Horizontal">
+            <TextBlock Margin="5,0"
+                       Classes="SectionHeader"
+                       Text="{Binding DateCursor, StringFormat='{}{0:dddd dd MMM}'}"
+                       ToolTip.Tip="{Binding DateCursor, StringFormat='{}{0:d}'}" />
+            <Button Grid.Row="0" Grid.Column="0"
+                    Classes="Icon"
+                    Command="{Binding ChangeViewTypeCommand}"
+                    ToolTip.Tip="{Binding ChangeViewTypeTooltip}">
+                <ic:FluentIcon Icon="CalendarClock" IconSize="Size16" />
+            </Button>
+        </StackPanel>
+
+
         <Button Grid.Row="1" Grid.Column="0"
                 Classes="Icon"
                 Command="{Binding MoveDateCursorToPreviousDayCommand}"
@@ -31,7 +42,7 @@
                 Classes="Icon"
                 Command="{Binding MoveDateCursorToNowCommand}"
                 ToolTip.Tip="{loc:Localize Key=JournalView_GoToToday_Tooltip}">
-            <ic:FluentIcon Icon="CalendarClock" IconSize="Size20" />
+            <ic:FluentIcon Icon="CalendarArrowCounterclockwise" IconSize="Size20" />
         </Button>
         <Button Grid.Row="1" Grid.Column="2"
                 Classes="Icon"
@@ -43,17 +54,18 @@
         <Button Grid.Row="1" Grid.Column="4"
                 Classes="Icon"
                 Command="{Binding CopyToClipboardCommand}"
-                ToolTip.Tip="{loc:Localize Key=JournalView_CopyTodayEntries_Tooltip}">
-            <ic:FluentIcon Icon="Copy" />
+                ToolTip.Tip="{Binding CopyToClipboardTooltip}">
+            <ic:FluentIcon Icon="DocumentCopy" />
         </Button>
-        <Button Grid.Row="1" Grid.Column="5"
+        <Button Grid.Row="1" Grid.Column="6"
+                Margin="15,0,0,0"
                 Classes="Icon"
                 Command="{Binding AddTimeEntryCommand}"
                 ToolTip.Tip="{loc:Localize Key=JournalView_AddTimeEntry_Tooltip}">
             <ic:FluentIcon Icon="Add" />
         </Button>
 
-        <ListBox Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="6"
+        <ListBox Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="7"
                  Classes="Journal"
                  ItemsSource="{Binding TimeEntries}"
                  SelectedItem="{Binding SelectedTimeEntry}"

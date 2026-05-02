@@ -1,6 +1,4 @@
-﻿using System.Reflection;
-
-namespace deavnote.app.ViewModels;
+﻿namespace deavnote.app.ViewModels;
 
 internal sealed partial class MainViewModel : BaseViewModel, IHostViewModel, IDisposable
 {
@@ -50,7 +48,7 @@ internal sealed partial class MainViewModel : BaseViewModel, IHostViewModel, IDi
 
         // move to app configuration 
         this.AppVersion = Assembly.GetEntryAssembly()?.GetName()?.Version?.ToStringInvariant() ?? new Version(0, 0, 0, 0).ToStringInvariant();
-        this.StoragePath = DatabasePathResolver.Resolve();
+        this.StoragePath = ApplicationEnvironment.ResolveAppDataFolder();
 
         _viewOrchestrator.ActiveViewModelChanging += OnActiveViewModelChanging;
         _viewOrchestrator.ActiveViewModelChanged += OnActiveViewModelChanged;

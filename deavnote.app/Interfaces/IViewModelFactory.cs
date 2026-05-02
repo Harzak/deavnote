@@ -8,7 +8,7 @@ namespace deavnote.app.Interfaces;
 /// </summary>
 internal interface IViewModelFactory
 {
-    TimeEntryListItemViewModel CreateTimeEntryViewModel(TimeEntry timeEntry);
+    TimeEntryListItemViewModel CreateTimeEntryViewModel(TimeEntry timeEntry, EJournalMode journalMode);
     JournalViewModel CreateJournalViewModel();
     AddTimeEntryViewModel CreateAddTimeEntryViewModel();
     SearchViewModel CreateSearchViewModel();

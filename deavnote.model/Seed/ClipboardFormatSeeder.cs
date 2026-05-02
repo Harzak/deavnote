@@ -11,7 +11,7 @@ public sealed class ClipboardFormatSeeder
         {
             Id = 1,
             Name = "Single Daily Default",
-            Context = EJournalContext.DailySingle,
+            Context = EJournalMode.TimeEntry,
             Template = "{TaskCode}-{TaskName}: {EntryName}",
             IsDefault = true,
             IsActive = true,
@@ -22,7 +22,7 @@ public sealed class ClipboardFormatSeeder
         {
             Id = 2,
             Name = "Multiple Daily Default",
-            Context = EJournalContext.DailyMultiple,
+            Context = EJournalMode.Day,
             Template = "{TaskCode}-{TaskName}: {EntryName}\n-{WorkDone}",
             IsDefault = true,
             IsActive = true,
@@ -33,7 +33,7 @@ public sealed class ClipboardFormatSeeder
         {
             Id = 3,
             Name = "Weekly Default",
-            Context = EJournalContext.Weekly,
+            Context = EJournalMode.Week,
             Template = "{TaskCode}-{TaskName}: {EntryName}",
             IsDefault = true,
             IsActive = true,

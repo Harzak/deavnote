@@ -17,7 +17,6 @@ global using deavnote.app.Resources;
 global using deavnote.app.Services;
 global using deavnote.app.EventArgs;
 global using deavnote.core.Configuration;
-global using deavnote.core.Enums;
 global using deavnote.core.EventArgs;
 global using deavnote.core.Interfaces;
 global using deavnote.model.Configuration;
@@ -41,6 +40,7 @@ global using System.Collections.ObjectModel;
 global using System.ComponentModel;
 global using System.ComponentModel.DataAnnotations;
 global using System.Globalization;
+global using System.Reflection;
 
 /// Avalonia
 global using Avalonia;

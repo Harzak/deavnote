@@ -22,10 +22,10 @@ internal sealed class ViewModelFactory : IViewModelFactory
     }
 
     /// <inheritdoc/>
-    public TimeEntryListItemViewModel CreateTimeEntryViewModel(model.Entities.TimeEntry timeEntry)
+    public TimeEntryListItemViewModel CreateTimeEntryViewModel(model.Entities.TimeEntry timeEntry, EJournalMode journalMode)
     {
         ArgumentNullException.ThrowIfNull(timeEntry);
-        return ActivatorUtilities.CreateInstance<TimeEntryListItemViewModel>(_serviceProvider, timeEntry);
+        return ActivatorUtilities.CreateInstance<TimeEntryListItemViewModel>(_serviceProvider, timeEntry, journalMode);
     }
 
     /// <inheritdoc/>

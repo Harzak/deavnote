@@ -14,7 +14,7 @@ internal sealed class ClipboardFormatRepository : IClipboardFormatRepository
     }
 
     /// <inheritdoc/>
-    public async Task<string> GetTemplateAsync(EJournalContext context, CancellationToken cancellationToken = default)
+    public async Task<string> GetTemplateAsync(EJournalMode context, CancellationToken cancellationToken = default)
     {
         using DeavnoteDbContext dbContext = await _contextFactory.CreateDbContextAsync(cancellationToken).ConfigureAwait(false);
         string? format = await dbContext.ClipboardFormats

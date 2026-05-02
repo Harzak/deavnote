@@ -13,9 +13,23 @@ internal sealed partial class JournalViewModel : BaseViewModel
     private readonly IClipboardService _clipboard;
 
     public override string Identifier { get; }
+    public string ChangeViewTypeTooltip => this.ViewType switch
+    {
+        EJournalMode.Day => Strings.JournalView_SwitchToWeekView_Tooltip,
+        EJournalMode.Week => Strings.JournalView_SwitchToDayView_Tooltip,
+        _ => throw new NotSupportedException(this.ViewType.ToString()),
+    };
+    public string CopyToClipboardTooltip => this.ViewType switch
+    {
+        EJournalMode.Day => Strings.JournalView_CopyTodayEntries_Tooltip,
+        EJournalMode.Week => Strings.JournalView_CopyWeekEntries_Tooltip,
+        _ => throw new NotSupportedException(this.ViewType.ToString()),
+    };
 
     [ObservableProperty]
-    public partial EJournalContext ViewType { get; set; }
+    [NotifyPropertyChangedFor(nameof(ChangeViewTypeTooltip))]
+    [NotifyPropertyChangedFor(nameof(CopyToClipboardTooltip))]
+    public partial EJournalMode ViewType { get; set; }
 
     [ObservableProperty]
     public partial DateOnly DateCursor { get; set; }
@@ -60,7 +74,7 @@ internal sealed partial class JournalViewModel : BaseViewModel
 
         this.Identifier = Guid.NewGuid().ToString();
         this.TimeEntries = [];
-        this.ViewType = EJournalContext.DailyMultiple;
+        this.ViewType = EJournalMode.Day;
     }
 
     public async override Task OnInitializedAsync()
@@ -114,6 +128,40 @@ internal sealed partial class JournalViewModel : BaseViewModel
     }
 
     [RelayCommand]
+    private async Task ChangeViewType(CancellationToken cancellationToken)
+    {
+        switch (this.ViewType)
+        {
+            case EJournalMode.Day:
+                await ChangeJournalMode(EJournalMode.Week, cancellationToken).ConfigureAwait(false);
+                this.ViewType = EJournalMode.Week;
+                break;
+            case EJournalMode.Week:
+                await ChangeJournalMode(EJournalMode.Day, cancellationToken).ConfigureAwait(false);
+                this.ViewType = EJournalMode.Day;
+                break;
+            default:
+                throw new NotSupportedException(this.ViewType.ToString());
+        }
+    }
+
+    [RelayCommand]
+    private async Task CopyToClipboard(CancellationToken cancellationToken)
+    {
+        switch (this.ViewType)
+        {
+            case EJournalMode.Day:
+                await _clipboard.SetDailyTimeEntriesAsync(_journal.TimeEntries, cancellationToken).ConfigureAwait(false);
+                break;
+            case EJournalMode.Week:
+                await _clipboard.SetWeeklyTimeEntriesAsync(_journal.TimeEntries, cancellationToken).ConfigureAwait(false);
+                break;
+            default:
+                throw new NotSupportedException(this.ViewType.ToString());
+        }
+        _notificationService.Show($"{_journal.TimeEntries.Count} time entries copied.", ENotificationType.Success);
+    }
+
     private async Task ChangeJournalMode(EJournalMode mode, CancellationToken cancellationToken)
     {
         JournalConfiguration configuration = mode switch
@@ -136,23 +184,6 @@ internal sealed partial class JournalViewModel : BaseViewModel
             _ => _journal.DefaultConfiguration,
         };
         await _journal.SetCursorsAsync(configuration, cancellationToken).ConfigureAwait(false);
-    }
-
-    [RelayCommand]
-    private async Task CopyToClipboard(CancellationToken cancellationToken)
-    {
-        switch (this.ViewType)
-        {
-            case EJournalContext.DailyMultiple:
-                await _clipboard.SetDailyTimeEntriesAsync(_journal.TimeEntries, cancellationToken).ConfigureAwait(false);
-                break;
-            case EJournalContext.Weekly:
-                await _clipboard.SetWeeklyTimeEntriesAsync(_journal.TimeEntries, cancellationToken).ConfigureAwait(false);
-                break;
-            default:
-                throw new NotSupportedException(this.ViewType.ToString());
-        }
-        _notificationService.Show($"{_journal.TimeEntries.Count} time entries copied.", ENotificationType.Success);
     }
 
     partial void OnSelectedTimeEntryChanged(TimeEntryListItemViewModel? value)
@@ -182,7 +213,7 @@ internal sealed partial class JournalViewModel : BaseViewModel
 
             foreach (model.Entities.TimeEntry entry in _journal.TimeEntries)
             {
-                TimeEntryListItemViewModel timeEntryViewModel = _viewModelFactory.CreateTimeEntryViewModel(entry);
+                TimeEntryListItemViewModel timeEntryViewModel = _viewModelFactory.CreateTimeEntryViewModel(entry, this.ViewType);
                 this.TimeEntries.Add(timeEntryViewModel);
             }
             if (_viewOrchestrator.ActiveViewModel != null)

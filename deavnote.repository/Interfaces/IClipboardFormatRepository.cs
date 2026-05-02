@@ -9,5 +9,5 @@ public interface IClipboardFormatRepository
     /// Asynchronously retrieves the active clipboard template for the specified journal context.
     /// </summary>
     /// <param name="context">The journal context for which to retrieve the clipboard template.</param>
-    Task<string> GetTemplateAsync(EJournalContext context, CancellationToken cancellationToken = default);
+    Task<string> GetTemplateAsync(EJournalMode context, CancellationToken cancellationToken = default);
 }
