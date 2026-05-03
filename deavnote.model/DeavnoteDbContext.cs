@@ -105,6 +105,10 @@ public sealed class DeavnoteDbContext : DbContext
 
             entity.Property(e => e.Note)
                   .HasMaxLength(4000);
+
+            entity.Property(e => e.Status)
+                  .HasConversion<string>()
+                  .HasMaxLength(50);
         });
     }
 

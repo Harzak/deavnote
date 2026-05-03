@@ -8,5 +8,5 @@ internal interface INavigationGuard
     /// <summary>
     /// Determines whether navigation from the specified source view model to the target view model is allowed.
     /// </summary>
-    Task<NavigationGuardResult> CanNavigateAsync(IEditableViewModel? from, IEditableViewModel to, NavigationContext context);
+    Task<NavigationGuardResult> CanNavigateAsync(IViewModel? from, IViewModel to, NavigationContext context);
 }

@@ -7,6 +7,8 @@ internal abstract class BaseViewModel : ObservableValidator, IViewModel
 {
     public abstract string Identifier { get; }
 
+    public virtual INavigationStateDescriptor NavigationState => EmptyNavigationStateDescriptor.Instance;
+
     /// <inheritdoc/>
     public virtual Task OnInitializedAsync()
     {
@@ -18,4 +20,5 @@ internal abstract class BaseViewModel : ObservableValidator, IViewModel
     {
         return Task.CompletedTask;
     }
+
 }

@@ -11,14 +11,14 @@ namespace deavnote.app.tests.Navigation.Guards;
 public sealed class HasUnsavedChangeGuardTests
 {
     private IDialogService _dialogService = null!;
-    private IEditableViewModel _targetViewModel = null!;
+    private IViewModel _targetViewModel = null!;
     private NavigationContext _context = null!;
 
     [TestInitialize]
     public void Initialize()
     {
         _dialogService = A.Fake<IDialogService>();
-        _targetViewModel = A.Fake<IEditableViewModel>();
+        _targetViewModel = A.Fake<IViewModel>();
         _context = new NavigationContext();
     }
 
@@ -27,7 +27,7 @@ public sealed class HasUnsavedChangeGuardTests
     {
         // Arrange
         HasUnsavedChangeGuard guard = new(_dialogService);
-        using IEditableViewModel sourceViewModel = CreateEditableViewModel(hasChanges: false);
+        IViewModel sourceViewModel = CreateViewModel(hasChanges: false);
 
         // Act
         NavigationGuardResult result = await guard.CanNavigateAsync(sourceViewModel, _targetViewModel, _context).ConfigureAwait(false);
@@ -42,10 +42,11 @@ public sealed class HasUnsavedChangeGuardTests
     {
         // Arrange
         HasUnsavedChangeGuard guard = new(_dialogService);
-        using IEditableViewModel sourceViewModel = CreateEditableViewModel(hasChanges: true);
+        IViewModel sourceViewModel = CreateViewModel(hasChanges: true);
+        INavigationStateDescriptor sourceState = sourceViewModel.NavigationState;
         A.CallTo(() => _dialogService.ShowWindowAsync(A<ConfirmationViewModel>._))
             .Returns(EConfirmationResult.Yes);
-        A.CallTo(() => sourceViewModel.TrySaveAsync(A<CancellationToken>._))
+        A.CallTo(() => sourceState.SaveChangesAsync(A<CancellationToken>._))
             .Returns(Task.FromResult(OperationResult.Success()));
 
         // Act
@@ -53,7 +54,7 @@ public sealed class HasUnsavedChangeGuardTests
 
         // Assert
         result.IsAllowed.Should().BeTrue();
-        A.CallTo(() => sourceViewModel.TrySaveAsync(A<CancellationToken>._)).MustHaveHappenedOnceExactly();
+        A.CallTo(() => sourceState.SaveChangesAsync(A<CancellationToken>._)).MustHaveHappenedOnceExactly();
     }
 
     [TestMethod]
@@ -61,7 +62,8 @@ public sealed class HasUnsavedChangeGuardTests
     {
         // Arrange
         HasUnsavedChangeGuard guard = new(_dialogService);
-        using IEditableViewModel sourceViewModel = CreateEditableViewModel(hasChanges: true);
+        IViewModel sourceViewModel = CreateViewModel(hasChanges: true);
+        INavigationStateDescriptor sourceState = sourceViewModel.NavigationState;
         A.CallTo(() => _dialogService.ShowWindowAsync(A<ConfirmationViewModel>._))
             .Returns(EConfirmationResult.No);
 
@@ -70,7 +72,7 @@ public sealed class HasUnsavedChangeGuardTests
 
         // Assert
         result.IsAllowed.Should().BeTrue();
-        A.CallTo(() => sourceViewModel.TrySaveAsync(A<CancellationToken>._)).MustNotHaveHappened();
+        A.CallTo(() => sourceState.SaveChangesAsync(A<CancellationToken>._)).MustNotHaveHappened();
     }
 
     [TestMethod]
@@ -78,7 +80,8 @@ public sealed class HasUnsavedChangeGuardTests
     {
         // Arrange
         HasUnsavedChangeGuard guard = new(_dialogService);
-        using IEditableViewModel sourceViewModel = CreateEditableViewModel(hasChanges: true);
+        IViewModel sourceViewModel = CreateViewModel(hasChanges: true);
+        INavigationStateDescriptor sourceState = sourceViewModel.NavigationState;
         A.CallTo(() => _dialogService.ShowWindowAsync(A<ConfirmationViewModel>._))
             .Returns(EConfirmationResult.Cancel);
 
@@ -87,7 +90,7 @@ public sealed class HasUnsavedChangeGuardTests
 
         // Assert
         result.IsCanceled.Should().BeTrue();
-        A.CallTo(() => sourceViewModel.TrySaveAsync(A<CancellationToken>._)).MustNotHaveHappened();
+        A.CallTo(() => sourceState.SaveChangesAsync(A<CancellationToken>._)).MustNotHaveHappened();
     }
 
     [TestMethod]
@@ -96,10 +99,11 @@ public sealed class HasUnsavedChangeGuardTests
         // Arrange
         const string errorMessage = "Save failed";
         HasUnsavedChangeGuard guard = new(_dialogService);
-        using IEditableViewModel sourceViewModel = CreateEditableViewModel(hasChanges: true);
+        IViewModel sourceViewModel = CreateViewModel(hasChanges: true);
+        INavigationStateDescriptor sourceState = sourceViewModel.NavigationState;
         A.CallTo(() => _dialogService.ShowWindowAsync(A<ConfirmationViewModel>._))
             .Returns(EConfirmationResult.Yes);
-        A.CallTo(() => sourceViewModel.TrySaveAsync(A<CancellationToken>._))
+        A.CallTo(() => sourceState.SaveChangesAsync(A<CancellationToken>._))
             .Returns(Task.FromResult(OperationResult.Failure(errorMessage)));
 
         // Act
@@ -110,10 +114,12 @@ public sealed class HasUnsavedChangeGuardTests
         result.Reason.Should().Be(errorMessage);
     }
 
-    private static IEditableViewModel CreateEditableViewModel(bool hasChanges)
+    private static IViewModel CreateViewModel(bool hasChanges)
     {
-        IEditableViewModel viewModel = A.Fake<IEditableViewModel>();
-        A.CallTo(() => viewModel.HasChanges).Returns(hasChanges);
+        INavigationStateDescriptor navigationState = A.Fake<INavigationStateDescriptor>();
+        IViewModel viewModel = A.Fake<IViewModel>();
+        A.CallTo(() => navigationState.HasUnsavedChanges).Returns(hasChanges);
+        A.CallTo(() => viewModel.NavigationState).Returns(navigationState);
         return viewModel;
     }
 }

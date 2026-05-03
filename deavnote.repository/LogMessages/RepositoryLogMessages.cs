@@ -1,4 +1,4 @@
-namespace deavnote.repository.Services;
+namespace deavnote.repository.LogMessages;
 
 /// <summary>
 /// Provides log message definitions for repository classes.

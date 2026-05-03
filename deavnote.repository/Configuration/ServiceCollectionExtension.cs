@@ -19,6 +19,7 @@ public static class ServiceCollectionExtension
         services.AddSingleton<IDevTaskRepository, DevTaskRepository>();
         services.AddSingleton<ISearchRepository, SearchRepository>();
         services.AddSingleton<IClipboardFormatRepository, ClipboardFormatRepository>();
+        services.AddSingleton<ITodoRepository, TodoRepository>();
 
         return services;
     }

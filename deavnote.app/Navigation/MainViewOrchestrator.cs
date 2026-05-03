@@ -13,7 +13,7 @@ internal sealed class MainViewOrchestrator : IViewOrchestrator
     private readonly IEnumerable<INavigationGuard> _navigationGuards;
 
     /// <inheritdoc/>
-    public IEditableViewModel? ActiveViewModel { get; private set; }
+    public IViewModel? ActiveViewModel { get; private set; }
 
     /// <inheritdoc/>
     public event EventHandler<ViewModelChangeEventArg>? ActiveViewModelChanging;
@@ -44,7 +44,14 @@ internal sealed class MainViewOrchestrator : IViewOrchestrator
     }
 
     /// <inheritdoc/>
-    public async Task<OperationResult> NavigateToAsync(IEditableViewModel viewModel, NavigationParameters? parameters = null)
+    public async Task<OperationResult> NavigateToTodoListAsync()
+    {
+        TodoListViewModel viewModel = _factory.CreateTodoListViewModel();
+        return await this.NavigateToAsync(viewModel).ConfigureAwait(false);
+    }
+
+    /// <inheritdoc/>
+    public async Task<OperationResult> NavigateToAsync(IViewModel viewModel, NavigationParameters? parameters = null)
     {
         ArgumentNullException.ThrowIfNull(viewModel);
 
@@ -67,7 +74,6 @@ internal sealed class MainViewOrchestrator : IViewOrchestrator
         if (this.ActiveViewModel != null)
         {
             await this.ActiveViewModel.OnDestroyAsync().ConfigureAwait(false);
-            this.ActiveViewModel.Dispose();
         }
 
         this.ActiveViewModel = viewModel;

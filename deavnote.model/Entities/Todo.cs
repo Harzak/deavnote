@@ -1,4 +1,6 @@
-﻿namespace deavnote.model.Entities;
+﻿using deavnote.model.Enums;
+
+namespace deavnote.model.Entities;
 
 /// <summary>
 /// Represents a to-do item with identifying information, description, and timestamps.
@@ -10,6 +12,7 @@ public partial class Todo
     public required string Name { get; set; }
     public string? Description { get; set; }
     public string? Note { get; set; }
+    public ETodoStatus Status { get; set; }
     public DateTime CreatedAtUtc { get; set; }
     public DateTime UpdatedAtUtc { get; set; }
 }

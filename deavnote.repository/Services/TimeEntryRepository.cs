@@ -80,10 +80,9 @@ internal sealed class TimeEntryRepository : ITimeEntryRepository
                 break;
         }
 
-        context.TimeEntries.Add(timeEntry);
-
         try
         {
+            await context.TimeEntries.AddAsync(timeEntry, cancellationToken).ConfigureAwait(false);
             await context.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
         }
         catch (DbUpdateException ex)

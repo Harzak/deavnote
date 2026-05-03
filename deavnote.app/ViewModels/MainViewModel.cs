@@ -14,7 +14,7 @@ internal sealed partial class MainViewModel : BaseViewModel, IHostViewModel, IDi
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(HasContent))]
-    public partial IEditableViewModel? ActiveViewModel { get; set; }
+    public partial IViewModel? ActiveViewModel { get; set; }
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(HasContent))]
@@ -69,6 +69,12 @@ internal sealed partial class MainViewModel : BaseViewModel, IHostViewModel, IDi
             this.ActiveViewModel = _viewOrchestrator.ActiveViewModel;
             this.IsBusy = false;
         });
+    }
+
+    [RelayCommand]
+    private async Task NavigateTodoList()
+    {
+        await _viewOrchestrator.NavigateToTodoListAsync().ConfigureAwait(false);
     }
 
     public void Dispose()

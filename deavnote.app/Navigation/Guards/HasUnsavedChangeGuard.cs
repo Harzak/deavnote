@@ -15,9 +15,10 @@ internal sealed class HasUnsavedChangeGuard : INavigationGuard
     }
 
     /// <inheritdoc/>
-    public async Task<NavigationGuardResult> CanNavigateAsync(IEditableViewModel? from, IEditableViewModel to, NavigationContext context)
+    public async Task<NavigationGuardResult> CanNavigateAsync(IViewModel? from, IViewModel to, NavigationContext context)
     {
-        if (from?.HasChanges == true)
+        INavigationStateDescriptor sourceState = from?.NavigationState ?? EmptyNavigationStateDescriptor.Instance;
+        if (sourceState.HasUnsavedChanges)
         {
             ConfirmationViewModel vm = new(Strings.AskUnsavedChanges);
             EConfirmationResult? result = await _dialogService.ShowWindowAsync(vm).ConfigureAwait(false);
@@ -25,7 +26,7 @@ internal sealed class HasUnsavedChangeGuard : INavigationGuard
             switch (result)
             {
                 case EConfirmationResult.Yes:
-                    OperationResult saveResult = await from.TrySaveAsync().ConfigureAwait(false);
+                    OperationResult saveResult = await sourceState.SaveChangesAsync().ConfigureAwait(false);
                     if (saveResult.IsSuccess)
                     {
                         return NavigationGuardResult.Allow();

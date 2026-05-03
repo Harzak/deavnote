@@ -230,7 +230,7 @@ internal sealed partial class JournalViewModel : BaseViewModel
             this.DateCursor = e.DateCursor;
         }));
     }
-    private void TrySyncSelectedTimeEntryWith(IEditableViewModel viewModel)
+    private void TrySyncSelectedTimeEntryWith(IViewModel viewModel)
     {
         if (viewModel is not TimeEntryDetailViewModel timeEntryDetailViewModel)
         {

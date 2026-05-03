@@ -13,6 +13,8 @@ internal abstract partial class BaseEditableViewModel<TSnapshot> : BaseViewModel
 
     public override sealed string Identifier { get; }
 
+    public override sealed INavigationStateDescriptor NavigationState { get; }
+
     public abstract string EditedElementIdentifier { get; }
 
     [ObservableProperty]
@@ -30,6 +32,7 @@ internal abstract partial class BaseEditableViewModel<TSnapshot> : BaseViewModel
         _notificationService = notificationService;
 
         this.Identifier = Guid.NewGuid().ToString();
+        this.NavigationState = new EditableNavigationStateDescriptor(() => this.HasChanges, this.TrySaveAsync);
         base.PropertyChanged += OnPropertyChanged;
     }
 
@@ -120,6 +123,12 @@ internal abstract partial class BaseEditableViewModel<TSnapshot> : BaseViewModel
             _disposed = true;
         }
         base.PropertyChanged -= OnPropertyChanged;
+    }
+
+    public override Task OnDestroyAsync()
+    {
+        this.Dispose();
+        return Task.CompletedTask;
     }
 
     public void Dispose()

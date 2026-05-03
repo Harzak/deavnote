@@ -2,9 +2,9 @@
 
 internal class ViewModelChangeEventArg : System.EventArgs
 {
-    public IEditableViewModel ViewModel { get; private set; }
+    public IViewModel ViewModel { get; private set; }
 
-    public ViewModelChangeEventArg(IEditableViewModel viewModel)
+    public ViewModelChangeEventArg(IViewModel viewModel)
     {
         this.ViewModel = viewModel;
     }

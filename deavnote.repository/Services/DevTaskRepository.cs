@@ -40,7 +40,7 @@ internal sealed class DevTaskRepository : IDevTaskRepository
         using DeavnoteDbContext context = await _contextFactory.CreateDbContextAsync(cancellationToken).ConfigureAwait(false);
 
         return await context.DevTasks
-          .Where(e => e.Id == id)
+          .Where(x => x.Id == id)
           .AsNoTracking()
           .FirstOrDefaultAsync(cancellationToken)
           .ConfigureAwait(false);
@@ -54,7 +54,7 @@ internal sealed class DevTaskRepository : IDevTaskRepository
         using DeavnoteDbContext context = await _contextFactory.CreateDbContextAsync(cancellationToken).ConfigureAwait(false);
 
         DevTask? existingTask = await context.DevTasks
-            .Where(e => e.Id == request.Id)
+            .Where(x => x.Id == request.Id)
             .FirstOrDefaultAsync(cancellationToken)
             .ConfigureAwait(false);
 
@@ -76,7 +76,7 @@ internal sealed class DevTaskRepository : IDevTaskRepository
         catch (DbUpdateException ex)
         {
             RepositoryLogMessages.LogFailedToUpdateDevTask(_logger, request.Id, ex);
-            return OperationResult.Failure($"Failed to update development task: {ex.InnerException?.Message}");
+            return OperationResult.Failure($"Failed to update development task");
         }
 
         return OperationResult.Success();
