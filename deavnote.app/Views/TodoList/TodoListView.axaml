@@ -1,0 +1,90 @@
+﻿<UserControl x:Class="deavnote.app.Views.TodoList.TodoListView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:ic="using:FluentIcons.Avalonia"
+             xmlns:loc="using:deavnote.app.Localization"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewmodels="using:deavnote.app.ViewModels.TodoList"
+             d:DesignHeight="800"
+             d:DesignWidth="400"
+             x:DataType="viewmodels:TodoListViewModel"
+             mc:Ignorable="d">
+    <ScrollViewer HorizontalScrollBarVisibility="Disabled">
+        <Grid Margin="25,10"
+              RowDefinitions="Auto, *, *" RowSpacing="15">
+
+            <Button Grid.Row="0"
+                    HorizontalAlignment="Right"
+                    Classes="Icon"
+                    Command="{Binding AddTodoItemCommand}"
+                    ToolTip.Tip="{loc:Localize Key=Common_Add}">
+                <ic:FluentIcon Icon="Add" IconSize="Size16" />
+            </Button>
+
+            <ListBox Grid.Row="1"
+                     Classes="TodoList"
+                     ItemsSource="{Binding TodoItemsInProgress}"
+                     SelectionMode="Single">
+                <ListBox.ItemContainerTheme>
+                    <ControlTheme TargetType="ListBoxItem">
+                        <Setter Property="Template">
+                            <ControlTemplate>
+                                <ContentPresenter Padding="{TemplateBinding Padding}"
+                                                  HorizontalAlignment="Stretch"
+                                                  Content="{TemplateBinding Content}"
+                                                  ContentTemplate="{TemplateBinding ContentTemplate}" />
+                            </ControlTemplate>
+                        </Setter>
+                    </ControlTheme>
+                </ListBox.ItemContainerTheme>
+                <ListBox.ItemTemplate>
+                    <DataTemplate DataType="viewmodels:TodoListItemViewModel">
+                        <Grid ColumnDefinitions="Auto, *" ColumnSpacing="10">
+                            <CheckBox Grid.Column="0"
+                                      VerticalAlignment="Center"
+                                      Command="{Binding SetCompletedCommand}"
+                                      IsChecked="{Binding IsCompleted}" />
+                            <TextBox Grid.Column="1"
+                                     AcceptsReturn="True" Classes="NoBackground"
+                                     Text="{Binding Note}" />
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+
+            <ListBox Grid.Row="2"
+                     Classes="TodoList"
+                     ItemsSource="{Binding TodoItemsCompleted}"
+                     SelectionMode="Single">
+                <ListBox.ItemContainerTheme>
+                    <ControlTheme TargetType="ListBoxItem">
+                        <Setter Property="Template">
+                            <ControlTemplate>
+                                <ContentPresenter Padding="{TemplateBinding Padding}"
+                                                  HorizontalAlignment="Stretch"
+                                                  Content="{TemplateBinding Content}"
+                                                  ContentTemplate="{TemplateBinding ContentTemplate}" />
+                            </ControlTemplate>
+                        </Setter>
+                    </ControlTheme>
+                </ListBox.ItemContainerTheme>
+                <ListBox.ItemTemplate>
+                    <DataTemplate DataType="viewmodels:TodoListItemViewModel">
+                        <Grid ColumnDefinitions="Auto, *" ColumnSpacing="10">
+                            <CheckBox Grid.Column="0"
+                                      VerticalAlignment="Center"
+                                      Classes="Disabled"
+                                      Command="{Binding SetCompletedCommand}"
+                                      IsChecked="{Binding IsCompleted}" />
+                            <TextBox Grid.Column="1"
+                                     AcceptsReturn="True" Classes="NoBackground Disabled"
+                                     Text="{Binding Note}" />
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+
+        </Grid>
+    </ScrollViewer>
+</UserControl>

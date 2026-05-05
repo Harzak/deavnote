@@ -95,7 +95,7 @@ internal sealed partial class TodoListViewModel : BaseViewModel, ITodoHost
                 TodoListItemViewModel? toRemove = this.TodoItemsCompleted.FirstOrDefault(x => x.Identifier.EqualsOrdinalIgnoreCase(item.Id.ToStringInvariant()));
                 if (toRemove != null)
                 {
-                    this.RemoveInProgressItem(toRemove);
+                    this.RemoveCompletedItem(toRemove);
                     this.AddInProgressItem(item);
                 }
             }

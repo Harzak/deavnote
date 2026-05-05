@@ -26,17 +26,13 @@ internal sealed partial class TodoListItemViewModel : BaseViewModel
         this.Note = model.Note;
     }
 
-
-
     [RelayCommand]
-    private async Task SetCompletedAsync(bool isCompleted)
+    private async Task SetCompletedAsync()
     {
-        _model.Status = isCompleted
+        _model.Status = this.IsCompleted
             ? ETodoStatus.Completed
             : ETodoStatus.InProgress;
         await _host.OnStateChangedAsync(_model).ConfigureAwait(false);
-
-        this.IsCompleted = isCompleted;
     }
 
     [RelayCommand]
