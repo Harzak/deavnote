@@ -8,6 +8,7 @@
              xmlns:ic="using:FluentIcons.Avalonia"
              xmlns:loc="using:deavnote.app.Localization"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:md="clr-namespace:LiveMarkdown.Avalonia;assembly=LiveMarkdown.Avalonia"
              xmlns:viewmodels="using:deavnote.app.ViewModels.TimeEntry"
              d:DesignHeight="450"
              d:DesignWidth="800"
@@ -52,12 +53,9 @@
                 </Button>
             </StackPanel>
 
-            <TextBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"
-                     Height="300"
-                     Margin="20,20,20,0"
-                     AcceptsReturn="True"
-                     PlaceholderText="{loc:Localize Key=TimeEntryDetailView_WorkDone_Placeholder}"
-                     Text="{Binding WorkDone}" />
+            <ctrl:MarkdownTextBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"
+                                  Margin="20,20,20,0"
+                                  Text="{Binding WorkDone}" />
 
             <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3"
                         Margin="20,0" HorizontalAlignment="Right"
