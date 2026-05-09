@@ -17,6 +17,7 @@ global using deavnote.app.Navigation.Guards;
 global using deavnote.app.Navigation.States;
 global using deavnote.app.Resources;
 global using deavnote.app.Services;
+global using deavnote.app.Factories;
 global using deavnote.app.EventArgs;
 global using deavnote.core.Configuration;
 global using deavnote.core.EventArgs;
@@ -33,6 +34,7 @@ global using deavnote.utils.Configuration;
 global using deavnote.utils.Interfaces;
 global using deavnote.utils.Results;
 global using deavnote.utils.Extensions;
+global using deavnote.utils.Actions;
 
 /// .NET
 global using System.Linq;

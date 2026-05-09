@@ -4,9 +4,10 @@ using LiveMarkdown.Avalonia;
 
 namespace deavnote.app.Controls;
 
-internal partial class MarkdownTextBox : UserControl
+internal partial class MarkdownTextBox : UserControl, IDisposable
 {
     private readonly ObservableStringBuilder _markdownBuilder;
+    private readonly DebounceAction _affectTextProperty;
     private EMarkdownTextBoxMode _currentMode;
 
     public static readonly StyledProperty<string> TextProperty =
@@ -23,6 +24,9 @@ internal partial class MarkdownTextBox : UserControl
         InitializeComponent();
 
         _markdownBuilder = new ObservableStringBuilder();
+        _affectTextProperty = new DebounceAction(
+            action: () => Dispatcher.UIThread.Post(() => this.Text = this.MarkdownTexBox.Text ?? string.Empty),
+            delayMs: 500);
 
         this.ViewModeButton.Click +=OnViewModeButtonClick;
         this.EditModeButton.Click += OnEditModeButtonClick;
@@ -44,20 +48,14 @@ internal partial class MarkdownTextBox : UserControl
         if (change.Property == TextProperty)
         {
             this.MarkdownTexBox.Text = change.GetNewValue<string>();
+            _markdownBuilder.Clear();
             _markdownBuilder.Append(change.GetNewValue<string>());
         }
     }
 
     private void OnMarkdownTexBoxTextChanged(object? sender, TextChangedEventArgs e)
     {
-        // implement throttle
-        this.Text = this.MarkdownTexBox.Text ?? string.Empty;
-
-        if (_currentMode == EMarkdownTextBoxMode.Split)
-        {
-            _markdownBuilder.Clear();
-            _markdownBuilder.Append(this.Text);
-        }
+        _affectTextProperty.Execute();
     }
 
     private void OnEditModeButtonClick(object? sender, RoutedEventArgs e)
@@ -124,4 +122,8 @@ internal partial class MarkdownTextBox : UserControl
         }
     }
 
+    public void Dispose()
+    {
+        _affectTextProperty?.Dispose();
+    }
 }
