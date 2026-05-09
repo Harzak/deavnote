@@ -8,7 +8,7 @@ internal sealed partial class TimeEntryDetailViewModel
     private readonly IViewModelFactory _factory;
     private readonly model.Entities.TimeEntry _model;
 
-    public override string EditedElementIdentifier { get; } 
+    public override string EditedElementIdentifier { get; }
     public DateTime CreatedAt => _model.CreatedAtUtc;
     public DateTime UpdatedAt => _model.UpdatedAtUtc;
 
