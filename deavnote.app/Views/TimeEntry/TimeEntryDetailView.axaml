@@ -8,12 +8,12 @@
              xmlns:ic="using:FluentIcons.Avalonia"
              xmlns:loc="using:deavnote.app.Localization"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:md="clr-namespace:LiveMarkdown.Avalonia;assembly=LiveMarkdown.Avalonia"
              xmlns:viewmodels="using:deavnote.app.ViewModels.TimeEntry"
              d:DesignHeight="450"
              d:DesignWidth="800"
              x:DataType="viewmodels:TimeEntryDetailViewModel"
              mc:Ignorable="d">
+
     <UserControl.Resources>
         <conv:DateTimeOffsetUtcToLocal x:Key="DateTimeOffsetUtcToLocal" />
         <conv:DateTimeUtcToLocal x:Key="DateTimeUtcToLocal" />

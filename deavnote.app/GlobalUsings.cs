@@ -19,6 +19,7 @@ global using deavnote.app.Resources;
 global using deavnote.app.Services;
 global using deavnote.app.Factories;
 global using deavnote.app.EventArgs;
+global using deavnote.app.Commands;
 global using deavnote.core.Configuration;
 global using deavnote.core.EventArgs;
 global using deavnote.core.Interfaces;

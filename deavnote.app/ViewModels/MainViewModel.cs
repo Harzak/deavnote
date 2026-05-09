@@ -54,12 +54,15 @@ internal sealed partial class MainViewModel : BaseViewModel, IHostViewModel, IDi
         _viewOrchestrator.ActiveViewModelChanged += OnActiveViewModelChanged;
     }
 
+    [RelayCommand]
+    private async Task NavigateTodoList()
+    {
+        await _viewOrchestrator.NavigateToTodoListAsync().ConfigureAwait(false);
+    }
+
     private void OnActiveViewModelChanging(object? sender, ViewModelChangeEventArg e)
     {
-        Dispatcher.UIThread.Invoke(() =>
-        {
-            this.IsBusy = true;
-        });
+        Dispatcher.UIThread.Invoke(() => this.IsBusy = true);
     }
 
     private void OnActiveViewModelChanged(object? sender, ViewModelChangeEventArg e)
@@ -69,12 +72,6 @@ internal sealed partial class MainViewModel : BaseViewModel, IHostViewModel, IDi
             this.ActiveViewModel = _viewOrchestrator.ActiveViewModel;
             this.IsBusy = false;
         });
-    }
-
-    [RelayCommand]
-    private async Task NavigateTodoList()
-    {
-        await _viewOrchestrator.NavigateToTodoListAsync().ConfigureAwait(false);
     }
 
     public void Dispose()

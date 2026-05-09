@@ -2,13 +2,27 @@
              xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:enums="using:deavnote.app.Enums"
              xmlns:ic="using:FluentIcons.Avalonia"
              xmlns:loc="using:deavnote.app.Localization"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:md="clr-namespace:LiveMarkdown.Avalonia;assembly=LiveMarkdown.Avalonia"
+             x:Name="Root"
              d:DesignHeight="450"
              d:DesignWidth="800"
              mc:Ignorable="d">
+
+    <UserControl.KeyBindings>
+        <KeyBinding Command="{Binding #Root.ChangeWorkDoneTexBoxModeCommand}"
+                    CommandParameter="{x:Static enums:EMarkdownTextBoxMode.Edit}"
+                    Gesture="Ctrl+E" />
+        <KeyBinding Command="{Binding #Root.ChangeWorkDoneTexBoxModeCommand}"
+                    CommandParameter="{x:Static enums:EMarkdownTextBoxMode.Split}"
+                    Gesture="Ctrl+I" />
+        <KeyBinding Command="{Binding #Root.ChangeWorkDoneTexBoxModeCommand}"
+                    CommandParameter="{x:Static enums:EMarkdownTextBoxMode.View}"
+                    Gesture="Ctrl+P" />
+    </UserControl.KeyBindings>
 
     <Grid RowDefinitions="Auto, *">
         <Grid.ColumnDefinitions>

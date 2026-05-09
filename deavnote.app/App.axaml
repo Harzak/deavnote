@@ -44,4 +44,5 @@
         <StyleInclude Source="avares://LiveMarkdown.Avalonia/Styles.axaml" />
         <FluentTheme />
     </Application.Styles>
+
 </Application>

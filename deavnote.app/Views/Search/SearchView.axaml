@@ -19,7 +19,8 @@
     </UserControl.Resources>
 
     <Grid Margin="5" ColumnDefinitions="*">
-        <ctrl:SearchBox Grid.Column="0"
+        <ctrl:SearchBox x:Name="SearchBox"
+                        Grid.Column="0"
                         VerticalAlignment="Center"
                         ClearCommand="{Binding ClearSearchTermsCommand}"
                         IsDropDownOpen="{Binding HasResults}"

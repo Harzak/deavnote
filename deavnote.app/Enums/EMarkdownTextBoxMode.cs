@@ -6,4 +6,3 @@ internal enum EMarkdownTextBoxMode
     View,
     Split,
 }
-

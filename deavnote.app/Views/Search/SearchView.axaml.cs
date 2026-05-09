@@ -6,4 +6,9 @@ internal sealed partial class SearchView : UserControl
     {
         InitializeComponent();
     }
+
+    internal void FocusSearch()
+    {
+        this.SearchBox.FocusSearch();
+    }
 }

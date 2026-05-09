@@ -278,4 +278,9 @@ internal sealed class SearchBox : TemplatedControl
             _listBox.SelectedIndex = -1;
         }
     }
+
+    internal void FocusSearch()
+    {
+        _textBox?.Focus();
+    }
 }

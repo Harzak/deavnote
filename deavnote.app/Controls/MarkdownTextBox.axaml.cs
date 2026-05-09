@@ -1,6 +1,7 @@
 using Avalonia.Data;
 using Avalonia.Interactivity;
 using LiveMarkdown.Avalonia;
+using System.Windows.Input;
 
 namespace deavnote.app.Controls;
 
@@ -13,6 +14,8 @@ internal partial class MarkdownTextBox : UserControl, IDisposable
     public static readonly StyledProperty<string> TextProperty =
         AvaloniaProperty.Register<MarkdownTextBox, string>(nameof(Text), defaultValue: string.Empty, defaultBindingMode: BindingMode.TwoWay);
 
+    public ICommand ChangeWorkDoneTexBoxModeCommand { get; }
+
     public string Text
     {
         get => this.GetValue(TextProperty);
@@ -21,6 +24,7 @@ internal partial class MarkdownTextBox : UserControl, IDisposable
 
     public MarkdownTextBox()
     {
+        this.ChangeWorkDoneTexBoxModeCommand = new ChangeMarkdownTextBoxModeCommand(this);
         InitializeComponent();
 
         _markdownBuilder = new ObservableStringBuilder();
@@ -73,7 +77,7 @@ internal partial class MarkdownTextBox : UserControl, IDisposable
         this.ChangeMode(EMarkdownTextBoxMode.Split);
     }
 
-    private void ChangeMode(EMarkdownTextBoxMode mode)
+    internal void ChangeMode(EMarkdownTextBoxMode mode)
     {
         if (_currentMode == mode) return;
         _currentMode = mode;
@@ -85,6 +89,7 @@ internal partial class MarkdownTextBox : UserControl, IDisposable
                 this.MarkdownRenderer.IsVisible = false;
                 this.MarkdownTexBox.IsVisible = true;
                 this.ViewSplitter.IsVisible = false;
+                this.MarkdownTexBox.Focus();
 
                 Grid.SetColumn(this.MarkdownTexBox, 0);
                 Grid.SetColumnSpan(this.MarkdownTexBox, 3);
@@ -94,6 +99,7 @@ internal partial class MarkdownTextBox : UserControl, IDisposable
                 this.MarkdownRenderer.IsVisible = true;
                 this.MarkdownTexBox.IsVisible = false;
                 this.ViewSplitter.IsVisible = false;
+                this.MarkdownRenderer.Focus();
 
                 Grid.SetColumn(this.MarkdownRenderer, 0);
                 Grid.SetColumnSpan(this.MarkdownRenderer, 3);
@@ -105,6 +111,7 @@ internal partial class MarkdownTextBox : UserControl, IDisposable
                 this.MarkdownRenderer.IsVisible = true;
                 this.MarkdownTexBox.IsVisible = true;
                 this.ViewSplitter.IsVisible = true;
+                this.MarkdownTexBox.Focus();
 
                 Grid.SetColumn(this.MarkdownTexBox, 0);
                 Grid.SetColumnSpan(this.MarkdownTexBox, 1);
