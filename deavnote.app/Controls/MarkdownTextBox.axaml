@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:ic="using:FluentIcons.Avalonia"
+             xmlns:loc="using:deavnote.app.Localization"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:md="clr-namespace:LiveMarkdown.Avalonia;assembly=LiveMarkdown.Avalonia"
              d:DesignHeight="450"
@@ -16,16 +17,28 @@
             <ColumnDefinition Width="*" MinWidth="80" />
         </Grid.ColumnDefinitions>
         <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3"
-                    Margin="20,0" HorizontalAlignment="Right" VerticalAlignment="Center"
-                    Orientation="Horizontal" Spacing="20">
-            <Button x:Name="EditModeButton" Classes="Icon">
-                <ic:FluentIcon Icon="Edit" IconSize="Size16" />
+                    Margin="5,5" HorizontalAlignment="Left" VerticalAlignment="Center"
+                    Orientation="Horizontal" Spacing="10">
+            <Button x:Name="EditModeButton"
+                    Classes="Icon"
+                    ToolTip.Tip="{loc:Localize Key=MarkdownTextBox_Edit_Tooltip}">
+                <ic:FluentIcon FontSize="18"
+                               Foreground="{StaticResource White3}"
+                               Icon="DocumentEdit" />
             </Button>
-            <Button x:Name="SplitModeButton" Classes="Icon">
-                <ic:FluentIcon Icon="SplitVertical" IconSize="Size16" />
+            <Button x:Name="SplitModeButton"
+                    Classes="Icon"
+                    ToolTip.Tip="{loc:Localize Key=MarkdownTextBox_SplitView_Tooltip}">
+                <ic:FluentIcon FontSize="18"
+                               Foreground="{StaticResource White3}"
+                               Icon="SplitVertical" />
             </Button>
-            <Button x:Name="ViewModeButton" Classes="Icon">
-                <ic:FluentIcon Icon="Eye" IconSize="Size16" />
+            <Button x:Name="ViewModeButton"
+                    Classes="Icon"
+                    ToolTip.Tip="{loc:Localize Key=MarkdownTextBox_Preview_Tooltip}">
+                <ic:FluentIcon FontSize="18"
+                               Foreground="{StaticResource White3}"
+                               Icon="DocumentSearch" />
             </Button>
         </StackPanel>
 

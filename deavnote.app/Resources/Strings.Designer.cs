@@ -376,6 +376,33 @@ namespace deavnote.app.Resources {
         }
 
         /// <summary>
+        ///   Looks up a localized string similar to Edit.
+        /// </summary>
+        internal static string MarkdownTextBox_Edit_Tooltip {
+            get {
+                return ResourceManager.GetString("MarkdownTextBox_Edit_Tooltip", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Split view.
+        /// </summary>
+        internal static string MarkdownTextBox_SplitView_Tooltip {
+            get {
+                return ResourceManager.GetString("MarkdownTextBox_SplitView_Tooltip", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Preview.
+        /// </summary>
+        internal static string MarkdownTextBox_Preview_Tooltip {
+            get {
+                return ResourceManager.GetString("MarkdownTextBox_Preview_Tooltip", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Looks up a localized string similar to Switch to week view.
         /// </summary>
         internal static string JournalView_SwitchToWeekView_Tooltip {
