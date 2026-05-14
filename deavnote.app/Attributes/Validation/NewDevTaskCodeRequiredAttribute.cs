@@ -4,8 +4,9 @@
 internal sealed class NewDevTaskCodeRequiredAttribute : LocalizedValidationAttribute
 {
     public NewDevTaskCodeRequiredAttribute()
+        :base("AddTimeEntryViewModel_NewTaskCode_Required")
     {
-        base.ErrorMessageResourceName = "AddTimeEntryViewModel_NewTaskCode_Required";
+
     }
 
     protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)

@@ -21,7 +21,7 @@ public class DevTaskDetailViewModelTests
     }
 
     [TestMethod]
-    public async Task Properties_WhenRequires_ShouldPreventSaving()
+    public async Task Properties_WhenRequired_ShouldPreventSaving()
     {
         // Arrange
         model.Entities.DevTask model = new()
@@ -31,10 +31,10 @@ public class DevTaskDetailViewModelTests
             Code = "Test",
             Description = "Initial description.",
         };
-
-        // Act
         using DevTaskDetailViewModel viewModel = new(model, isReadonly: false, _repository, _notificationService);
         await viewModel.OnInitializedAsync().ConfigureAwait(false);
+
+        // Act
         viewModel.Name = "";
 
         // Assert
@@ -56,10 +56,10 @@ public class DevTaskDetailViewModelTests
             Code = "Test",
             Description = "Initial description.",
         };
-
-        // Act
         using DevTaskDetailViewModel viewModel = new(model, isReadonly: false, _repository, _notificationService);
         await viewModel.OnInitializedAsync().ConfigureAwait(false);
+
+        // Act
         viewModel.Description += " Additional description.";
 
         // Assert
@@ -81,10 +81,10 @@ public class DevTaskDetailViewModelTests
         };
         A.CallTo(() => _repository.UpdateTaskAsync(A<UpdateDevTaskRequest>._, A<CancellationToken>._))
             .Returns(Task.FromResult(OperationResult.Success()));
-
-        // Act
         using DevTaskDetailViewModel viewModel = new(model, isReadonly: false, _repository, _notificationService);
         await viewModel.OnInitializedAsync().ConfigureAwait(false);
+
+        // Act
         viewModel.Description += " Additional description.";
         await viewModel.SaveCommand.ExecuteAsync(parameter: null).ConfigureAwait(false);
 
@@ -113,10 +113,10 @@ public class DevTaskDetailViewModelTests
             Code = "Test",
             Description = "Initial description.",
         };
-
-        // Act
         using DevTaskDetailViewModel viewModel = new(model, isReadonly: false, _repository, _notificationService);
         await viewModel.OnInitializedAsync().ConfigureAwait(false);
+
+        // Act
         viewModel.Description += " Additional description.";
         viewModel.CancelCommand.Execute(parameter: null);
 
@@ -138,11 +138,11 @@ public class DevTaskDetailViewModelTests
             Code = "Test",
             Description = "Initial description.",
         };
-
-        // Act
         using DevTaskDetailViewModel viewModel = new(model, isReadonly: false, _repository, _notificationService);
         await viewModel.OnInitializedAsync().ConfigureAwait(false);
         const string text = " Additional description.";
+
+        // Act
         viewModel.Description += text;
         viewModel.Description = viewModel.Description.Replace(text, "", StringComparison.OrdinalIgnoreCase);
 

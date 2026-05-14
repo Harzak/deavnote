@@ -65,6 +65,7 @@ internal sealed partial class AddTimeEntryViewModel : DialogViewModel<AddTimeEnt
         this.SearchTaskCode = string.Empty;
         this.SearchTaskName = string.Empty;
         this.EntryName = string.Empty;
+        this.EntryTaskLink = ETimeEntryCreationTaskLink.None;
 
         base.ClearErrors();
     }

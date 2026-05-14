@@ -4,8 +4,9 @@
 internal sealed class PositiveDurationAttribute : LocalizedValidationAttribute
 {
     public PositiveDurationAttribute()
+        :base("AddTimeEntryViewModel_EntryDuration_Positive")
     {
-        base.ErrorMessageResourceName = "AddTimeEntryViewModel_EntryDuration_Positive";
+
     }
 
     protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)

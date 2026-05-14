@@ -20,7 +20,7 @@ public class TimeEntryDetailViewModelTests
     }
 
     [TestMethod]
-    public async Task Properties_WhenRequires_ShouldPreventSaving()
+    public async Task Properties_WhenRequired_ShouldPreventSaving()
     {
         // Arrange
         model.Entities.TimeEntry model = new()
@@ -37,10 +37,10 @@ public class TimeEntryDetailViewModelTests
                 Code = "TT-001",
             },
         };
-
-        // Act
         using TimeEntryDetailViewModel viewModel = new(model, _journal, _factory, _notificationService);
         await viewModel.OnInitializedAsync().ConfigureAwait(false);
+
+        // Act
         viewModel.Name = "";
 
         // Assert
@@ -69,10 +69,10 @@ public class TimeEntryDetailViewModelTests
                 Code = "TT-001",
             },
         };
-
-        // Act
         using TimeEntryDetailViewModel viewModel = new(model, _journal, _factory, _notificationService);
         await viewModel.OnInitializedAsync().ConfigureAwait(false);
+
+        // Act
         viewModel.WorkDone += " Additional work done.";
 
         // Assert
@@ -101,10 +101,10 @@ public class TimeEntryDetailViewModelTests
         };
         A.CallTo(() => _journal.UpdateEntryAsync(A<UpdateTimeEntryRequest>._, A<CancellationToken>._))
             .Returns(Task.FromResult(OperationResult.Success()));
-
-        // Act
         using TimeEntryDetailViewModel viewModel = new(model, _journal, _factory, _notificationService);
         await viewModel.OnInitializedAsync().ConfigureAwait(false);
+
+        // Act
         viewModel.WorkDone += " Additional work done.";
         await viewModel.SaveCommand.ExecuteAsync(parameter: null).ConfigureAwait(false);
 
@@ -142,10 +142,10 @@ public class TimeEntryDetailViewModelTests
                 Code = "TT-001",
             },
         };
-
-        // Act
         using TimeEntryDetailViewModel viewModel = new(model, _journal, _factory, _notificationService);
         await viewModel.OnInitializedAsync().ConfigureAwait(false);
+
+        // Act
         viewModel.WorkDone += " Additional work done.";
         viewModel.CancelCommand.Execute(parameter: null);
 
@@ -174,10 +174,10 @@ public class TimeEntryDetailViewModelTests
                 Code = "TT-001",
             },
         };
-
-        // Act
         using TimeEntryDetailViewModel viewModel = new(model, _journal, _factory, _notificationService);
         await viewModel.OnInitializedAsync().ConfigureAwait(false);
+
+        // Act
         const string text = " Additional work done.";
         viewModel.WorkDone += text;
         viewModel.WorkDone = viewModel.WorkDone.Replace(text, "", StringComparison.OrdinalIgnoreCase);
