@@ -56,4 +56,9 @@ internal sealed class ViewModelFactory : IViewModelFactory
     {
         return ActivatorUtilities.CreateInstance<TodoListViewModel>(_serviceProvider);
     }
+
+    public SettingsViewModel CreateSettingsViewModel()
+    {
+        return ActivatorUtilities.CreateInstance<SettingsViewModel>(_serviceProvider);
+    }
 }

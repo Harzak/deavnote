@@ -37,7 +37,8 @@ internal sealed class DialogService : IDialogService
 
         dialog.Closed += (_, _) => tcs.TrySetResult(default);
 
-        var e = await dialog.ShowDialog<TResult>(owner).ConfigureAwait(false);
+        await viewModel.OnInitializedAsync().ConfigureAwait(false);
+        await dialog.ShowDialog<TResult>(owner).ConfigureAwait(false);
 
         return await tcs.Task.ConfigureAwait(false);
     }

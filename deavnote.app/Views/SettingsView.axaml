@@ -1,0 +1,82 @@
+﻿<UserControl x:Class="deavnote.app.Views.SettingsView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:loc="using:deavnote.app.Localization"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewmodels="using:deavnote.app.ViewModels"
+             d:DesignHeight="600"
+             d:DesignWidth="650"
+             x:DataType="viewmodels:SettingsViewModel"
+             Background="{StaticResource Grey1}"
+             mc:Ignorable="d">
+
+    <Grid MinWidth="600"
+          Margin="10"
+          RowDefinitions="Auto, Auto, Auto" RowSpacing="15">
+
+        <Border Grid.Row="0"
+                Padding="10"
+                BorderBrush="{StaticResource Grey5}"
+                BorderThickness="1" CornerRadius="2">
+            <Grid ColumnDefinitions="Auto, *" RowDefinitions="Auto,Auto">
+
+                <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
+                           Classes="Title"
+                           Text="{loc:Localize Key=SettingsView_GeneralSettings_GeneralHeader}" />
+
+                <TextBlock Grid.Row="1" Grid.Column="0"
+                           Margin="10" VerticalAlignment="Center"
+                           Text="{loc:Localize Key=SettingsView_GeneralSettings_LanguageHeader}" />
+                <ComboBox Grid.Row="1" Grid.Column="1"
+                          MinWidth="150"
+                          VerticalAlignment="Center"
+                          SelectedIndex="0">
+                    <ComboBoxItem Content="English" />
+                </ComboBox>
+
+            </Grid>
+        </Border>
+
+        <Border Grid.Row="1"
+                Padding="10"
+                BorderBrush="{StaticResource Grey5}"
+                BorderThickness="1" CornerRadius="2">
+            <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto" RowSpacing="10">
+
+                <TextBlock Grid.Row="0"
+                           Classes="Title"
+                           Text="{loc:Localize Key=SettingsView_TemplateSettings_Header}" />
+
+                <TextBlock Grid.Row="1" Text="{loc:Localize Key=SettingsView_TemplateSettings_TimeEntry}" />
+                <TextBox Grid.Row="2"
+                         MinHeight="70"
+                         Margin="0,0,0,10"
+                         AcceptsReturn="True"
+                         Text="{Binding ClipboardTemplateTimeEntry}" />
+
+                <TextBlock Grid.Row="3" Text="{loc:Localize Key=SettingsView_TemplateSettings_Day}" />
+                <TextBox Grid.Row="4"
+                         MinHeight="70"
+                         Margin="0,0,0,10"
+                         AcceptsReturn="True"
+                         Text="{Binding ClipboardTemplateDay}" />
+
+                <TextBlock Grid.Row="5" Text="{loc:Localize Key=SettingsView_TemplateSettings_Week}" />
+                <TextBox Grid.Row="6"
+                         MinHeight="70"
+                         AcceptsReturn="True"
+                         Text="{Binding ClipboardTemplateWeek}" />
+
+            </Grid>
+        </Border>
+
+        <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
+                    HorizontalAlignment="Right"
+                    Orientation="Horizontal" Spacing="8">
+            <Button Command="{Binding ConfirmCommand}" Content="{loc:Localize Key=Common_Save}" />
+            <Button Command="{Binding CancelCommand}" Content="{loc:Localize Key=Common_Cancel}" />
+        </StackPanel>
+
+    </Grid>
+</UserControl>

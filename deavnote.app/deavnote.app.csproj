@@ -52,6 +52,9 @@
 	    <AutoGen>True</AutoGen>
 	    <DependentUpon>Strings.resx</DependentUpon>
 	  </Compile>
+	  <Compile Update="Views\SettingsView.axaml.cs">
+	    <DependentUpon>SettingsView.axaml</DependentUpon>
+	  </Compile>
 	  <Compile Update="Views\ConfirmationView.axaml.cs">
 	    <DependentUpon>ConfirmationView.axaml</DependentUpon>
 	  </Compile>

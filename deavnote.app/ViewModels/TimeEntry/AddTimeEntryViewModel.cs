@@ -111,7 +111,10 @@ internal sealed partial class AddTimeEntryViewModel : DialogViewModel<AddTimeEnt
     }
 
     [RelayCommand]
-    private void Cancel() => base.Close(result: null);
+    private void Cancel()
+    {
+        base.Close(result: null);
+    }
     #endregion
 
     #region Property Change Handlers

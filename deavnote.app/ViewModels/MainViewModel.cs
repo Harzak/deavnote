@@ -3,6 +3,8 @@
 internal sealed partial class MainViewModel : BaseViewModel, IHostViewModel, IDisposable
 {
     private readonly IViewOrchestrator _viewOrchestrator;
+    private readonly IViewModelFactory _viewModelFactory;
+    private readonly IDialogService _dialogService;
 
     public override string Identifier { get ; }
 
@@ -33,17 +35,21 @@ internal sealed partial class MainViewModel : BaseViewModel, IHostViewModel, IDi
     public MainViewModel(
         IViewModelFactory viewModelFactory,
         IViewOrchestrator viewOrchestrator,
-        INotificationService notificationService)
+        INotificationService notificationService,
+        IDialogService dialogService)
     {
         ArgumentNullException.ThrowIfNull(viewModelFactory);
         ArgumentNullException.ThrowIfNull(viewOrchestrator);
         ArgumentNullException.ThrowIfNull(notificationService);
+        ArgumentNullException.ThrowIfNull(dialogService);
 
         _viewOrchestrator = viewOrchestrator;
+        _viewModelFactory = viewModelFactory;
+        _dialogService = dialogService;
 
         this.Identifier = Guid.NewGuid().ToString();
-        this.Search = viewModelFactory.CreateSearchViewModel();
-        this.Journal = viewModelFactory.CreateJournalViewModel();
+        this.Search = _viewModelFactory.CreateSearchViewModel();
+        this.Journal = _viewModelFactory.CreateJournalViewModel();
         this.Notifications = notificationService;
 
         // move to app configuration 
@@ -58,6 +64,13 @@ internal sealed partial class MainViewModel : BaseViewModel, IHostViewModel, IDi
     private async Task NavigateTodoList()
     {
         await _viewOrchestrator.NavigateToTodoListAsync().ConfigureAwait(false);
+    }
+
+    [RelayCommand]
+    private async Task OpenSettings()
+    {
+        SettingsViewModel vm = _viewModelFactory.CreateSettingsViewModel();
+        await _dialogService.ShowWindowAsync(vm).ConfigureAwait(false);
     }
 
     private void OnActiveViewModelChanging(object? sender, ViewModelChangeEventArg e)

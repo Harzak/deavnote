@@ -10,4 +10,10 @@ public interface IClipboardFormatRepository
     /// </summary>
     /// <param name="context">The journal context for which to retrieve the clipboard template.</param>
     Task<string> GetTemplateAsync(EJournalMode context, CancellationToken cancellationToken = default);
+
+
+    /// <summary>
+    /// Updates the template for the active clipboard format associated with the specified journal mode context.
+    /// </summary>
+    Task<OperationResult> SetTemplateAsync(EJournalMode context, string format, CancellationToken cancellationToken = default);
 }

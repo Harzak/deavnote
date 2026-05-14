@@ -286,6 +286,15 @@ namespace deavnote.app.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Save.
+        /// </summary>
+        internal static string Common_Save {
+            get {
+                return ResourceManager.GetString("Common_Save", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Started at.
         /// </summary>
         internal static string Common_StartedAt {
@@ -453,6 +462,69 @@ namespace deavnote.app.Resources {
         internal static string SearchViewModel_Navigate_Failed {
             get {
                 return ResourceManager.GetString("SearchViewModel_Navigate_Failed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to General.
+        /// </summary>
+        internal static string SettingsView_GeneralSettings_GeneralHeader {
+            get {
+                return ResourceManager.GetString("SettingsView_GeneralSettings_GeneralHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Language.
+        /// </summary>
+        internal static string SettingsView_GeneralSettings_LanguageHeader {
+            get {
+                return ResourceManager.GetString("SettingsView_GeneralSettings_LanguageHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Day.
+        /// </summary>
+        internal static string SettingsView_TemplateSettings_Day {
+            get {
+                return ResourceManager.GetString("SettingsView_TemplateSettings_Day", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Clipboard templates.
+        /// </summary>
+        internal static string SettingsView_TemplateSettings_Header {
+            get {
+                return ResourceManager.GetString("SettingsView_TemplateSettings_Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Time entry.
+        /// </summary>
+        internal static string SettingsView_TemplateSettings_TimeEntry {
+            get {
+                return ResourceManager.GetString("SettingsView_TemplateSettings_TimeEntry", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Week.
+        /// </summary>
+        internal static string SettingsView_TemplateSettings_Week {
+            get {
+                return ResourceManager.GetString("SettingsView_TemplateSettings_Week", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Settings.
+        /// </summary>
+        internal static string SettingsViewModel_Title {
+            get {
+                return ResourceManager.GetString("SettingsViewModel_Title", resourceCulture);
             }
         }
         

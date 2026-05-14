@@ -77,7 +77,6 @@
             </Grid>
         </Border>
 
-
         <TextBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
                  Margin="0,10,0,0" VerticalAlignment="Top"
                  PlaceholderText="{loc:Localize Key=AddTimeEntryView_EntryName_Placeholder}"
