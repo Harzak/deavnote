@@ -6,110 +6,102 @@
              xmlns:loc="using:deavnote.app.Localization"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewmodels="using:deavnote.app.ViewModels.TimeEntry"
-             d:DesignHeight="400"
-             d:DesignWidth="690"
+             d:DesignHeight="380"
+             d:DesignWidth="550"
              x:DataType="viewmodels:AddTimeEntryViewModel"
              Background="{StaticResource Grey1}"
              mc:Ignorable="d">
 
-    <Grid MinWidth="550"
+    <Grid MinWidth="500"
           Margin="16"
-          ColumnSpacing="10" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto" RowSpacing="10">
+          ColumnSpacing="10" RowDefinitions="Auto,Auto,Auto,Auto,Auto" RowSpacing="10">
 
-        <TextBlock Grid.Row="0"
-                   HorizontalAlignment="Left"
-                   Classes="Title"
-                   Text="{loc:Localize Key=AddTimeEntryView_RelatedTask_Title}" />
+        <Border Grid.Row="0"
+                Padding="10"
+                BorderBrush="{StaticResource Grey5}"
+                BorderThickness="1" CornerRadius="2">
+            <Grid ColumnDefinitions="Auto, *" ColumnSpacing="10" RowDefinitions="Auto, Auto, Auto"
+                  RowSpacing="10">
 
-        <Grid Grid.Row="1"
-              ColumnDefinitions="200, *" ColumnSpacing="10">
+                <TextBlock Grid.Row="0" Grid.Column="0"
+                           Classes="Content"
+                           Text="{loc:Localize Key=Task}" />
 
-            <AutoCompleteBox Grid.Column="0"
-                             Width="200"
-                             VerticalAlignment="Top"
-                             FilterMode="ContainsOrdinal"
-                             ItemsSource="{Binding ExistingTasks}"
-                             MaxDropDownHeight="400" MinimumPrefixLength="0"
-                             PlaceholderText="{loc:Localize Key=Common_Code}"
-                             SelectedItem="{Binding SelectedTask}"
-                             Text="{Binding SearchTaskCode}"
-                             ValueMemberBinding="{Binding Code}" />
+                <AutoCompleteBox Grid.Row="1" Grid.Column="0"
+                                 Width="120"
+                                 VerticalAlignment="Top"
+                                 FilterMode="ContainsOrdinal"
+                                 ItemsSource="{Binding ExistingTasks}"
+                                 MaxDropDownHeight="400" MinimumPrefixLength="0"
+                                 PlaceholderText="{loc:Localize Key=Task_Code}"
+                                 SelectedItem="{Binding SelectedTask}"
+                                 Text="{Binding SearchTaskCode}"
+                                 ValueMemberBinding="{Binding Code}" />
 
-            <AutoCompleteBox Grid.Column="1"
-                             VerticalAlignment="Top"
-                             FilterMode="ContainsOrdinal"
-                             ItemsSource="{Binding ExistingTasks}"
-                             MaxDropDownHeight="400" MinimumPrefixLength="0"
-                             PlaceholderText="{loc:Localize Key=Common_Name}"
-                             SelectedItem="{Binding SelectedTask}"
-                             Text="{Binding SearchTaskName}"
-                             ValueMemberBinding="{Binding Name}" />
-        </Grid>
+                <AutoCompleteBox Grid.Row="1" Grid.Column="1"
+                                 VerticalAlignment="Top"
+                                 FilterMode="ContainsOrdinal"
+                                 ItemsSource="{Binding ExistingTasks}"
+                                 MaxDropDownHeight="400" MinimumPrefixLength="0"
+                                 PlaceholderText="{loc:Localize Key=Task_Name}"
+                                 SelectedItem="{Binding SelectedTask}"
+                                 Text="{Binding SearchTaskName}"
+                                 ValueMemberBinding="{Binding Name}" />
 
-        <ContentControl Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
-                        Content="{Binding EntryTaskLink}">
-            <ContentControl.Styles>
-                <Style Selector="ContentControl[Content=CreateNewTask]">
-                    <Setter Property="ContentTemplate">
-                        <DataTemplate>
-                            <Border HorizontalAlignment="Center" Classes="Banner Blue">
-                                <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-                                    <TextBlock Classes="Banner" Text="{loc:Localize Key=AddTimeEntryView_TaskWillBeCreated_Banner}" />
-                                </StackPanel>
-                            </Border>
-                        </DataTemplate>
-                    </Setter>
-                </Style>
-                <Style Selector="ContentControl[Content=LinkToExistingTask]">
-                    <Setter Property="ContentTemplate">
-                        <DataTemplate>
-                            <Border HorizontalAlignment="Center" Classes="Banner Violet">
-                                <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-                                    <TextBlock Classes="Banner" Text="{loc:Localize Key=AddTimeEntryView_LinkedToExistingTask_Banner}" />
-                                </StackPanel>
-                            </Border>
-                        </DataTemplate>
-                    </Setter>
-                </Style>
-                <Style Selector="ContentControl[Content=None]">
-                    <Setter Property="ContentTemplate">
-                        <DataTemplate>
-                            <Border HorizontalAlignment="Center" Classes="Banner Gray">
-                                <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-                                    <TextBlock Classes="Banner" Text="{loc:Localize Key=AddTimeEntryView_NoTaskSelected_Banner}" />
-                                </StackPanel>
-                            </Border>
-                        </DataTemplate>
-                    </Setter>
-                </Style>
-            </ContentControl.Styles>
-        </ContentControl>
+                <ContentControl Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
+                                Content="{Binding EntryTaskLink}">
+                    <ContentControl.Styles>
+                        <Style Selector="ContentControl[Content=CreateNewTask]">
+                            <Setter Property="ContentTemplate">
+                                <DataTemplate>
+                                    <TextBlock Classes="Banner Blue" Text="{loc:Localize Key=AddTimeEntryView_TaskWillBeCreated_Banner}" />
+                                </DataTemplate>
+                            </Setter>
+                        </Style>
+                        <Style Selector="ContentControl[Content=LinkToExistingTask]">
+                            <Setter Property="ContentTemplate">
+                                <DataTemplate>
+                                    <TextBlock Classes="Banner Violet" Text="{loc:Localize Key=AddTimeEntryView_LinkedToExistingTask_Banner}" />
+                                </DataTemplate>
+                            </Setter>
+                        </Style>
+                        <Style Selector="ContentControl[Content=None]">
+                            <Setter Property="ContentTemplate">
+                                <DataTemplate>
+                                    <TextBlock Classes="Banner Gray" Text="{loc:Localize Key=AddTimeEntryView_NoTaskSelected_Banner}" />
+                                </DataTemplate>
+                            </Setter>
+                        </Style>
+                    </ContentControl.Styles>
+                </ContentControl>
+            </Grid>
+        </Border>
 
-        <TextBlock Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"
-                   Classes="Title"
-                   Text="{loc:Localize Key=AddTimeEntryView_TimeEntry_Title}" />
 
-        <TextBox Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2"
-                 VerticalAlignment="Top"
+        <TextBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
+                 Margin="0,10,0,0" VerticalAlignment="Top"
                  PlaceholderText="{loc:Localize Key=AddTimeEntryView_EntryName_Placeholder}"
                  Text="{Binding EntryName}" />
 
-        <StackPanel Grid.Row="5" Orientation="Horizontal">
-            <DatePicker VerticalAlignment="Top" SelectedDate="{Binding EntryStartedAt}" />
+        <Grid Grid.Row="2" ColumnDefinitions="Auto, *">
+            <DatePicker Grid.Column="0"
+                        VerticalAlignment="Center"
+                        SelectedDate="{Binding EntryStartedAt}" />
 
-            <ctrl:DurationInput VerticalAlignment="Top"
+            <ctrl:DurationInput Grid.Column="1"
+                                HorizontalAlignment="Right" VerticalAlignment="Center"
                                 DefaultValue="01:00:00"
                                 Value="{Binding EntryDuration}" />
-        </StackPanel>
+        </Grid>
 
-        <TextBox Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2"
+        <TextBox Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"
                  MinHeight="100" MaxHeight="300"
                  VerticalAlignment="Top"
                  AcceptsReturn="True"
                  PlaceholderText="{loc:Localize Key=AddTimeEntryView_EntryWorkDone_Placeholder}"
                  Text="{Binding EntryWorkDone}" />
 
-        <StackPanel Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2"
+        <StackPanel Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2"
                     HorizontalAlignment="Right"
                     Orientation="Horizontal" Spacing="8">
             <Button Command="{Binding ConfirmCommand}" Content="{loc:Localize Key=Common_Add}" />

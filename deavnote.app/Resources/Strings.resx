@@ -157,10 +157,10 @@
     <value>Optional description</value>
   </data>
   <data name="AddTimeEntryView_LinkedToExistingTask_Banner" xml:space="preserve">
-    <value>the time entry will be linked to this task</value>
+    <value>Linked to this task</value>
   </data>
   <data name="AddTimeEntryView_NoTaskSelected_Banner" xml:space="preserve">
-    <value>You can link this time entry to an existing task or create a new one</value>
+    <value>Choose an existing task or create a new task</value>
   </data>
   <data name="AddTimeEntryView_RelatedTask_Title" xml:space="preserve">
     <value>Related Task</value>
@@ -172,7 +172,7 @@
     <value>e.g. DO-896</value>
   </data>
   <data name="AddTimeEntryView_TaskWillBeCreated_Banner" xml:space="preserve">
-    <value>The task will be created</value>
+    <value>Task will be created</value>
   </data>
   <data name="AddTimeEntryView_TimeEntry_Title" xml:space="preserve">
     <value>Time Entry</value>
@@ -263,5 +263,14 @@
   </data>
   <data name="MarkdownTextBox_Preview_Tooltip" xml:space="preserve">
     <value>Preview</value>
+  </data>
+  <data name="Task_Code" xml:space="preserve">
+    <value>Task code</value>
+  </data>
+  <data name="Task_Name" xml:space="preserve">
+    <value>Task name</value>
+  </data>
+  <data name="Task" xml:space="preserve">
+    <value>Task</value>
   </data>
 </root>

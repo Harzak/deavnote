@@ -79,7 +79,7 @@ namespace deavnote.app.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to the time entry will be linked to this task.
+        ///   Looks up a localized string similar to Linked to this task.
         /// </summary>
         internal static string AddTimeEntryView_LinkedToExistingTask_Banner {
             get {
@@ -88,7 +88,7 @@ namespace deavnote.app.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to You can link this time entry to an existing task or create a new one.
+        ///   Looks up a localized string similar to Choose an existing task or create a new task.
         /// </summary>
         internal static string AddTimeEntryView_NoTaskSelected_Banner {
             get {
@@ -124,7 +124,7 @@ namespace deavnote.app.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The task will be created.
+        ///   Looks up a localized string similar to Task will be created.
         /// </summary>
         internal static string AddTimeEntryView_TaskWillBeCreated_Banner {
             get {
@@ -365,7 +365,7 @@ namespace deavnote.app.Resources {
                 return ResourceManager.GetString("JournalView_GoToToday_Tooltip", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Switch to day view.
         /// </summary>
@@ -374,34 +374,7 @@ namespace deavnote.app.Resources {
                 return ResourceManager.GetString("JournalView_SwitchToDayView_Tooltip", resourceCulture);
             }
         }
-
-        /// <summary>
-        ///   Looks up a localized string similar to Edit.
-        /// </summary>
-        internal static string MarkdownTextBox_Edit_Tooltip {
-            get {
-                return ResourceManager.GetString("MarkdownTextBox_Edit_Tooltip", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to Split view.
-        /// </summary>
-        internal static string MarkdownTextBox_SplitView_Tooltip {
-            get {
-                return ResourceManager.GetString("MarkdownTextBox_SplitView_Tooltip", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to Preview.
-        /// </summary>
-        internal static string MarkdownTextBox_Preview_Tooltip {
-            get {
-                return ResourceManager.GetString("MarkdownTextBox_Preview_Tooltip", resourceCulture);
-            }
-        }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Switch to week view.
         /// </summary>
@@ -430,6 +403,33 @@ namespace deavnote.app.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Edit.
+        /// </summary>
+        internal static string MarkdownTextBox_Edit_Tooltip {
+            get {
+                return ResourceManager.GetString("MarkdownTextBox_Edit_Tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Preview.
+        /// </summary>
+        internal static string MarkdownTextBox_Preview_Tooltip {
+            get {
+                return ResourceManager.GetString("MarkdownTextBox_Preview_Tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Split view.
+        /// </summary>
+        internal static string MarkdownTextBox_SplitView_Tooltip {
+            get {
+                return ResourceManager.GetString("MarkdownTextBox_SplitView_Tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Clear search.
         /// </summary>
         internal static string SearchBox_Clear_Tooltip {
@@ -453,6 +453,33 @@ namespace deavnote.app.Resources {
         internal static string SearchViewModel_Navigate_Failed {
             get {
                 return ResourceManager.GetString("SearchViewModel_Navigate_Failed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Task.
+        /// </summary>
+        internal static string Task {
+            get {
+                return ResourceManager.GetString("Task", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Task code.
+        /// </summary>
+        internal static string Task_Code {
+            get {
+                return ResourceManager.GetString("Task_Code", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Task name.
+        /// </summary>
+        internal static string Task_Name {
+            get {
+                return ResourceManager.GetString("Task_Name", resourceCulture);
             }
         }
         
