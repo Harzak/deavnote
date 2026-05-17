@@ -26,17 +26,20 @@ public class AddTimeEntryViewModelTests
 
         // Act
         viewModel.EntryTaskLink =  Enums.ETimeEntryCreationTaskLink.CreateNewTask;
+        viewModel.EntryName = "input";
         viewModel.EntryName = "";
         viewModel.EntryDuration = TimeSpan.MinValue;
+        viewModel.SearchTaskCode = "input";
         viewModel.SearchTaskCode = "";
+        viewModel.SearchTaskName= "input";
         viewModel.SearchTaskName= "";
 
         // Assert
-        viewModel.ConfirmCommand.CanExecute(parameter: null).Should().BeFalse();
         viewModel.HasErrors.Should().BeTrue();
         viewModel.GetErrors(nameof(viewModel.EntryName)).Should().ContainSingle();
         viewModel.GetErrors(nameof(viewModel.EntryDuration)).Should().ContainSingle();
         viewModel.GetErrors(nameof(viewModel.SearchTaskCode)).Should().ContainSingle();
         viewModel.GetErrors(nameof(viewModel.SearchTaskName)).Should().ContainSingle();
+        viewModel.ConfirmCommand.CanExecute(parameter: null).Should().BeFalse();
     }
 }
