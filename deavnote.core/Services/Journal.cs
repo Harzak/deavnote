@@ -14,15 +14,17 @@ namespace deavnote.core.Services;
 /// TimeEntriesChanged event to be notified when the set of visible time entries changes.</remarks>
 internal sealed class Journal : IJournal
 {
+    private DateTime _cursorUtc;
+
     private readonly ITimeEntryRepository _repository;
     private readonly TimeProvider _timeProvider;
 
     private readonly ConcurrentDictionary<int, TimeEntry> _pool;
     private readonly List<TimeEntry> _entriesInCursor;
-    private readonly HashSet<DateOnly> _fetchedDates;
+    private readonly HashSet<DateTime> _fetchedDatesUtc;
 
     /// <inheritdoc/>
-    public DateOnly DateCursor { get; private set; }
+    public DateOnly DateCursor => DateOnly.FromDateTime(TimeZoneInfo.ConvertTimeFromUtc(_cursorUtc, _timeProvider.LocalTimeZone));
     /// <inheritdoc/>
     public int DayOffset { get; private set; }
     /// <inheritdoc/>
@@ -44,11 +46,11 @@ internal sealed class Journal : IJournal
         _timeProvider = timeProvider;
         _pool = [];
         _entriesInCursor = [];
-        _fetchedDates = [];
+        _fetchedDatesUtc = [];
 
         this.DefaultConfiguration = new JournalConfiguration
         {
-            DateCursor = DateOnly.FromDateTime(_timeProvider.GetLocalNow().DateTime),
+            DateCursor = DateOnly.FromDateTime(TimeZoneInfo.ConvertTimeFromUtc(_timeProvider.GetUtcNow().UtcDateTime, _timeProvider.LocalTimeZone)),
             DayOffset = 1,
         };
     }
@@ -116,7 +118,7 @@ internal sealed class Journal : IJournal
         bool hasChanged = this.DateCursor != date;
         if (hasChanged)
         {
-            this.DateCursor = date;
+            _cursorUtc = TimeZoneInfo.ConvertTimeToUtc(date.ToDateTime(TimeOnly.MinValue), _timeProvider.LocalTimeZone);
             this.InvokeCursorChanged();
         }
         return hasChanged;
@@ -136,47 +138,48 @@ internal sealed class Journal : IJournal
     private async Task OnCursorChangedAsync(CancellationToken cancellationToken = default)
     {
         await this.LoadEntriesInCursorAsync(hardReload: false, cancellationToken).ConfigureAwait(false);
-        _ = this.LoadAdjacentEntriesAsync(this.DateCursor, this.DayOffset, cancellationToken);
+        _ = this.LoadAdjacentEntriesAsync(_cursorUtc, this.DayOffset, cancellationToken);
     }
 
     private async Task LoadEntriesInCursorAsync(bool hardReload = false, CancellationToken cancellationToken = default)
     {
-        DateOnly from = this.DateCursor;
-        DateOnly to = this.DateCursor.AddDays(this.DayOffset);
+        DateTime from = _cursorUtc;
+        DateTime to = _cursorUtc.AddDays(this.DayOffset);
 
-        if (!_fetchedDates.Contains(from) || hardReload)
+        if (!_fetchedDatesUtc.Contains(from) || hardReload)
         {
+            if (hardReload)
+            {
+                _fetchedDatesUtc.Clear();
+            }
             await this.LoadEntriesBetweenAsync(from, to, cancellationToken).ConfigureAwait(false);
         }
 
         _entriesInCursor.Clear();
-
         IEnumerable<TimeEntry> entries = _pool.Values
-            .Where(e => TimeZoneInfo.ConvertTimeFromUtc(e.StartedAtUtc, _timeProvider.LocalTimeZone)
-            .IsInRangeExclusive(this.DateCursor, this.DateCursor.AddDays(this.DayOffset)));
-
+            .Where(e => e.StartedAtUtc >= _cursorUtc && e.StartedAtUtc < _cursorUtc.AddDays(this.DayOffset));
         _entriesInCursor.AddRange(entries);
 
         this.InvokeTimeEntriesChanged();
     }
 
-    private async Task LoadAdjacentEntriesAsync(DateOnly cursor, int dayOffset, CancellationToken cancellationToken = default)
+    private async Task LoadAdjacentEntriesAsync(DateTime cursorUtc, int dayOffset, CancellationToken cancellationToken = default)
     {
-        DateOnly prevFrom = cursor.AddDays(-dayOffset);
-        DateOnly nextFrom = cursor.AddDays(dayOffset);
+        DateTime prevFrom = cursorUtc.AddDays(-dayOffset);
+        DateTime nextFrom = cursorUtc.AddDays(dayOffset);
 
         List<Task> prefetchTasks = [];
 
-        if (!_fetchedDates.Contains(prevFrom))
+        if (!_fetchedDatesUtc.Contains(prevFrom))
         {
-            DateOnly to = prevFrom.AddDays(dayOffset);
+            DateTime to = prevFrom.AddDays(dayOffset);
             Task previous = this.LoadEntriesBetweenAsync(prevFrom, to, cancellationToken);
             prefetchTasks.Add(previous);
         }
 
-        if (!_fetchedDates.Contains(nextFrom))
+        if (!_fetchedDatesUtc.Contains(nextFrom))
         {
-            DateOnly to = nextFrom.AddDays(dayOffset);
+            DateTime to = nextFrom.AddDays(dayOffset);
             Task next = this.LoadEntriesBetweenAsync(nextFrom, to, cancellationToken);
             prefetchTasks.Add(next);
         }
@@ -184,16 +187,25 @@ internal sealed class Journal : IJournal
         await Task.WhenAll(prefetchTasks).ConfigureAwait(false);
     }
 
-    private async Task LoadEntriesBetweenAsync(DateOnly from, DateOnly to, CancellationToken cancellationToken = default)
+    private async Task LoadEntriesBetweenAsync(DateTime fromUtc, DateTime toUtc, CancellationToken cancellationToken = default)
     {
-        IReadOnlyList<TimeEntry> entries = await _repository.GetEntriesBetweenAsync(from, to, cancellationToken).ConfigureAwait(false);
+        IReadOnlyList<TimeEntry> entries = await _repository.GetEntriesBetweenAsync(fromUtc, toUtc, cancellationToken).ConfigureAwait(false);
+
+        IEnumerable<int> staleKeys = _pool
+            .Where(kvp => kvp.Value.StartedAtUtc >= fromUtc && kvp.Value.StartedAtUtc < toUtc)
+            .Select(kvp => kvp.Key);
+
+        foreach (int key in staleKeys)
+        {
+            _pool.TryRemove(key, out _);
+        }
 
         foreach (TimeEntry entry in entries)
         {
             _pool[entry.Id] = entry;
         }
 
-        _fetchedDates.Add(from);
+        _fetchedDatesUtc.Add(fromUtc);
     }
 
     private void InvokeTimeEntriesChanged()

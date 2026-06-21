@@ -9,10 +9,10 @@ public interface ITimeEntryRepository
     /// <summary>
     /// Retrieves time entries occurring between the specified start and end dates.
     /// </summary>
-    /// <param name="startDate">The start date of the range to retrieve entries for.</param>
-    /// <param name="endDate">The end date of the range to retrieve entries for.</param>
+    /// <param name="startDateUtc">The start date of the range to retrieve entries for.</param>
+    /// <param name="endDateUtc">The end date of the range to retrieve entries for.</param>
     /// <returns>contains a read-only list of time entries within the specified date range.</returns>
-    Task<IReadOnlyList<TimeEntry>> GetEntriesBetweenAsync(DateOnly startDate, DateOnly endDate, CancellationToken cancellationToken = default);
+    Task<IReadOnlyList<TimeEntry>> GetEntriesBetweenAsync(DateTime startDateUtc, DateTime endDateUtc, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Asynchronously adds a new time entry.

@@ -31,4 +31,13 @@ public static class DateTimeExtensions
         DateOnly day = DateOnly.FromDateTime(date);
         return day >= from && day < to;
     }
+
+    /// <summary>
+    /// Returns true if the date falls within [from, to), where <paramref name="to"/> is exclusive
+    /// (i.e., a moment at 08:00 on the <paramref name="to"/> date is NOT included).
+    /// </summary>
+    public static bool IsInRangeExclusive(this DateTime date, DateTime from, DateTime to)
+    {
+        return date >= from && date < to;
+    }
 }

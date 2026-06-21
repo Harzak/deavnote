@@ -5,8 +5,9 @@ public class JournalTests
 {
     public TestContext TestContext { get; set; }
     private TimeProvider _timeProvider;
-
     private ITimeEntryRepository _repository;
+
+    private static readonly TimeZoneInfo UtcPlus2 = TimeZoneInfo.CreateCustomTimeZone("UTC+2", TimeSpan.FromHours(2), "UTC+2", "UTC+2");
 
     [TestInitialize]
     public void Initialize()
@@ -19,7 +20,7 @@ public class JournalTests
     public async Task SetCursors_ShouldLoadEntries()
     {
         //Arrange
-        this.SetupTimeProviderForDateRange(+2);
+        this.SetupTimeProvider(UtcPlus2);
         Journal journal = new(_repository, _timeProvider);
         JournalConfiguration configuration = new()
         {
@@ -32,8 +33,8 @@ public class JournalTests
 
         //Assert
         A.CallTo(() => _repository.GetEntriesBetweenAsync(
-                new DateOnly(2026, 08, 10),
-                new DateOnly(2026, 08, 11),
+                LocalMidnightAsUtc(new DateOnly(2026, 08, 10), UtcPlus2),
+                LocalMidnightAsUtc(new DateOnly(2026, 08, 11), UtcPlus2),
                 A<CancellationToken>.Ignored))
             .MustHaveHappenedOnceExactly();
     }
@@ -42,7 +43,7 @@ public class JournalTests
     public async Task SetCursors_ShouldPreLoadAdjacentEntries()
     {
         //Arrange
-        this.SetupTimeProviderForDateRange(+2);
+        this.SetupTimeProvider(UtcPlus2);
         Journal journal = new(_repository, _timeProvider);
         JournalConfiguration configuration = new()
         {
@@ -55,14 +56,14 @@ public class JournalTests
 
         //Assert
         A.CallTo(() => _repository.GetEntriesBetweenAsync(
-                new DateOnly(2026, 08, 09),
-                new DateOnly(2026, 08, 10),
+                LocalMidnightAsUtc(new DateOnly(2026, 08, 09), UtcPlus2),
+                LocalMidnightAsUtc(new DateOnly(2026, 08, 10), UtcPlus2),
                 A<CancellationToken>.Ignored))
             .MustHaveHappenedOnceExactly();
 
         A.CallTo(() => _repository.GetEntriesBetweenAsync(
-                new DateOnly(2026, 08, 11),
-                new DateOnly(2026, 08, 12),
+                LocalMidnightAsUtc(new DateOnly(2026, 08, 11), UtcPlus2),
+                LocalMidnightAsUtc(new DateOnly(2026, 08, 12), UtcPlus2),
                 A<CancellationToken>.Ignored))
             .MustHaveHappenedOnceExactly();
     }
@@ -71,7 +72,7 @@ public class JournalTests
     public async Task SetCursorsAsync_WhenIdenticalConfiguration_ShouldNotReloadEntries()
     {
         //Arrange
-        this.SetupTimeProviderForDateRange(+2);
+        this.SetupTimeProvider(UtcPlus2);
         Journal journal = new(_repository, _timeProvider);
         JournalConfiguration configuration = new()
         {
@@ -85,8 +86,8 @@ public class JournalTests
 
         //Assert
         A.CallTo(() => _repository.GetEntriesBetweenAsync(
-                new DateOnly(2026, 08, 10),
-                new DateOnly(2026, 08, 11),
+                LocalMidnightAsUtc(new DateOnly(2026, 08, 10), UtcPlus2),
+                LocalMidnightAsUtc(new DateOnly(2026, 08, 11), UtcPlus2),
                 A<CancellationToken>.Ignored))
             .MustHaveHappenedOnceExactly();
     }
@@ -95,7 +96,7 @@ public class JournalTests
     public async Task SetCursorsAsync_WhenAlreadyKnown_ShouldNotReloadEntries()
     {
         //Arrange
-        this.SetupTimeProviderForDateRange(+2);
+        this.SetupTimeProvider(UtcPlus2);
         Journal journal = new(_repository, _timeProvider);
         JournalConfiguration configuration1 = new()
         {
@@ -115,8 +116,8 @@ public class JournalTests
 
         //Assert
         A.CallTo(() => _repository.GetEntriesBetweenAsync(
-                new DateOnly(2026, 08, 10),
-                new DateOnly(2026, 08, 11),
+                LocalMidnightAsUtc(new DateOnly(2026, 08, 10), UtcPlus2),
+                LocalMidnightAsUtc(new DateOnly(2026, 08, 11), UtcPlus2),
                 A<CancellationToken>.Ignored))
             .MustHaveHappenedOnceExactly();
     }
@@ -125,16 +126,16 @@ public class JournalTests
     public async Task ShiftDate_WhenEmptyDays_ShouldNotRetrieveResult()
     {
         //Arrange
-        this.SetupTimeProviderForDateRange(+2);
+        this.SetupTimeProvider(UtcPlus2);
         Journal journal = new(_repository, _timeProvider);
-        JournalConfiguration configuration1 = new()
+        JournalConfiguration configuration = new()
         {
             DateCursor = new DateOnly(2026, 08, 10),
             DayOffset = 1,
         };
         A.CallTo(() => _repository.GetEntriesBetweenAsync(
-                new DateOnly(2026, 08, 10),
-                new DateOnly(2026, 08, 11),
+                LocalMidnightAsUtc(new DateOnly(2026, 08, 10), UtcPlus2),
+                LocalMidnightAsUtc(new DateOnly(2026, 08, 11), UtcPlus2),
                 A<CancellationToken>.Ignored))
             .Returns(new List<TimeEntry>()
             {
@@ -142,12 +143,12 @@ public class JournalTests
                 {
                     Id = 1,
                     Name = "Test Entry",
-                    StartedAtUtc = new DateTime(2026, 08, 10, 8, 0, 0),
+                    StartedAtUtc = new DateTime(2026, 08, 10, 8, 0, 0, DateTimeKind.Utc),
                 },
             }.AsReadOnly());
 
         //Act
-        await journal.SetCursorsAsync(configuration1, this.TestContext.CancellationToken).ConfigureAwait(false);
+        await journal.SetCursorsAsync(configuration, this.TestContext.CancellationToken).ConfigureAwait(false);
         await journal.ShiftDateCursorAsync(-1, this.TestContext.CancellationToken).ConfigureAwait(false);
 
         //Assert
@@ -158,7 +159,7 @@ public class JournalTests
     public async Task LoadDefaultCursor_ShouldUseDefaultConfiguration()
     {
         //Arrange
-        this.SetupTimeProviderForDateRange(+2);
+        this.SetupTimeProvider(UtcPlus2);
         Journal journal = new(_repository, _timeProvider);
 
         //Act
@@ -170,10 +171,11 @@ public class JournalTests
     }
 
     [TestMethod]
-    public async Task Cursor_ShouldExcludeEntriesOutsideLocalRange_WhenNotUTC()
+    public async Task Cursor_ShouldIncludeEntryAtLocalMidnight_WhenNotUTC()
     {
-        //Arrange
-        this.SetupTimeProviderForDateRange(+2);
+        // Arrange
+        // 2026-08-09 22:00 UTC = 2026-08-10 00:00 UTC+2 → first moment of the cursor day → must be included
+        this.SetupTimeProvider(UtcPlus2);
         Journal journal = new(_repository, _timeProvider);
         JournalConfiguration configuration = new()
         {
@@ -181,20 +183,15 @@ public class JournalTests
             DayOffset = 1,
         };
 
-        DateTime entryDateUtc = new DateTime(2026, 08, 09, 23, 30, 0, DateTimeKind.Utc);
+        DateTime entryStartUtc = new DateTime(2026, 08, 09, 22, 0, 0, DateTimeKind.Utc);
         A.CallTo(() => _repository.GetEntriesBetweenAsync(
-            new DateOnly(2026, 08, 10),
-            new DateOnly(2026, 08, 11),
-            A<CancellationToken>.Ignored))
-        .Returns(new List<TimeEntry>()
-        {
-            new()
+                LocalMidnightAsUtc(new DateOnly(2026, 08, 10), UtcPlus2),
+                LocalMidnightAsUtc(new DateOnly(2026, 08, 11), UtcPlus2),
+                A<CancellationToken>.Ignored))
+            .Returns(new List<TimeEntry>()
             {
-                Id = 1,
-                Name = "Test Entry",
-                StartedAtUtc = entryDateUtc,
-            },
-        }.AsReadOnly());
+                new() { Id = 1, Name = "Test Entry", StartedAtUtc = entryStartUtc },
+            }.AsReadOnly());
 
         //Act
         await journal.SetCursorsAsync(configuration, this.TestContext.CancellationToken).ConfigureAwait(false);
@@ -204,13 +201,12 @@ public class JournalTests
         entry.Should().NotBeNull();
     }
 
-
     [TestMethod]
     public async Task Cursor_ShouldExcludeEntriesOutsideLocalRange_WhenUTC()
     {
         // Arrange
-        this.SetupTimeProviderForDateRange(TimeZoneInfo.Utc);
-
+        // 2026-08-09 23:30 UTC with UTC timezone → local date is Aug 9 → not in Aug 10 cursor
+        this.SetupTimeProvider(TimeZoneInfo.Utc);
         Journal journal = new(_repository, _timeProvider);
         JournalConfiguration configuration = new()
         {
@@ -220,16 +216,12 @@ public class JournalTests
 
         DateTime entryDateUtc = new DateTime(2026, 08, 09, 23, 30, 0, DateTimeKind.Utc);
         A.CallTo(() => _repository.GetEntriesBetweenAsync(
-                new DateOnly(2026, 08, 10),
-                new DateOnly(2026, 08, 11),
+                LocalMidnightAsUtc(new DateOnly(2026, 08, 10), TimeZoneInfo.Utc),
+                LocalMidnightAsUtc(new DateOnly(2026, 08, 11), TimeZoneInfo.Utc),
                 A<CancellationToken>.Ignored))
             .Returns(new List<TimeEntry>()
             {
-                new() {
-                    Id = 1,
-                    Name = "Test Entry",
-                    StartedAtUtc = entryDateUtc,
-                },
+                new() { Id = 1, Name = "Test Entry", StartedAtUtc = entryDateUtc },
             }.AsReadOnly());
 
         // Act
@@ -244,7 +236,8 @@ public class JournalTests
     public async Task Cursor_ShouldExcludeEntriesOutsideLocalRange_WhenEntryIsOnPreviousLocalDay()
     {
         // Arrange
-        this.SetupTimeProviderForDateRange(+2);
+        // 2026-06-20 21:59 UTC = 2026-06-20 23:59 UTC+2 → local date is Jun 20 → not in Jun 21 cursor
+        this.SetupTimeProvider(UtcPlus2);
         Journal journal = new(_repository, _timeProvider);
         JournalConfiguration configuration = new()
         {
@@ -254,30 +247,29 @@ public class JournalTests
 
         DateTime entryDateUtc = new DateTime(2026, 06, 20, 21, 59, 0, DateTimeKind.Utc);
         A.CallTo(() => _repository.GetEntriesBetweenAsync(
-                new DateOnly(2026, 06, 21),
-                new DateOnly(2026, 06, 22),
+                LocalMidnightAsUtc(new DateOnly(2026, 06, 21), UtcPlus2),
+                LocalMidnightAsUtc(new DateOnly(2026, 06, 22), UtcPlus2),
                 A<CancellationToken>.Ignored))
             .Returns(new List<TimeEntry>()
             {
-            new() { Id = 1, Name = "Test Entry", StartedAtUtc = entryDateUtc },
+                new() { Id = 1, Name = "Test Entry", StartedAtUtc = entryDateUtc },
             }.AsReadOnly());
 
         // Act
         await journal.SetCursorsAsync(configuration, this.TestContext.CancellationToken).ConfigureAwait(false);
         TimeEntry? entry = journal.TimeEntries.FirstOrDefault(x => x.Id == 1);
 
+        // Assert
         entry.Should().BeNull();
     }
 
-    private void SetupTimeProviderForDateRange(int utcOffset)
-    {
-        TimeZoneInfo utcPlus2 = TimeZoneInfo.CreateCustomTimeZone($"UTC{utcOffset}", TimeSpan.FromHours(utcOffset), $"UTC+{utcOffset}", $"UTC{utcOffset}");
-        this.SetupTimeProviderForDateRange(utcPlus2);
-    }
+    private static DateTime LocalMidnightAsUtc(DateOnly localDate, TimeZoneInfo zone) =>
+        TimeZoneInfo.ConvertTimeToUtc(localDate.ToDateTime(TimeOnly.MinValue), zone);
 
-    private void SetupTimeProviderForDateRange(TimeZoneInfo timeZoneInfo)
+    private void SetupTimeProvider(TimeZoneInfo timeZoneInfo)
     {
         A.CallTo(() => _timeProvider.LocalTimeZone).Returns(timeZoneInfo);
+        A.CallTo(() => _timeProvider.GetUtcNow()).Returns(new DateTimeOffset(2026, 06, 21, 12, 0, 0, TimeSpan.Zero));
     }
 }
 

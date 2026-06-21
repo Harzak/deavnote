@@ -73,7 +73,7 @@ internal sealed partial class TimeEntryDetailViewModel
             Id = _model.Id,
             Name = this.Name,
             WorkDone = this.WorkDone,
-            StartedAt = this.StartedAt.UtcDateTime,
+            StartedAt = this.StartedAt.DateTime,
             Duration = this.Duration,
         }, cancellationToken)
         .ConfigureAwait(false);
