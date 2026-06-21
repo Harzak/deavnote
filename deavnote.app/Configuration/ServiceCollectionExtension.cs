@@ -23,6 +23,7 @@ internal static class ServiceCollectionExtension
         services.AddSingleton<IViewOrchestrator, MainViewOrchestrator>();
         services.AddSingleton<IDebounceActionFactory, DebounceUIActionFactory>();
         services.AddSingleton<ILocalizationService>(_ => LocalizationService.Instance);
+        services.AddSingleton(TimeProvider.System);
 
         return services;
     }

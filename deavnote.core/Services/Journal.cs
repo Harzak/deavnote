@@ -15,6 +15,7 @@ namespace deavnote.core.Services;
 internal sealed class Journal : IJournal
 {
     private readonly ITimeEntryRepository _repository;
+    private readonly TimeProvider _timeProvider;
 
     private readonly ConcurrentDictionary<int, TimeEntry> _pool;
     private readonly List<TimeEntry> _entriesInCursor;
@@ -34,18 +35,20 @@ internal sealed class Journal : IJournal
 
     public event EventHandler<JournalCursorChangedEventArgs>? CursorChanged;
 
-    public Journal(ITimeEntryRepository repository)
+    public Journal(ITimeEntryRepository repository, TimeProvider timeProvider)
     {
         ArgumentNullException.ThrowIfNull(repository);
+        ArgumentNullException.ThrowIfNull(timeProvider);
 
         _repository = repository;
+        _timeProvider = timeProvider;
         _pool = [];
         _entriesInCursor = [];
         _fetchedDates = [];
 
         this.DefaultConfiguration = new JournalConfiguration
         {
-            DateCursor = DateOnly.FromDateTime(DateTime.Today),
+            DateCursor = DateOnly.FromDateTime(_timeProvider.GetLocalNow().DateTime),
             DayOffset = 1,
         };
     }
@@ -147,7 +150,11 @@ internal sealed class Journal : IJournal
         }
 
         _entriesInCursor.Clear();
-        IEnumerable<TimeEntry> entries = _pool.Values.Where(e => e.StartedAtUtc.IsInRangeExclusive(this.DateCursor, this.DateCursor.AddDays(this.DayOffset)));
+
+        IEnumerable<TimeEntry> entries = _pool.Values
+            .Where(e => TimeZoneInfo.ConvertTimeFromUtc(e.StartedAtUtc, _timeProvider.LocalTimeZone)
+            .IsInRangeExclusive(this.DateCursor, this.DateCursor.AddDays(this.DayOffset)));
+
         _entriesInCursor.AddRange(entries);
 
         this.InvokeTimeEntriesChanged();
