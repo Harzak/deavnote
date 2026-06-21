@@ -50,7 +50,8 @@ internal sealed class Journal : IJournal
 
         this.DefaultConfiguration = new JournalConfiguration
         {
-            DateCursor = DateOnly.FromDateTime(TimeZoneInfo.ConvertTimeFromUtc(_timeProvider.GetUtcNow().UtcDateTime, _timeProvider.LocalTimeZone)),
+            DateCursor = DateOnly.FromDateTime(
+                TimeZoneInfo.ConvertTimeFromUtc(_timeProvider.GetUtcNow().UtcDateTime, _timeProvider.LocalTimeZone)),
             DayOffset = 1,
         };
     }
@@ -118,7 +119,9 @@ internal sealed class Journal : IJournal
         bool hasChanged = this.DateCursor != date;
         if (hasChanged)
         {
-            _cursorUtc = TimeZoneInfo.ConvertTimeToUtc(date.ToDateTime(TimeOnly.MinValue), _timeProvider.LocalTimeZone);
+            _cursorUtc = TimeZoneInfo.ConvertTimeToUtc(
+                date.ToDateTime(TimeOnly.MinValue), _timeProvider.LocalTimeZone);
+
             this.InvokeCursorChanged();
         }
         return hasChanged;
@@ -156,8 +159,10 @@ internal sealed class Journal : IJournal
         }
 
         _entriesInCursor.Clear();
+
         IEnumerable<TimeEntry> entries = _pool.Values
             .Where(e => e.StartedAtUtc >= _cursorUtc && e.StartedAtUtc < _cursorUtc.AddDays(this.DayOffset));
+
         _entriesInCursor.AddRange(entries);
 
         this.InvokeTimeEntriesChanged();

@@ -142,22 +142,24 @@ internal sealed partial class SearchViewModel : BaseViewModel, IDisposable
 
     partial void OnSelectedItemChanged(SearchResultItem? value)
     {
-        if (value is null)
+        _ = NavigateToSelectedItemAsync().ContinueWith(_ =>
+        {
+            this.SelectedItem = null;
+        });
+    }
+
+    private async Task NavigateToSelectedItemAsync()
+    {
+        if (this.SelectedItem is null)
         {
             return;
         }
 
-        _ = NavigateToSelectedItemAsync(value);
-    }
-
-    private async Task NavigateToSelectedItemAsync(SearchResultItem value)
-    {
         OperationResult? result = null;
-
-        switch (value.Type)
+        switch (this.SelectedItem.Type)
         {
             case ESearchResultItemType.DevTask:
-                model.Entities.DevTask? devTask = await _devTaskRepository.GetTaskAsync(id: value.Id).ConfigureAwait(false);
+                model.Entities.DevTask? devTask = await _devTaskRepository.GetTaskAsync(id: this.SelectedItem.Id).ConfigureAwait(false);
                 if (devTask != null)
                 {
                     result = await _viewOrchestrator.NavigateToDevTaskDetailAsync(devTask).ConfigureAwait(false);
@@ -166,14 +168,14 @@ internal sealed partial class SearchViewModel : BaseViewModel, IDisposable
                 break;
 
             case ESearchResultItemType.TimeEntry:
-                model.Entities.TimeEntry? timeEntry = await _timeEntryRepository.GetEntryAsync(id: value.Id).ConfigureAwait(false);
+                model.Entities.TimeEntry? timeEntry = await _timeEntryRepository.GetEntryAsync(id: this.SelectedItem.Id).ConfigureAwait(false);
                 if (timeEntry != null)
                 {
                     result = await _viewOrchestrator.NavigateToTimeEntryDetailAsync(timeEntry).ConfigureAwait(false);
                 }
                 break;
             default:
-                throw new NotSupportedException(value.Type.ToString());
+                throw new NotSupportedException(this.SelectedItem.Type.ToString());
         }
 
         if (result?.IsFailed != false)
