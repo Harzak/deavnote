@@ -14,7 +14,7 @@
              mc:Ignorable="d">
 
     <Grid Margin="5"
-          ColumnDefinitions="Auto, Auto, Auto, *, Auto, Auto, Auto" RowDefinitions="Auto,Auto, *">
+          ColumnDefinitions="Auto, Auto, Auto, *, Auto, Auto, Auto" RowDefinitions="Auto,Auto, *, Auto">
 
         <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="7"
                     Margin="0,5" HorizontalAlignment="Center" VerticalAlignment="Center"
@@ -93,6 +93,17 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
+
+        <StackPanel Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="7"
+                    HorizontalAlignment="Center"
+                    Orientation="Horizontal">
+            <TextBlock Margin="3"
+                       Classes="Legend" Text="Total time:" />
+            <TextBlock Margin="3"
+                       Classes="Legend"
+                       Text="{Binding TotalTime}" />
+        </StackPanel>
+
     </Grid>
 
 </UserControl>

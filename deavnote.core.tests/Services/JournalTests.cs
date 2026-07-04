@@ -190,7 +190,12 @@ public class JournalTests
                 A<CancellationToken>.Ignored))
             .Returns(new List<TimeEntry>()
             {
-                new() { Id = 1, Name = "Test Entry", StartedAtUtc = entryStartUtc },
+                new()
+                {
+                    Id = 1,
+                    Name = "Test Entry",
+                    StartedAtUtc = entryStartUtc,
+                },
             }.AsReadOnly());
 
         //Act
@@ -221,7 +226,12 @@ public class JournalTests
                 A<CancellationToken>.Ignored))
             .Returns(new List<TimeEntry>()
             {
-                new() { Id = 1, Name = "Test Entry", StartedAtUtc = entryDateUtc },
+                new()
+                {
+                    Id = 1,
+                    Name = "Test Entry",
+                    StartedAtUtc = entryDateUtc,
+                },
             }.AsReadOnly());
 
         // Act
@@ -252,7 +262,12 @@ public class JournalTests
                 A<CancellationToken>.Ignored))
             .Returns(new List<TimeEntry>()
             {
-                new() { Id = 1, Name = "Test Entry", StartedAtUtc = entryDateUtc },
+                new()
+                {
+                    Id = 1,
+                    Name = "Test Entry",
+                    StartedAtUtc = entryDateUtc,
+                },
             }.AsReadOnly());
 
         // Act
@@ -261,6 +276,49 @@ public class JournalTests
 
         // Assert
         entry.Should().BeNull();
+    }
+
+
+    [TestMethod]
+    public async Task SetCursors_ShouldChangeTotalTimes()
+    {
+        // Arrange
+        this.SetupTimeProvider(UtcPlus2);
+        Journal journal = new(_repository, _timeProvider);
+        JournalConfiguration configuration = new()
+        {
+            DateCursor = new DateOnly(2026, 08, 10),
+            DayOffset = 1,
+        };
+
+        DateTime entryStartUtc = new DateTime(2026, 08, 09, 22, 0, 0, DateTimeKind.Utc);
+        A.CallTo(() => _repository.GetEntriesBetweenAsync(
+                LocalMidnightAsUtc(new DateOnly(2026, 08, 10), UtcPlus2),
+                LocalMidnightAsUtc(new DateOnly(2026, 08, 11), UtcPlus2),
+                A<CancellationToken>.Ignored))
+            .Returns(new List<TimeEntry>()
+            {
+                new()
+                {
+                    Id = 1,
+                    Name = "Test Entry",
+                    StartedAtUtc = entryStartUtc,
+                    Duration = TimeSpan.FromHours(2),
+                },
+                new()
+                {
+                    Id = 2,
+                    Name = "Test Entry 2",
+                    StartedAtUtc = entryStartUtc,
+                    Duration = TimeSpan.FromMinutes(30),
+                },
+            }.AsReadOnly());
+
+        // Act
+        await journal.SetCursorsAsync(configuration, this.TestContext.CancellationToken).ConfigureAwait(false);
+
+        // Assert
+        journal.EntriesTotalTimes.Should().Be(TimeSpan.FromHours(2) + TimeSpan.FromMinutes(30));
     }
 
     private static DateTime LocalMidnightAsUtc(DateOnly localDate, TimeZoneInfo zone) =>
