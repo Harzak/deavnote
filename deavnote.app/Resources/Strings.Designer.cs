@@ -412,6 +412,15 @@ namespace deavnote.app.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Markdown Cheat Sheet.
+        /// </summary>
+        internal static string MarkdownTextBox_Cheatsheet_Tooltip {
+            get {
+                return ResourceManager.GetString("MarkdownTextBox_Cheatsheet_Tooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Edit.
         /// </summary>
         internal static string MarkdownTextBox_Edit_Tooltip {

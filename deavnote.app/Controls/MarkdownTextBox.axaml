@@ -13,13 +13,13 @@
              mc:Ignorable="d">
 
     <UserControl.KeyBindings>
-        <KeyBinding Command="{Binding #Root.ChangeWorkDoneTexBoxModeCommand}"
+        <KeyBinding Command="{Binding #Root.InternalViewModel.ChangeModeCommand}"
                     CommandParameter="{x:Static enums:EMarkdownTextBoxMode.Edit}"
                     Gesture="Ctrl+E" />
-        <KeyBinding Command="{Binding #Root.ChangeWorkDoneTexBoxModeCommand}"
+        <KeyBinding Command="{Binding #Root.InternalViewModel.ChangeModeCommand}"
                     CommandParameter="{x:Static enums:EMarkdownTextBoxMode.Split}"
                     Gesture="Ctrl+I" />
-        <KeyBinding Command="{Binding #Root.ChangeWorkDoneTexBoxModeCommand}"
+        <KeyBinding Command="{Binding #Root.InternalViewModel.ChangeModeCommand}"
                     CommandParameter="{x:Static enums:EMarkdownTextBoxMode.View}"
                     Gesture="Ctrl+P" />
     </UserControl.KeyBindings>
@@ -31,10 +31,12 @@
             <ColumnDefinition Width="*" MinWidth="80" />
         </Grid.ColumnDefinitions>
         <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3"
-                    HorizontalAlignment="Left" VerticalAlignment="Center"
+                    VerticalAlignment="Center"
                     Orientation="Horizontal" Spacing="10">
             <Button x:Name="EditModeButton"
                     Classes="Icon"
+                    Command="{Binding #Root.InternalViewModel.ChangeModeCommand}"
+                    CommandParameter="{x:Static enums:EMarkdownTextBoxMode.Edit}"
                     ToolTip.Tip="{loc:Localize Key=MarkdownTextBox_Edit_Tooltip}">
                 <ic:FluentIcon FontSize="18"
                                Foreground="{StaticResource White3}"
@@ -42,6 +44,8 @@
             </Button>
             <Button x:Name="SplitModeButton"
                     Classes="Icon"
+                    Command="{Binding #Root.InternalViewModel.ChangeModeCommand}"
+                    CommandParameter="{x:Static enums:EMarkdownTextBoxMode.Split}"
                     ToolTip.Tip="{loc:Localize Key=MarkdownTextBox_SplitView_Tooltip}">
                 <ic:FluentIcon FontSize="18"
                                Foreground="{StaticResource White3}"
@@ -49,10 +53,21 @@
             </Button>
             <Button x:Name="ViewModeButton"
                     Classes="Icon"
+                    Command="{Binding #Root.InternalViewModel.ChangeModeCommand}"
+                    CommandParameter="{x:Static enums:EMarkdownTextBoxMode.View}"
                     ToolTip.Tip="{loc:Localize Key=MarkdownTextBox_Preview_Tooltip}">
                 <ic:FluentIcon FontSize="18"
                                Foreground="{StaticResource White3}"
                                Icon="DocumentSearch" />
+            </Button>
+            <Button x:Name="CheatSheetButton"
+                    HorizontalAlignment="Right"
+                    Classes="Icon"
+                    Command="{Binding #Root.InternalViewModel.ShowCheatSheetCommand}"
+                    ToolTip.Tip="{loc:Localize Key=MarkdownTextBox_Cheatsheet_Tooltip}">
+                <ic:FluentIcon FontSize="18"
+                               Foreground="{StaticResource White3}"
+                               Icon="InfoSparkle" />
             </Button>
         </StackPanel>
 

@@ -1,0 +1,75 @@
+﻿<UserControl x:Class="deavnote.app.Views.MarkdownCheatSheetView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:ic="using:FluentIcons.Avalonia"
+             xmlns:loc="using:deavnote.app.Localization"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewmodels="using:deavnote.app.ViewModels"
+             Width="600"
+             Height="500"
+             x:DataType="viewmodels:MarkdownCheatSheetViewModel"
+             Background="{DynamicResource CustomMainBackground}"
+             mc:Ignorable="d">
+
+    <Grid Margin="20" RowDefinitions="*, Auto">
+
+        <ScrollViewer Grid.Row="0" HorizontalScrollBarVisibility="Disabled">
+            <StackPanel Spacing="10">
+                <TextBlock Classes="CardTitle" Text="Markdown Syntax Reference" />
+
+                <TextBlock Classes="Subtitle" Text="Headers" />
+                <SelectableTextBlock Classes="Legend" Text="# H1" />
+                <SelectableTextBlock Classes="Legend" Text="## H2" />
+                <SelectableTextBlock Classes="Legend" Text="### H3" />
+
+                <TextBlock Classes="Subtitle" Text="Emphasis" />
+                <SelectableTextBlock Classes="Legend" Text="*italic* or _italic_" />
+                <SelectableTextBlock Classes="Legend" Text="**bold** or __bold__" />
+                <SelectableTextBlock Classes="Legend" Text="***bold italic*** or ___bold italic___" />
+
+                <TextBlock Classes="Subtitle" Text="Lists" />
+                <SelectableTextBlock Classes="Legend" Text="Unordered: - item or * item or + item" />
+                <SelectableTextBlock Classes="Legend" Text="Ordered: 1. item" />
+                <SelectableTextBlock Classes="Legend" Text="Nested: Add 2 spaces before - or 1." />
+
+                <TextBlock Classes="Subtitle" Text="Links" />
+                <SelectableTextBlock Classes="Legend" Text="[Link text](https://example.com)" />
+                <SelectableTextBlock Classes="Legend" Text="[Link with title](https://example.com &quot;Title&quot;)" />
+
+                <TextBlock Classes="Subtitle" Text="Images" />
+                <SelectableTextBlock Classes="Legend" Text="![Alt text](image-url.jpg)" />
+
+                <TextBlock Classes="Subtitle" Text="Code" />
+                <SelectableTextBlock Classes="Legend" Text="Inline: code" />
+                <SelectableTextBlock Classes="Legend" Text="Block: `language" />
+                <SelectableTextBlock Classes="Legend" Text="       code block" />
+                <SelectableTextBlock Classes="Legend" Text="       `" />
+
+                <TextBlock Classes="Subtitle" Text="Blockquotes" />
+                <SelectableTextBlock Classes="Legend" Text="&gt; Quote text" />
+                <SelectableTextBlock Classes="Legend" Text="&gt;&gt; Nested quote" />
+
+                <TextBlock Classes="Subtitle" Text="Horizontal Rule" />
+                <SelectableTextBlock Classes="Legend" Text="--- or *** or ___" />
+
+                <TextBlock Classes="Subtitle" Text="Tables" />
+                <SelectableTextBlock Classes="Legend" Text="| Column 1 | Column 2 |" />
+                <SelectableTextBlock Classes="Legend" Text="| -------- | -------- |" />
+                <SelectableTextBlock Classes="Legend" Text="| Cell 1   | Cell 2   |" />
+
+                <TextBlock Classes="Subtitle" Text="Task Lists" />
+                <SelectableTextBlock Classes="Legend" Text="- [ ] Unchecked task" />
+                <SelectableTextBlock Classes="Legend" Text="- [x] Checked task" />
+            </StackPanel>
+        </ScrollViewer>
+
+        <StackPanel Grid.Row="1"
+                    Margin="0,10,0,0" HorizontalAlignment="Right"
+                    Orientation="Horizontal">
+            <Button Width="100"
+                    Command="{Binding CloseCommand}"
+                    Content="Close" />
+        </StackPanel>
+    </Grid>
+</UserControl>
