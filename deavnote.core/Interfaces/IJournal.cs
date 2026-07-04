@@ -17,6 +17,10 @@ public interface IJournal
     /// </summary>
     int DayOffset { get; }
     /// <summary>
+    /// Gets the total time span of all time entries corresponding to the current date and time cursors.
+    /// </summary>
+    TimeSpan EntriesTotalTimes { get; }
+    /// <summary>
     /// Gets the collection of time entries corresponding to the current date and time cursors.
     /// </summary>
     IReadOnlyCollection<TimeEntry> TimeEntries { get; }

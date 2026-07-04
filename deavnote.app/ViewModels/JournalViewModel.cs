@@ -38,6 +38,9 @@ internal sealed partial class JournalViewModel : BaseViewModel
     public partial bool IsLoading { get; set; }
 
     [ObservableProperty]
+    public partial string TotalTime { get; set; }
+
+    [ObservableProperty]
     public partial ObservableCollection<TimeEntryListItemViewModel> TimeEntries { get; set; }
 
     [ObservableProperty]
@@ -75,6 +78,7 @@ internal sealed partial class JournalViewModel : BaseViewModel
         this.Identifier = Guid.NewGuid().ToString();
         this.TimeEntries = [];
         this.ViewType = EJournalMode.Day;
+        this.TotalTime = string.Empty;
     }
 
     public async override Task OnInitializedAsync()
@@ -207,6 +211,7 @@ internal sealed partial class JournalViewModel : BaseViewModel
     {
         Dispatcher.UIThread.Post((Action)(() =>
         {
+            this.TotalTime = _journal.EntriesTotalTimes.ToString(@"hh\:mm", CultureInfo.CurrentCulture);
             this.TimeEntries.Clear();
 
             if (_journal.TimeEntries.Count == 0) return;
@@ -225,11 +230,9 @@ internal sealed partial class JournalViewModel : BaseViewModel
 
     private void OnJournalCursorChanged(object? sender, JournalCursorChangedEventArgs e)
     {
-        Dispatcher.UIThread.Post((Action)(() =>
-        {
-            this.DateCursor = e.DateCursor;
-        }));
+        Dispatcher.UIThread.Post((Action)(() => this.DateCursor = e.DateCursor));
     }
+
     private void TrySyncSelectedTimeEntryWith(IViewModel viewModel)
     {
         if (viewModel is not TimeEntryDetailViewModel timeEntryDetailViewModel)

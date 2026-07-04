@@ -24,7 +24,7 @@
 
     <ScrollViewer HorizontalScrollBarVisibility="Disabled">
         <Grid Margin="20"
-              ColumnDefinitions="*, Auto" ColumnSpacing="15" RowDefinitions="Auto, *, Auto"
+              ColumnDefinitions="*, Auto" ColumnSpacing="15" RowDefinitions="Auto, *"
               RowSpacing="15">
 
             <Grid Grid.Row="0" Grid.Column="0"
@@ -38,6 +38,21 @@
                 <TextBox Grid.Row="1" Grid.Column="0"
                          Classes="Title"
                          Text="{Binding TaskName}" />
+
+
+                <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
+                            Margin="10,0,0,0" HorizontalAlignment="Left"
+                            Orientation="Horizontal">
+                    <TextBlock Classes="Legend" Text="{loc:Localize Key=Common_CreatedAt}" />
+                    <TextBlock Margin="3,0,10,0"
+                               Classes="Legend"
+                               Text="{Binding TaskCreatedAt, Converter={StaticResource DateTimeUtcToLocal}}" />
+                    <TextBlock Classes="Legend" Text="-" />
+                    <TextBlock Margin="10,0,3,0"
+                               Classes="Legend"
+                               Text="{loc:Localize Key=Common_ModifiedAt}" />
+                    <TextBlock Classes="Legend" Text="{Binding TaskUpdatedAt, Converter={StaticResource DateTimeUtcToLocal}}" />
+                </StackPanel>
             </Grid>
 
             <Border Grid.Row="0" Grid.Column="1"
@@ -76,20 +91,6 @@
 
             <ctrl:MarkdownTextBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
                                   Text="{Binding TaskDescription}" />
-
-            <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
-                        HorizontalAlignment="Right"
-                        Orientation="Horizontal">
-                <TextBlock Classes="Legend" Text="{loc:Localize Key=Common_CreatedAt}" />
-                <TextBlock Margin="3,0,10,0"
-                           Classes="Legend"
-                           Text="{Binding TaskCreatedAt, Converter={StaticResource DateTimeUtcToLocal}}" />
-                <TextBlock Classes="Legend" Text="-" />
-                <TextBlock Margin="10,0,3,0"
-                           Classes="Legend"
-                           Text="{loc:Localize Key=Common_ModifiedAt}" />
-                <TextBlock Classes="Legend" Text="{Binding TaskUpdatedAt, Converter={StaticResource DateTimeUtcToLocal}}" />
-            </StackPanel>
 
         </Grid>
     </ScrollViewer>

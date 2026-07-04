@@ -27,6 +27,8 @@ internal sealed class Journal : IJournal
     public DateOnly DateCursor => DateOnly.FromDateTime(TimeZoneInfo.ConvertTimeFromUtc(_cursorUtc, _timeProvider.LocalTimeZone));
     /// <inheritdoc/>
     public int DayOffset { get; private set; }
+    /// <inheritdoc/>   
+    public TimeSpan EntriesTotalTimes { get; private set; }
     /// <inheritdoc/>
     public IReadOnlyCollection<TimeEntry> TimeEntries => _entriesInCursor.AsReadOnly();
     /// <inheritdoc/>
@@ -164,6 +166,8 @@ internal sealed class Journal : IJournal
             .Where(e => e.StartedAtUtc >= _cursorUtc && e.StartedAtUtc < _cursorUtc.AddDays(this.DayOffset));
 
         _entriesInCursor.AddRange(entries);
+
+        this.EntriesTotalTimes = TimeSpan.FromTicks(entries.Sum(e => e.Duration.Ticks));
 
         this.InvokeTimeEntriesChanged();
     }
