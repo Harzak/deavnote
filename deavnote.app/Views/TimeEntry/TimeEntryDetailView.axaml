@@ -23,66 +23,74 @@
     </UserControl.KeyBindings>
 
     <ScrollViewer HorizontalScrollBarVisibility="Disabled">
-        <Grid Margin="10"
-              ColumnDefinitions="*, Auto, Auto" RowDefinitions="Auto, Auto, Auto, Auto" RowSpacing="15">
+        <Grid Margin="20"
+              ColumnDefinitions="*, Auto" ColumnSpacing="15" RowDefinitions="Auto, *, Auto"
+              RowSpacing="15">
 
-            <TextBox Grid.Row="0" Grid.Column="0"
-                     VerticalAlignment="Center"
-                     Classes="Title"
-                     Text="{Binding Name}" />
+            <Grid Grid.Row="0" Grid.Column="0"
+                  ColumnDefinitions="*" ColumnSpacing="10" RowDefinitions="Auto, Auto, Auto"
+                  RowSpacing="15">
 
-            <StackPanel Grid.Row="0" Grid.Column="1"
-                        HorizontalAlignment="Left" VerticalAlignment="Center"
-                        Orientation="Horizontal" Spacing="10">
+                <SelectableTextBlock Grid.Row="0" Grid.Column="0"
+                                     Margin="10,0,0,0" HorizontalAlignment="Left"
+                                     Classes="CardTitle Code"
+                                     Text="{Binding TaskCode}" />
+                <TextBox Grid.Row="1" Grid.Column="0"
+                         Classes="Title"
+                         Text="{Binding TaskName}" />
+            </Grid>
 
-                <DatePicker Margin="10,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center"
-                            SelectedDate="{Binding StartedAt, Converter={StaticResource DateTimeOffsetUtcToLocal}}" />
-                <ctrl:DurationInput Margin="0,0,100,0" VerticalAlignment="Center"
-                                    Value="{Binding Duration}" />
-            </StackPanel>
+            <Border Grid.Row="0" Grid.Column="1"
+                    Padding="15"
+                    Classes="TimeEntry Detail">
+                <Grid ColumnDefinitions="*, Auto" RowDefinitions="Auto, Auto" RowSpacing="15">
 
-            <StackPanel Grid.Row="0" Grid.Column="2"
+                    <TextBox Grid.Row="0" Grid.Column="0"
+                             VerticalAlignment="Center"
+                             Classes="Title"
+                             Text="{Binding EntryName}" />
+
+                    <StackPanel Grid.Row="0" Grid.Column="1"
+                                HorizontalAlignment="Right"
+                                Orientation="Horizontal" Spacing="10">
+                        <Button Classes="Icon"
+                                Command="{Binding SaveCommand}"
+                                ToolTip.Tip="{loc:Localize Key=TimeEntryDetailView_Save_Tooltip}">
+                            <ic:FluentIcon FontSize="26" Icon="Save" />
+                        </Button>
+                        <Button Classes="Icon"
+                                Command="{Binding CancelCommand}"
+                                ToolTip.Tip="{loc:Localize Key=TimeEntryDetailView_Cancel_Tooltip}">
+                            <ic:FluentIcon FontSize="26" Icon="DismissCircle" />
+                        </Button>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
+                                Orientation="Horizontal">
+                        <DatePicker HorizontalAlignment="Left" VerticalAlignment="Center"
+                                    SelectedDate="{Binding EntryStartedAt, Converter={StaticResource DateTimeOffsetUtcToLocal}}" />
+                        <ctrl:DurationInput VerticalAlignment="Center" Value="{Binding EntryDuration}" />
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <ctrl:MarkdownTextBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
+                                  Text="{Binding TaskDescription}" />
+
+            <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
                         HorizontalAlignment="Right"
-                        Orientation="Horizontal" Spacing="10">
-                <Button Classes="Icon"
-                        Command="{Binding SaveCommand}"
-                        ToolTip.Tip="{loc:Localize Key=TimeEntryDetailView_Save_Tooltip}">
-                    <ic:FluentIcon FontSize="26" Icon="Save" />
-                </Button>
-                <Button Classes="Icon"
-                        Command="{Binding CancelCommand}"
-                        ToolTip.Tip="{loc:Localize Key=TimeEntryDetailView_Cancel_Tooltip}">
-                    <ic:FluentIcon FontSize="26" Icon="DismissCircle" />
-                </Button>
-            </StackPanel>
-
-            <ctrl:MarkdownTextBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"
-                                  Margin="20,20,20,0"
-                                  Text="{Binding WorkDone}" />
-
-            <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3"
-                        Margin="20,0" HorizontalAlignment="Right"
                         Orientation="Horizontal">
                 <TextBlock Classes="Legend" Text="{loc:Localize Key=Common_CreatedAt}" />
                 <TextBlock Margin="3,0,10,0"
                            Classes="Legend"
-                           Text="{Binding CreatedAt, Converter={StaticResource DateTimeUtcToLocal}}" />
+                           Text="{Binding TaskCreatedAt, Converter={StaticResource DateTimeUtcToLocal}}" />
                 <TextBlock Classes="Legend" Text="-" />
                 <TextBlock Margin="10,0,3,0"
                            Classes="Legend"
                            Text="{loc:Localize Key=Common_ModifiedAt}" />
-                <TextBlock Classes="Legend" Text="{Binding UpdatedAt, Converter={StaticResource DateTimeUtcToLocal}}" />
+                <TextBlock Classes="Legend" Text="{Binding TaskUpdatedAt, Converter={StaticResource DateTimeUtcToLocal}}" />
             </StackPanel>
 
-            <Expander Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3"
-                      Margin="0,15,0,0" HorizontalAlignment="Stretch" VerticalAlignment="Top">
-                <Expander.Header>
-                    Related Task
-                </Expander.Header>
-                <Grid>
-                    <dtviews:DevTaskDetailView DataContext="{Binding RelatedTask}" />
-                </Grid>
-            </Expander>
         </Grid>
     </ScrollViewer>
 </UserControl>

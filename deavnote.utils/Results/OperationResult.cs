@@ -16,6 +16,12 @@ public class OperationResult : ResultBase
     }
 
     /// <summary>
+    /// Indicates whether this result is <see langword="true"/>
+    /// enabling short-circuit evaluation with <c>&amp;&amp;</c>.
+    /// </summary>
+    public bool IsTrue => this.IsSuccess;
+
+    /// <summary>
     /// Sets the operation result to successful status.
     /// </summary>
     /// <returns>The current <see cref="OperationResult"/> instance with the success status set.</returns>
@@ -47,6 +53,19 @@ public class OperationResult : ResultBase
     }
 
     /// <summary>
+    /// Performs a AND operation with another <see cref="OperationResult"/> instance.
+    /// </summary>
+    public bool BitwiseAnd(OperationResult other)
+    {
+        if (this.IsFailed)
+        {
+            return false;
+        }
+        return other?.IsSuccess ?? false;
+    }
+
+
+    /// <summary>
     /// Creates a successful operation result.
     /// </summary>
     /// <returns>A new <see cref="OperationResult"/> instance representing a successful operation.</returns>
@@ -72,5 +91,31 @@ public class OperationResult : ResultBase
     public static OperationResult Failure(string message)
     {
         return new OperationResult(success: false).WithError(message);
+    }
+
+    /// <summary>
+    /// Returns <see langword="true"/> when this result represents a success, enabling short-circuit evaluation with <c>&amp;&amp;</c>.
+    /// </summary>
+    public static bool operator true(OperationResult result) => result?.IsSuccess ?? false;
+
+    /// <summary>
+    /// Returns <see langword="true"/> when this result represents a failure, enabling short-circuit evaluation with <c>&amp;&amp;</c>.
+    /// </summary>
+    public static bool operator false(OperationResult result) => result?.IsFailed ?? true;
+
+    /// <summary>
+    /// Combines two operation results. Returns <paramref name="left"/> when it has failed, otherwise returns <paramref name="right"/>.
+    /// </summary>
+    public static OperationResult operator &(OperationResult left, OperationResult right)
+    {
+        if (left == null)
+        {
+            return Failure();
+        }
+        if (!left.IsSuccess)
+        {
+            return left;
+        }
+        return right;
     }
 }

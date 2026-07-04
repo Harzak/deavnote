@@ -1,116 +1,152 @@
-﻿namespace deavnote.app.ViewModels.TimeEntry;
+﻿using deavnote.app.Models;
+
+namespace deavnote.app.ViewModels.TimeEntry;
 
 internal sealed partial class TimeEntryDetailViewModel
-    : BaseEditableViewModel<(string Name, string WorkDone, DateTimeOffset StartedAt, TimeSpan Duration)>
+    : BaseEditableViewModel<TimeEntrySnapshot>
 {
-
     private readonly IJournal _journal;
-    private readonly IViewModelFactory _factory;
+    private readonly IDevTaskRepository _taskRepository;
     private readonly model.Entities.TimeEntry _model;
 
     public override string EditedElementIdentifier { get; }
-    public DateTime CreatedAt => _model.CreatedAtUtc;
-    public DateTime UpdatedAt => _model.UpdatedAtUtc;
+
+    #region Task properties
+    public DateTime TaskCreatedAt { get; set; }
+    public DateTime TaskUpdatedAt { get; set; }
+    public string TaskCode { get; set; }
 
     [ObservableProperty]
     [Required(ErrorMessage = "Name is required.")]
     [NotifyDataErrorInfo]
-    public partial string Name { get; set; }
+    public partial string TaskName { get; set; }
 
     [ObservableProperty]
-    public partial string WorkDone { get; set; }
+    public partial string TaskDescription { get; set; }
+
+    [ObservableProperty]
+    public partial EDevTaskState TaskState { get; set; }
+    #endregion
+
+    #region Time entry properties
+    [ObservableProperty]
+    [Required(ErrorMessage = "Name is required.")]
+    [NotifyDataErrorInfo]
+    public partial string EntryName { get; set; }
+
 
     [ObservableProperty]
     [Required(ErrorMessage = "Start date is required.")]
     [NotifyDataErrorInfo]
-    public partial DateTimeOffset StartedAt { get; set; }
+    public partial DateTimeOffset EntryStartedAt { get; set; }
 
     [ObservableProperty]
     [Required(ErrorMessage = "Duration is required.")]
     [NotifyDataErrorInfo]
-    public partial TimeSpan Duration { get; set; }
-
-    [ObservableProperty]
-    public partial DevTaskDetailViewModel? RelatedTask { get; set; }
+    public partial TimeSpan EntryDuration { get; set; }
+    #endregion
 
     public TimeEntryDetailViewModel(
         model.Entities.TimeEntry model,
         IJournal journal,
-        IViewModelFactory factory,
+        IDevTaskRepository taskRepository,
         INotificationService notificationService)
         : base(notificationService)
     {
         ArgumentNullException.ThrowIfNull(model);
         ArgumentNullException.ThrowIfNull(journal);
-        ArgumentNullException.ThrowIfNull(factory);
+        ArgumentNullException.ThrowIfNull(taskRepository);
 
         _model = model;
         _journal = journal;
-        _factory = factory;
+        _taskRepository = taskRepository;
 
         this.EditedElementIdentifier = _model.Id.ToString(CultureInfo.InvariantCulture);
-        this.Name = _model.Name;
-        this.WorkDone = _model.WorkDone ?? string.Empty;
+
+        this.TaskName = string.Empty;
+        this.TaskDescription = string.Empty;
+        this.TaskCode = string.Empty;
+        this.TaskState = EDevTaskState.Unknown;
+
+        this.EntryName = _model.Name;
         DateTime startedAtUtc = DateTime.SpecifyKind(_model.StartedAtUtc, DateTimeKind.Utc);
-        this.StartedAt = new DateTimeOffset(startedAtUtc);
-        this.Duration = _model.Duration;
+        this.EntryStartedAt = new DateTimeOffset(startedAtUtc);
+        this.EntryDuration = _model.Duration;
     }
 
     public async override Task OnInitializedAsync()
     {
         await base.OnInitializedAsync().ConfigureAwait(false);
 
-        this.RelatedTask = _factory.CreateDevTaskDetailViewModel(_model.DevTask, isReadonly: true);
+        model.Entities.DevTask? relatedTask = await _taskRepository.GetTaskAsync(_model.TaskId).ConfigureAwait(false);
+        if (relatedTask != null)
+        {
+            this.TaskName = relatedTask.Name;
+            this.TaskCode = relatedTask.Code;
+            this.TaskState = relatedTask.State;
+            this.TaskCreatedAt = relatedTask.CreatedAtUtc;
+            this.TaskUpdatedAt = relatedTask.UpdatedAtUtc;
+            this.TaskDescription = relatedTask.Description ?? string.Empty;
+        }
 
         base.ValidateAllProperties();
         base.CommitSnapshot();
     }
 
-    protected override async Task<OperationResult> ApplyChangesAsync(CancellationToken cancellationToken)
+    protected async override Task<OperationResult> ApplyChangesAsync(CancellationToken cancellationToken)
     {
-        return await _journal.UpdateEntryAsync(new UpdateTimeEntryRequest
+        OperationResult resultTask = await _taskRepository.UpdateTaskAsync(new UpdateDevTaskRequest
         {
-            Id = _model.Id,
-            Name = this.Name,
-            WorkDone = this.WorkDone,
-            StartedAt = this.StartedAt.DateTime,
-            Duration = this.Duration,
+            Id = _model.TaskId,
+            Code = this.TaskCode,
+            Name = this.TaskName,
+            Description = this.TaskDescription,
+            State = this.TaskState,
         }, cancellationToken)
         .ConfigureAwait(false);
-    }
 
-    protected override void UndoChanges(
-        (string Name,
-         string WorkDone,
-         DateTimeOffset StartedAt,
-         TimeSpan Duration)
-        snapshot)
-    {
-        this.Name = snapshot.Name;
-        this.WorkDone = snapshot.WorkDone;
-        this.StartedAt = snapshot.StartedAt;
-        this.Duration = snapshot.Duration;
-    }
-
-    protected override (string Name, string WorkDone, DateTimeOffset StartedAt, TimeSpan Duration) TakeSnapshot()
-    {
-        return (this.Name, this.WorkDone, this.StartedAt, this.Duration);
-    }
-
-    protected override bool SnapshotEquals((string Name, string WorkDone, DateTimeOffset StartedAt, TimeSpan Duration) snapshot)
-    {
-        return string.Equals(snapshot.Name, this.Name, StringComparison.Ordinal)
-            && string.Equals(snapshot.WorkDone, this.WorkDone, StringComparison.Ordinal)
-            && snapshot.StartedAt == this.StartedAt
-            && snapshot.Duration == this.Duration;
-    }
-
-    protected override void Dispose(bool disposing)
-    {
-        if (disposing)
+        OperationResult resultEntry = await _journal.UpdateEntryAsync(new UpdateTimeEntryRequest
         {
-            this.RelatedTask?.Dispose();
-        }
-        base.Dispose(disposing);
+            Id = _model.Id,
+            Name = this.EntryName,
+            StartedAt = this.EntryStartedAt.DateTime,
+            Duration = this.EntryDuration,
+        }, cancellationToken)
+        .ConfigureAwait(false);
+
+        return resultEntry && resultTask;
+    }
+
+    protected override void UndoChanges(TimeEntrySnapshot snapshot)
+    {
+        this.TaskName = snapshot.TaskName;
+        this.TaskDescription = snapshot.TaskDescription;
+        this.TaskState = snapshot.TaskState;
+        this.EntryName = snapshot.EntryName;
+        this.EntryStartedAt = snapshot.EntryStartedAt;
+        this.EntryDuration = snapshot.EntryDuration;
+    }
+
+    protected override TimeEntrySnapshot TakeSnapshot()
+    {
+        return new TimeEntrySnapshot()
+        {
+            EntryName = this.EntryName,
+            EntryStartedAt = this.EntryStartedAt,
+            EntryDuration = this.EntryDuration,
+            TaskName = this.TaskName,
+            TaskDescription = this.TaskDescription,
+            TaskState = this.TaskState,
+        };
+    }
+
+    protected override bool SnapshotEquals(TimeEntrySnapshot snapshot)
+    {
+        return string.Equals(snapshot.EntryName, this.EntryName, StringComparison.Ordinal)
+            && string.Equals(snapshot.TaskName, this.TaskName, StringComparison.Ordinal)
+            && string.Equals(snapshot.TaskDescription, this.TaskDescription, StringComparison.Ordinal)
+            && snapshot.TaskState == this.TaskState
+            && snapshot.EntryStartedAt == this.EntryStartedAt
+            && snapshot.EntryDuration == this.EntryDuration;
     }
 }

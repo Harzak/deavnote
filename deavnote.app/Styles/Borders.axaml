@@ -40,4 +40,11 @@
         <Setter Property="BorderBrush" Value="{StaticResource Grey4}" />
     </Style>
 
+    <Style Selector="Border.TimeEntry.Detail">
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="CornerRadius" Value="4" />
+        <Setter Property="Background" Value="{StaticResource Grey2}" />
+        <Setter Property="BorderBrush" Value="{StaticResource Grey5}" />
+    </Style>
+
 </Styles>

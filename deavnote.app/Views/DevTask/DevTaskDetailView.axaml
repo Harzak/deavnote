@@ -9,7 +9,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewmodels="using:deavnote.app.ViewModels"
              d:DesignHeight="500"
-             d:DesignWidth="600"
+             d:DesignWidth="800"
              x:DataType="viewmodels:DevTask.DevTaskDetailViewModel"
              mc:Ignorable="d">
 
