@@ -8,14 +8,14 @@ namespace deavnote.app.tests.ViewModels.TimeEntry;
 public class TimeEntryDetailViewModelTests
 {
     private IJournal _journal;
-    private IViewModelFactory _factory;
+    private IDevTaskRepository _taskRepository;
     private INotificationService _notificationService;
 
     [TestInitialize]
     public void Initialize()
     {
         _journal = A.Fake<IJournal>();
-        _factory = A.Fake<IViewModelFactory>();
+        _taskRepository = A.Fake<IDevTaskRepository>();
         _notificationService = A.Fake<INotificationService>();
     }
 
@@ -23,29 +23,35 @@ public class TimeEntryDetailViewModelTests
     public async Task Properties_WhenRequired_ShouldPreventSaving()
     {
         // Arrange
+        model.Entities.DevTask task = new()
+        {
+            Id = 1,
+            Name = "Test Task",
+            Code = "TT-001",
+            Description = "Task description",
+            State = deavnote.model.Enums.EDevTaskState.InProgress,
+            CreatedAtUtc = DateTime.UtcNow,
+            UpdatedAtUtc = DateTime.UtcNow,
+        };
         model.Entities.TimeEntry model = new()
         {
             Id = 1,
+            TaskId = task.Id,
             Name = "Test Entry",
-            WorkDone = "Worked on testing.",
             StartedAtUtc = DateTime.UtcNow,
             Duration = TimeSpan.FromHours(2),
-            DevTask = new model.Entities.DevTask
-            {
-                Id = 1,
-                Name = "Test Task",
-                Code = "TT-001",
-            },
         };
-        using TimeEntryDetailViewModel viewModel = new(model, _journal, _factory, _notificationService);
+        A.CallTo(() => _taskRepository.GetTaskAsync(task.Id, A<CancellationToken>._))
+            .Returns(Task.FromResult<model.Entities.DevTask?>(task));
+        using TimeEntryDetailViewModel viewModel = new(model, _journal, _taskRepository, _notificationService);
         await viewModel.OnInitializedAsync().ConfigureAwait(false);
 
         // Act
-        viewModel.Name = "";
+        viewModel.EntryName = "";
 
         // Assert
         viewModel.HasErrors.Should().BeTrue();
-        viewModel.GetErrors(nameof(viewModel.Name)).Should().ContainSingle();
+        viewModel.GetErrors(nameof(viewModel.EntryName)).Should().ContainSingle();
         viewModel.HasChanges.Should().BeTrue();
         viewModel.SaveCommand.CanExecute(parameter: null).Should().BeFalse();
         viewModel.CancelCommand.CanExecute(parameter: null).Should().BeTrue();
@@ -55,25 +61,31 @@ public class TimeEntryDetailViewModelTests
     public async Task ModifyingProperty_WhenTracked_ShouldSetDirtyState()
     {
         // Arrange
+        model.Entities.DevTask task = new()
+        {
+            Id = 1,
+            Name = "Test Task",
+            Code = "TT-001",
+            Description = "Task description",
+            State = deavnote.model.Enums.EDevTaskState.InProgress,
+            CreatedAtUtc = DateTime.UtcNow,
+            UpdatedAtUtc = DateTime.UtcNow,
+        };
         model.Entities.TimeEntry model = new()
         {
             Id = 1,
+            TaskId = task.Id,
             Name = "Test Entry",
-            WorkDone = "Worked on testing.",
             StartedAtUtc = DateTime.UtcNow,
             Duration = TimeSpan.FromHours(2),
-            DevTask = new model.Entities.DevTask
-            {
-                Id = 1,
-                Name = "Test Task",
-                Code = "TT-001",
-            },
         };
-        using TimeEntryDetailViewModel viewModel = new(model, _journal, _factory, _notificationService);
+        A.CallTo(() => _taskRepository.GetTaskAsync(task.Id, A<CancellationToken>._))
+            .Returns(Task.FromResult<model.Entities.DevTask?>(task));
+        using TimeEntryDetailViewModel viewModel = new(model, _journal, _taskRepository, _notificationService);
         await viewModel.OnInitializedAsync().ConfigureAwait(false);
 
         // Act
-        viewModel.WorkDone += " Additional work done.";
+        viewModel.TaskDescription += " Additional work done.";
 
         // Assert
         viewModel.HasChanges.Should().BeTrue();
@@ -85,41 +97,53 @@ public class TimeEntryDetailViewModelTests
     public async Task Save_WithChanges_ShouldSetDirtyState()
     {
         // Arrange
+        model.Entities.DevTask task = new()
+        {
+            Id = 1,
+            Name = "Test Task",
+            Code = "TT-001",
+            Description = "Task description",
+            State = deavnote.model.Enums.EDevTaskState.InProgress,
+            CreatedAtUtc = DateTime.UtcNow,
+            UpdatedAtUtc = DateTime.UtcNow,
+        };
         model.Entities.TimeEntry model = new()
         {
             Id = 1,
+            TaskId = task.Id,
             Name = "Test Entry",
-            WorkDone = "Worked on testing.",
             StartedAtUtc = DateTime.UtcNow,
             Duration = TimeSpan.FromHours(2),
-            DevTask = new model.Entities.DevTask
-            {
-                Id = 1,
-                Name = "Test Task",
-                Code = "TT-001",
-            },
         };
+        A.CallTo(() => _taskRepository.GetTaskAsync(task.Id, A<CancellationToken>._))
+            .Returns(Task.FromResult<model.Entities.DevTask?>(task));
+        A.CallTo(() => _taskRepository.UpdateTaskAsync(A<UpdateDevTaskRequest>._, A<CancellationToken>._))
+            .Returns(Task.FromResult(OperationResult.Success()));
         A.CallTo(() => _journal.UpdateEntryAsync(A<UpdateTimeEntryRequest>._, A<CancellationToken>._))
             .Returns(Task.FromResult(OperationResult.Success()));
-        using TimeEntryDetailViewModel viewModel = new(model, _journal, _factory, _notificationService);
+        using TimeEntryDetailViewModel viewModel = new(model, _journal, _taskRepository, _notificationService);
         await viewModel.OnInitializedAsync().ConfigureAwait(false);
 
         // Act
-        viewModel.WorkDone += " Additional work done.";
+        viewModel.TaskDescription += " Additional work done.";
         await viewModel.SaveCommand.ExecuteAsync(parameter: null).ConfigureAwait(false);
 
         // Assert
         viewModel.HasChanges.Should().BeFalse();
         viewModel.SaveCommand.CanExecute(parameter: null).Should().BeFalse();
         viewModel.CancelCommand.CanExecute(parameter: null).Should().BeFalse();
-        A.CallTo(() => _journal.UpdateEntryAsync(new UpdateTimeEntryRequest()
-        {
-            Id = model.Id,
-            Name = viewModel.Name,
-            WorkDone = viewModel.WorkDone,
-            StartedAt = viewModel.StartedAt.UtcDateTime,
-            Duration = viewModel.Duration,
-        }, A<CancellationToken>._))
+        A.CallTo(() => _taskRepository.UpdateTaskAsync(A<UpdateDevTaskRequest>.That.Matches(req =>
+            req.Id == task.Id &&
+            req.Name == viewModel.TaskName &&
+            req.Code == viewModel.TaskCode &&
+            req.Description == viewModel.TaskDescription &&
+            req.State == viewModel.TaskState), A<CancellationToken>._))
+        .MustHaveHappenedOnceExactly();
+        A.CallTo(() => _journal.UpdateEntryAsync(A<UpdateTimeEntryRequest>.That.Matches(req =>
+            req.Id == model.Id &&
+            req.Name == viewModel.EntryName &&
+            req.StartedAt == viewModel.EntryStartedAt.DateTime &&
+            req.Duration == viewModel.EntryDuration), A<CancellationToken>._))
         .MustHaveHappenedOnceExactly();
     }
 
@@ -128,30 +152,36 @@ public class TimeEntryDetailViewModelTests
     public async Task Cancel_WithChanges_ShouldSetDirtyState()
     {
         // Arrange
+        model.Entities.DevTask task = new()
+        {
+            Id = 1,
+            Name = "Test Task",
+            Code = "TT-001",
+            Description = "Task description",
+            State = deavnote.model.Enums.EDevTaskState.InProgress,
+            CreatedAtUtc = DateTime.UtcNow,
+            UpdatedAtUtc = DateTime.UtcNow,
+        };
         model.Entities.TimeEntry model = new()
         {
             Id = 1,
+            TaskId = task.Id,
             Name = "Test Entry",
-            WorkDone = "Worked on testing.",
             StartedAtUtc = DateTime.UtcNow,
             Duration = TimeSpan.FromHours(2),
-            DevTask = new model.Entities.DevTask
-            {
-                Id = 1,
-                Name = "Test Task",
-                Code = "TT-001",
-            },
         };
-        using TimeEntryDetailViewModel viewModel = new(model, _journal, _factory, _notificationService);
+        A.CallTo(() => _taskRepository.GetTaskAsync(task.Id, A<CancellationToken>._))
+            .Returns(Task.FromResult<model.Entities.DevTask?>(task));
+        using TimeEntryDetailViewModel viewModel = new(model, _journal, _taskRepository, _notificationService);
         await viewModel.OnInitializedAsync().ConfigureAwait(false);
 
         // Act
-        viewModel.WorkDone += " Additional work done.";
+        viewModel.TaskDescription += " Additional work done.";
         viewModel.CancelCommand.Execute(parameter: null);
 
         // Assert
         viewModel.HasChanges.Should().BeFalse();
-        viewModel.WorkDone.Should().Be(model.WorkDone);
+        viewModel.TaskDescription.Should().Be(task.Description);
         viewModel.SaveCommand.CanExecute(parameter: null).Should().BeFalse();
         viewModel.CancelCommand.CanExecute(parameter: null).Should().BeFalse();
     }
@@ -160,31 +190,37 @@ public class TimeEntryDetailViewModelTests
     public async Task UndoChanges_ShouldSetDirtyState()
     {
         // Arrange
+        model.Entities.DevTask task = new()
+        {
+            Id = 1,
+            Name = "Test Task",
+            Code = "TT-001",
+            Description = "Task description",
+            State = deavnote.model.Enums.EDevTaskState.InProgress,
+            CreatedAtUtc = DateTime.UtcNow,
+            UpdatedAtUtc = DateTime.UtcNow,
+        };
         model.Entities.TimeEntry model = new()
         {
             Id = 1,
+            TaskId = task.Id,
             Name = "Test Entry",
-            WorkDone = "Worked on testing.",
             StartedAtUtc = DateTime.UtcNow,
             Duration = TimeSpan.FromHours(2),
-            DevTask = new model.Entities.DevTask
-            {
-                Id = 1,
-                Name = "Test Task",
-                Code = "TT-001",
-            },
         };
-        using TimeEntryDetailViewModel viewModel = new(model, _journal, _factory, _notificationService);
+        A.CallTo(() => _taskRepository.GetTaskAsync(task.Id, A<CancellationToken>._))
+            .Returns(Task.FromResult<model.Entities.DevTask?>(task));
+        using TimeEntryDetailViewModel viewModel = new(model, _journal, _taskRepository, _notificationService);
         await viewModel.OnInitializedAsync().ConfigureAwait(false);
 
         // Act
         const string text = " Additional work done.";
-        viewModel.WorkDone += text;
-        viewModel.WorkDone = viewModel.WorkDone.Replace(text, "", StringComparison.OrdinalIgnoreCase);
+        viewModel.TaskDescription += text;
+        viewModel.TaskDescription = viewModel.TaskDescription.Replace(text, "", StringComparison.OrdinalIgnoreCase);
 
         // Assert
         viewModel.HasChanges.Should().BeFalse();
-        viewModel.WorkDone.Should().Be(model.WorkDone);
+        viewModel.TaskDescription.Should().Be(task.Description);
         viewModel.SaveCommand.CanExecute(parameter: null).Should().BeFalse();
         viewModel.CancelCommand.CanExecute(parameter: null).Should().BeFalse();
     }
