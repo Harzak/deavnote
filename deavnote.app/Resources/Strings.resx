@@ -297,4 +297,7 @@
   <data name="Common_Save" xml:space="preserve">
     <value>Save</value>
   </data>
+  <data name="MarkdownTextBox_Cheatsheet_Tooltip" xml:space="preserve">
+    <value>Markdown Cheat Sheet</value>
+  </data>
 </root>

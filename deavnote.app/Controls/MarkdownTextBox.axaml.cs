@@ -1,20 +1,21 @@
 using Avalonia.Data;
 using Avalonia.Interactivity;
+using deavnote.app.ViewModels.Controls;
 using LiveMarkdown.Avalonia;
-using System.Windows.Input;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace deavnote.app.Controls;
 
 internal partial class MarkdownTextBox : UserControl, IDisposable
 {
     private readonly ObservableStringBuilder _markdownBuilder;
-    private readonly DebounceAction _affectTextProperty;
-    private EMarkdownTextBoxMode _currentMode;
+    private MarkdownTextBoxViewModel? _viewModel;
 
     public static readonly StyledProperty<string> TextProperty =
         AvaloniaProperty.Register<MarkdownTextBox, string>(nameof(Text), defaultValue: string.Empty, defaultBindingMode: BindingMode.TwoWay);
 
-    public ICommand ChangeWorkDoneTexBoxModeCommand { get; }
+    public static readonly StyledProperty<MarkdownTextBoxViewModel?> InternalViewModelProperty =
+        AvaloniaProperty.Register<MarkdownTextBox, MarkdownTextBoxViewModel?>(nameof(InternalViewModel));
 
     public string Text
     {
@@ -22,67 +23,97 @@ internal partial class MarkdownTextBox : UserControl, IDisposable
         set => this.SetValue(TextProperty, value);
     }
 
+    public MarkdownTextBoxViewModel? InternalViewModel
+    {
+        get => this.GetValue(InternalViewModelProperty);
+        private set => this.SetValue(InternalViewModelProperty, value);
+    }
+
     public MarkdownTextBox()
     {
-        this.ChangeWorkDoneTexBoxModeCommand = new ChangeMarkdownTextBoxModeCommand(this);
         InitializeComponent();
 
         _markdownBuilder = new ObservableStringBuilder();
-        _affectTextProperty = new DebounceAction(
-            action: () => Dispatcher.UIThread.Post(() => this.Text = this.MarkdownTexBox.Text ?? string.Empty),
-            delayMs: 500);
 
-        this.ViewModeButton.Click +=OnViewModeButtonClick;
-        this.EditModeButton.Click += OnEditModeButtonClick;
-        this.SplitModeButton.Click += OnSplitModeButtonClick;
         this.MarkdownTexBox.TextChanged += this.OnMarkdownTexBoxTextChanged;
     }
 
     protected override void OnLoaded(RoutedEventArgs e)
     {
         base.OnLoaded(e);
-        this.ChangeMode(EMarkdownTextBoxMode.Edit);
 
-        MarkdownRenderer.MarkdownBuilder = _markdownBuilder;
+        IDialogService? dialogService = (Application.Current as App)?.Services?.GetService<IDialogService>();
+        IDebounceActionFactory? debounceActionFactory = (Application.Current as App)?.Services?.GetService<IDebounceActionFactory>();
+        if (dialogService is not null && debounceActionFactory is not null)
+        {
+            _viewModel = new MarkdownTextBoxViewModel(dialogService, debounceActionFactory);
+            _viewModel.PropertyChanged += this.OnViewModelPropertyChanged;
+            _viewModel.Text = this.Text;
+            this.InternalViewModel = _viewModel;
+
+            this.ApplyModeToUI(_viewModel.CurrentMode);
+        }
+
+        this.MarkdownRenderer.MarkdownBuilder = _markdownBuilder;
+    }
+
+    protected override void OnUnloaded(RoutedEventArgs e)
+    {
+        _viewModel?.PropertyChanged -= this.OnViewModelPropertyChanged;
+
+        base.OnUnloaded(e);
     }
 
     protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
     {
         base.OnPropertyChanged(change);
+
         if (change.Property == TextProperty)
         {
-            this.MarkdownTexBox.Text = change.GetNewValue<string>();
+            string newText = change.GetNewValue<string>() ?? string.Empty;
+            this.MarkdownTexBox.Text = newText;
             _markdownBuilder.Clear();
             _markdownBuilder.Append(change.GetNewValue<string>());
+
+            if (_viewModel is not null && !string.Equals(_viewModel.Text, newText, StringComparison.Ordinal))
+            {
+                _viewModel.Text = newText;
+            }
         }
     }
 
     private void OnMarkdownTexBoxTextChanged(object? sender, TextChangedEventArgs e)
     {
-        _affectTextProperty.Execute();
+        if (_viewModel is not null)
+        {
+            _viewModel.InternalTextBoxValue = this.MarkdownTexBox.Text ?? string.Empty;
+            _viewModel.OnTextBoxTextChanged();
+        }
+        else
+        {
+            this.Text = this.MarkdownTexBox.Text ?? string.Empty;
+        }
     }
 
-    private void OnEditModeButtonClick(object? sender, RoutedEventArgs e)
+    private void OnViewModelPropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
-        this.ChangeMode(EMarkdownTextBoxMode.Edit);
+        if (string.Equals(e.PropertyName, nameof(MarkdownTextBoxViewModel.CurrentMode), StringComparison.Ordinal) && _viewModel is not null)
+        {
+            this.ApplyModeToUI(_viewModel.CurrentMode);
+        }
+        else if (string.Equals(e.PropertyName, nameof(MarkdownTextBoxViewModel.Text), StringComparison.Ordinal) && _viewModel is not null)
+        {
+            if (!string.Equals(this.Text, _viewModel.Text, StringComparison.Ordinal))
+            {
+                this.Text = _viewModel.Text;
+            }
+        }
     }
 
-    private void OnViewModeButtonClick(object? sender, RoutedEventArgs e)
+    private void ApplyModeToUI(EMarkdownTextBoxMode mode)
     {
-        this.ChangeMode(EMarkdownTextBoxMode.View);
-    }
-
-    private void OnSplitModeButtonClick(object? sender, RoutedEventArgs e)
-    {
-        this.ChangeMode(EMarkdownTextBoxMode.Split);
-    }
-
-    internal void ChangeMode(EMarkdownTextBoxMode mode)
-    {
-        if (_currentMode == mode) return;
-        _currentMode = mode;
-
         _markdownBuilder.Clear();
+
         switch (mode)
         {
             case EMarkdownTextBoxMode.Edit:
@@ -131,6 +162,10 @@ internal partial class MarkdownTextBox : UserControl, IDisposable
 
     public void Dispose()
     {
-        _affectTextProperty?.Dispose();
+        if (_viewModel is not null)
+        {
+            _viewModel.PropertyChanged -= this.OnViewModelPropertyChanged;
+            _viewModel.Dispose();
+        }
     }
 }

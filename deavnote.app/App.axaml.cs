@@ -9,6 +9,8 @@ internal sealed partial class App : Application, IDisposable
 {
     private ServiceProvider? _serviceProvider;
 
+    internal IServiceProvider? Services => _serviceProvider;
+
     public override void Initialize()
     {
         AvaloniaXamlLoader.Load(this);

@@ -7,7 +7,7 @@ namespace deavnote.app.Services;
 internal sealed class DialogService : IDialogService
 {
     /// <inheritdoc/>
-    public async Task<TResult?> ShowWindowAsync<TResult>(DialogViewModel<TResult> viewModel)
+    public async Task<TResult?> ShowWindowAsync<TResult>(DialogViewModel<TResult> viewModel, bool blockMainWindow = true)
     {
         ArgumentNullException.ThrowIfNull(viewModel);
 
@@ -25,6 +25,7 @@ internal sealed class DialogService : IDialogService
             SizeToContent = SizeToContent.WidthAndHeight,
             WindowStartupLocation = WindowStartupLocation.CenterOwner,
             CanResize = true,
+
         };
 
 
@@ -40,7 +41,14 @@ internal sealed class DialogService : IDialogService
         await viewModel.OnInitializedAsync().ConfigureAwait(false);
         await Dispatcher.UIThread.InvokeAsync(async () =>
         {
-            await dialog.ShowDialog<TResult>(owner).ConfigureAwait(false);
+            if (blockMainWindow)
+            {
+                await dialog.ShowDialog<TResult>(owner).ConfigureAwait(false);
+            }
+            else
+            {
+                dialog.Show(owner);
+            }
         })
         .ConfigureAwait(false);
 
