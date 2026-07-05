@@ -4,7 +4,7 @@ Simple desktop app focused on personal productivity (time imputation, task input
 
 </br>
 
-<img width="100%" height="100%" alt="Screenshot-deavnote-2026-05-17 211734" src="https://github.com/user-attachments/assets/73bb4aa0-98a3-4936-8e61-5c0e333be3f4" />
+<img width="100%" height="100%" alt="Screenshot 2026-07-05 135243" src="https://github.com/user-attachments/assets/a8d6e95b-e3fe-42f6-9b6d-49af39b84899" />
 
 ## Features
 
