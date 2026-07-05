@@ -1,96 +1,77 @@
-﻿using System.Text.RegularExpressions;
+﻿namespace deavnote.core.Services;
 
-namespace deavnote.core.Services;
-
-internal sealed partial class JournalClipboardService : IClipboardService
+/// <summary>
+/// Service responsible for formatting time entries and setting them to the clipboard -
+/// based on user-defined templates for different journal modes (single entry, daily, weekly).
+/// </summary>
+internal sealed class JournalClipboardService : IClipboardService
 {
     private readonly IClipboardInterop _clipboardInterop;
     private readonly IClipboardFormatRepository _clipboardFormatRepository;
+    private readonly ITemplateParser _templateParser;
+    private readonly ITemplateRenderer _templateRenderer;
 
-    private const string TASK_NAME_PLACEHOLDER = "TaskName";
-    private const string TASK_CODE_PLACEHOLDER = "TaskCode";
-    private const string ENTRY_NAME_PLACEHOLDER = "EntryName";
-    private const string WORK_DONE_PLACEHOLDER = "WorkDone";
-
-    public JournalClipboardService(IClipboardInterop clipboardInterop, IClipboardFormatRepository clipboardFormatRepository)
+    public JournalClipboardService(
+          IClipboardInterop clipboardInterop,
+          IClipboardFormatRepository clipboardFormatRepository,
+          ITemplateParser templateParser,
+          ITemplateRenderer templateRenderer)
     {
         ArgumentNullException.ThrowIfNull(clipboardInterop);
         ArgumentNullException.ThrowIfNull(clipboardFormatRepository);
+        ArgumentNullException.ThrowIfNull(templateParser);
+        ArgumentNullException.ThrowIfNull(templateRenderer);
 
         _clipboardInterop = clipboardInterop;
         _clipboardFormatRepository = clipboardFormatRepository;
+        _templateParser = templateParser;
+        _templateRenderer = templateRenderer;
     }
 
+    /// <summary>
+    /// Sets the clipboard text to a formatted representation of a single time entry.
+    /// </summary>
     public async Task SetTimeEntryAsync(TimeEntry entry, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(entry);
 
-        string text = await this.GetTextAsync(entry, EJournalMode.TimeEntry, cancellationToken).ConfigureAwait(false);
+        string templateString = await _clipboardFormatRepository.GetTemplateAsync(EJournalMode.TimeEntry, cancellationToken).ConfigureAwait(false);
+        string text = _templateRenderer.RenderTimeEntry(templateString, entry);
 
         await _clipboardInterop.SetTextAsync(text).ConfigureAwait(false);
     }
 
+    /// <summary>
+    /// Sets the clipboard text to a formatted representation of multiple time entries for a single day.
+    /// </summary>
     public async Task SetDailyTimeEntriesAsync(IEnumerable<TimeEntry> entries, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(entries);
 
-        StringBuilder builder = new();
-        foreach (TimeEntry entry in entries)
-        {
-            string entryText = await this.GetTextAsync(entry, EJournalMode.Day, cancellationToken).ConfigureAwait(false);
-            builder.AppendLine(entryText);
-        }
-        await _clipboardInterop.SetTextAsync(builder.ToString()).ConfigureAwait(false);
+        string templateString = await _clipboardFormatRepository.GetTemplateAsync(EJournalMode.Day, cancellationToken).ConfigureAwait(false);
+        TemplateSection template = _templateParser.Parse(templateString);
+        string text = _templateRenderer.RenderTimeEntries(template, entries);
+
+        await _clipboardInterop.SetTextAsync(text).ConfigureAwait(false);
     }
 
+    /// <summary>
+    /// Sets the clipboard text to a formatted representation of multiple time entries for a week.
+    /// </summary>
     public async Task SetWeeklyTimeEntriesAsync(IEnumerable<TimeEntry> entries, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(entries);
 
+        string templateString = await _clipboardFormatRepository.GetTemplateAsync(EJournalMode.Week, cancellationToken).ConfigureAwait(false);
+        TemplateSection template = _templateParser.Parse(templateString);
+
         StringBuilder builder = new();
         string header = DateOnly.FromDateTime(DateTime.UtcNow).ToString(CultureInfo.InvariantCulture);
         builder.AppendLine(header);
-        foreach (TimeEntry entry in entries)
-        {
-            string entryText = await this.GetTextAsync(entry, EJournalMode.Week, cancellationToken).ConfigureAwait(false);
-            builder.AppendLine(entryText);
-        }
+
+        string text = _templateRenderer.RenderTimeEntries(template, entries);
+        builder.Append(text);
 
         await _clipboardInterop.SetTextAsync(builder.ToString()).ConfigureAwait(false);
     }
-
-    private async Task<string> GetTextAsync(TimeEntry entry, EJournalMode context, CancellationToken cancellationToken = default)
-    {
-        string template = await _clipboardFormatRepository.GetTemplateAsync(context, cancellationToken).ConfigureAwait(false);
-        Dictionary<string, string> placeholders = this.CreatePlaceholders(entry);
-        return this.InterpolateTemplate(template, placeholders);
-    }
-
-    [GeneratedRegex(@"\{(?<Key>\w+)\}", RegexOptions.ExplicitCapture, matchTimeoutMilliseconds: 1000)] 
-    private static partial Regex PlaceholderReplacementRegex();
-
-    /// <summary>
-    /// Replaces placeholders in the template string with corresponding values from the dictionary.
-    /// </summary>
-    /// <remarks>If a placeholder key is not found in the dictionary, the original placeholder is left unchanged.</remarks>
-    private string InterpolateTemplate(string template, Dictionary<string, string> placeholders)
-    {
-        return PlaceholderReplacementRegex().Replace(template, match =>
-        {
-            var key = match.Groups[1].Value;
-            return placeholders.TryGetValue(key, out var value) ? value : match.Value;
-        });
-    }
-
-    private Dictionary<string, string> CreatePlaceholders(TimeEntry entry)
-    {
-        return new Dictionary<string, string>(StringComparer.Ordinal)
-        {
-            { TASK_NAME_PLACEHOLDER, string.IsNullOrWhiteSpace(entry.DevTask?.Name) ? "[Empty Task Name]" : entry.DevTask.Name },
-            { TASK_CODE_PLACEHOLDER, string.IsNullOrWhiteSpace(entry.DevTask?.Code) ? "[Empty Task Code]" : entry.DevTask.Code },
-            { ENTRY_NAME_PLACEHOLDER, string.IsNullOrWhiteSpace(entry.Name) ? "[Empty Entry Name]" : entry.Name },
-            { WORK_DONE_PLACEHOLDER, entry.WorkDone ?? string.Empty },
-        };
-    }
 }
-

@@ -1,8 +1,4 @@
-﻿using deavnote.repository.Dto;
-using deavnote.utils.Results;
-using System.Collections.Concurrent;
-
-[assembly: InternalsVisibleTo("deavnote.core.tests")]
+﻿[assembly: InternalsVisibleTo("deavnote.core.tests")]
 
 namespace deavnote.core.Services;
 

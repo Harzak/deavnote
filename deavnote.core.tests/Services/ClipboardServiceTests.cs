@@ -1,10 +1,16 @@
 ﻿namespace deavnote.core.tests.Services;
 
+/// <summary>
+/// Tests for JournalClipboardService focusing on orchestration logic.
+/// Template parsing and rendering logic is tested separately in TemplateParserTests and TemplateRendererTests.
+/// </summary>
 [TestClass]
 public class ClipboardServiceTests
 {
     private IClipboardInterop _clipboard;
     private IClipboardFormatRepository _repository;
+    private ITemplateParser _templateParser;
+    private ITemplateRenderer _templateRenderer;
 
     public TestContext TestContext { get; set; }
 
@@ -13,157 +19,102 @@ public class ClipboardServiceTests
     {
         _clipboard = A.Fake<IClipboardInterop>();
         _repository = A.Fake<IClipboardFormatRepository>();
+        _templateParser = A.Fake<ITemplateParser>();
+        _templateRenderer = A.Fake<ITemplateRenderer>();
     }
 
     [TestMethod]
-    public async Task SetDailyTimeEntryAsync_ShouldInterpolateTemplate()
+    public async Task SetTimeEntryAsync_CallsRendererAndSetsClipboard()
     {
         // Arrange
-        JournalClipboardService service = new(_clipboard, _repository);
-        A.CallTo(()
-            => _repository.GetTemplateAsync(model.Enums.EJournalMode.TimeEntry, A<CancellationToken>.Ignored))
-            .Returns("entry name is: {EntryName} and work done is: {WorkDone}");
+        JournalClipboardService service = new(_clipboard, _repository, _templateParser, _templateRenderer);
+        const string templateString = "{EntryName}";
+        const string renderedText = "Rendered text";
+        TimeEntry entry = new() { Name = "Test entry" };
+
+        A.CallTo(() => _repository.GetTemplateAsync(model.Enums.EJournalMode.TimeEntry, A<CancellationToken>.Ignored))
+            .Returns(templateString);
+        A.CallTo(() => _templateRenderer.RenderTimeEntry(templateString, entry))
+            .Returns(renderedText);
 
         // Act
-        await service.SetTimeEntryAsync(new TimeEntry
-        {
-            Name = "Refactor some stuff",
-            WorkDone = "a lot of works",
-        }, TestContext.CancellationToken)
-        .ConfigureAwait(false);
+        await service.SetTimeEntryAsync(entry, TestContext.CancellationToken).ConfigureAwait(false);
 
         // Assert
-        string expected = "entry name is: Refactor some stuff and work done is: a lot of works";
-        A.CallTo(() => _clipboard.SetTextAsync(expected))
+        A.CallTo(() => _repository.GetTemplateAsync(model.Enums.EJournalMode.TimeEntry, A<CancellationToken>.Ignored))
+            .MustHaveHappenedOnceExactly();
+        A.CallTo(() => _templateRenderer.RenderTimeEntry(templateString, entry))
+            .MustHaveHappenedOnceExactly();
+        A.CallTo(() => _clipboard.SetTextAsync(renderedText))
             .MustHaveHappenedOnceExactly();
     }
 
     [TestMethod]
-    public async Task SetDailyTimeEntriesAsync_ShouldInterpolateTemplate()
+    public async Task SetDailyTimeEntriesAsync_ParsesTemplateAndCallsRenderer()
     {
         // Arrange
-        JournalClipboardService service = new(_clipboard, _repository);
-        A.CallTo(()
-            => _repository.GetTemplateAsync(model.Enums.EJournalMode.Day, A<CancellationToken>.Ignored))
-            .Returns("{EntryName}/{WorkDone}/{TaskName}/{TaskCode}");
+        JournalClipboardService service = new(_clipboard, _repository, _templateParser, _templateRenderer);
+        const string templateString = "{{EACH_ENTRY}}\n{EntryName}\n{{END_EACH}}";
+        TemplateSection parsedTemplate = new(string.Empty, "{EntryName}\n", string.Empty, hasLoop: true);
+        const string renderedText = "Entry1\nEntry2\n";
+        TimeEntry[] entries =
+        [
+            new TimeEntry { Name = "Entry1" },
+            new TimeEntry { Name = "Entry2" },
+        ];
+
+        A.CallTo(() => _repository.GetTemplateAsync(model.Enums.EJournalMode.Day, A<CancellationToken>.Ignored))
+            .Returns(templateString);
+        A.CallTo(() => _templateParser.Parse(templateString))
+            .Returns(parsedTemplate);
+        A.CallTo(() => _templateRenderer.RenderTimeEntries(parsedTemplate, entries))
+            .Returns(renderedText);
 
         // Act
-        await service.SetDailyTimeEntriesAsync([new TimeEntry
-        {
-            Name = "Entry1",
-            WorkDone = "Work1",
-            DevTask = new DevTask()
-            {
-                Name = "Task1",
-                Code = "Code1",
-            },
-        },
-        new TimeEntry
-        {
-            Name = "Entry2",
-            WorkDone = "Work2",
-            DevTask = new DevTask()
-            {
-                Name = "Task2",
-                Code = "Code2",
-            },
-        },], TestContext.CancellationToken)
-        .ConfigureAwait(false);
+        await service.SetDailyTimeEntriesAsync(entries, TestContext.CancellationToken).ConfigureAwait(false);
 
         // Assert
-        string expected = "Entry1/Work1/Task1/Code1" + Environment.NewLine +
-                          "Entry2/Work2/Task2/Code2" + Environment.NewLine;
-        A.CallTo(() => _clipboard.SetTextAsync(expected))
+        A.CallTo(() => _repository.GetTemplateAsync(model.Enums.EJournalMode.Day, A<CancellationToken>.Ignored))
+            .MustHaveHappenedOnceExactly();
+        A.CallTo(() => _templateParser.Parse(templateString))
+            .MustHaveHappenedOnceExactly();
+        A.CallTo(() => _templateRenderer.RenderTimeEntries(parsedTemplate, entries))
+            .MustHaveHappenedOnceExactly();
+        A.CallTo(() => _clipboard.SetTextAsync(renderedText))
             .MustHaveHappenedOnceExactly();
     }
 
     [TestMethod]
-    public async Task SetWeeklyTimeEntriesAsync_ShouldInterpolateTemplate()
+    public async Task SetWeeklyTimeEntriesAsync_AddsDateHeaderAndCallsRenderer()
     {
         // Arrange
-        JournalClipboardService service = new(_clipboard, _repository);
-        A.CallTo(()
-            => _repository.GetTemplateAsync(model.Enums.EJournalMode.Week, A<CancellationToken>.Ignored))
-            .Returns("{EntryName}/{WorkDone}/{TaskName}/{TaskCode}");
+        JournalClipboardService service = new(_clipboard, _repository, _templateParser, _templateRenderer);
+        const string templateString = "{EntryName}";
+        TemplateSection parsedTemplate = new(string.Empty, "{EntryName}", string.Empty, hasLoop: false);
+        const string renderedText = "Entry1";
+        TimeEntry[] entries = [new TimeEntry { Name = "Entry1" }];
+
+        A.CallTo(() => _repository.GetTemplateAsync(model.Enums.EJournalMode.Week, A<CancellationToken>.Ignored))
+            .Returns(templateString);
+        A.CallTo(() => _templateParser.Parse(templateString))
+            .Returns(parsedTemplate);
+        A.CallTo(() => _templateRenderer.RenderTimeEntries(parsedTemplate, entries))
+            .Returns(renderedText);
 
         // Act
-        await service.SetWeeklyTimeEntriesAsync([new TimeEntry
-        {
-            Name = "Entry1",
-            WorkDone = "Work1",
-            DevTask = new DevTask()
-            {
-                Name = "Task1",
-                Code = "Code1",
-            },
-        },
-        new TimeEntry
-        {
-            Name = "Entry2",
-            WorkDone = "Work2",
-            DevTask = new DevTask()
-            {
-                Name = "Task2",
-                Code = "Code2",
-            },
-        },], TestContext.CancellationToken)
-        .ConfigureAwait(false);
+        await service.SetWeeklyTimeEntriesAsync(entries, TestContext.CancellationToken).ConfigureAwait(false);
 
         // Assert
-        string expected = DateOnly.FromDateTime(DateTime.UtcNow).ToString(CultureInfo.InvariantCulture) + Environment.NewLine +
-                          "Entry1/Work1/Task1/Code1" + Environment.NewLine +
-                          "Entry2/Work2/Task2/Code2" + Environment.NewLine;
-        A.CallTo(() => _clipboard.SetTextAsync(expected))
+        A.CallTo(() => _repository.GetTemplateAsync(model.Enums.EJournalMode.Week, A<CancellationToken>.Ignored))
             .MustHaveHappenedOnceExactly();
-    }
-
-    [TestMethod]
-    public async Task SetDailyTimeEntryAsync_WhenInvalidPlaceholder_ShouldFailedGracefully()
-    {
-        // Arrange
-        JournalClipboardService service = new(_clipboard, _repository);
-        A.CallTo(()
-            => _repository.GetTemplateAsync(model.Enums.EJournalMode.TimeEntry, A<CancellationToken>.Ignored))
-            .Returns("entry name is: {InvalidPlaceHolder} and work done is: {WorkDone}");
-
-        // Act
-        await service.SetTimeEntryAsync(new TimeEntry
-        {
-            Name = "Refactor some stuff",
-            WorkDone = "a lot of works",
-        }, TestContext.CancellationToken).ConfigureAwait(false);
-
-        // Assert
-        string expected = "entry name is: {InvalidPlaceHolder} and work done is: a lot of works";
-        A.CallTo(() => _clipboard.SetTextAsync(expected))
+        A.CallTo(() => _templateParser.Parse(templateString))
             .MustHaveHappenedOnceExactly();
-    }
+        A.CallTo(() => _templateRenderer.RenderTimeEntries(parsedTemplate, entries))
+            .MustHaveHappenedOnceExactly();
 
-    [TestMethod]
-    public async Task SetDailyTimeEntryAsync_WhenEmptyPlaceholder_ShouldFailedGracefully()
-    {
-        // Arrange
-        JournalClipboardService service = new(_clipboard, _repository);
-        A.CallTo(()
-            => _repository.GetTemplateAsync(model.Enums.EJournalMode.TimeEntry, A<CancellationToken>.Ignored))
-            .Returns("task name: {TaskName}. task code: {TaskCode}. time entry name: {EntryName}. work done: {WorkDone}");
-
-        // Act
-        await service.SetTimeEntryAsync(new TimeEntry
-        {
-            Name = string.Empty,
-            WorkDone = null,
-            DevTask = new DevTask()
-            {
-                Name = null!,
-                Code = null!,
-            },
-        }, TestContext.CancellationToken)
-        .ConfigureAwait(false);
-
-        // Assert
-        string expected = "task name: [Empty Task Name]. task code: [Empty Task Code]. time entry name: [Empty Entry Name]. work done: ";
-        A.CallTo(() => _clipboard.SetTextAsync(expected))
+        // Verify clipboard text includes date header
+        A.CallTo(() => _clipboard.SetTextAsync(A<string>.That.Matches(text => 
+            text.StartsWith(DateOnly.FromDateTime(DateTime.UtcNow).ToString(CultureInfo.InvariantCulture)))))
             .MustHaveHappenedOnceExactly();
     }
 }
