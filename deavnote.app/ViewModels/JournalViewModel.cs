@@ -55,21 +55,13 @@ internal sealed partial class JournalViewModel : BaseViewModel
         INotificationService notificationService,
         IClipboardService clipboard)
     {
-        ArgumentNullException.ThrowIfNull(journal);
-        ArgumentNullException.ThrowIfNull(dateProvider);
-        ArgumentNullException.ThrowIfNull(viewModelFactory);
-        ArgumentNullException.ThrowIfNull(dialogService);
-        ArgumentNullException.ThrowIfNull(viewOrchestrator);
-        ArgumentNullException.ThrowIfNull(notificationService);
-        ArgumentNullException.ThrowIfNull(clipboard);
-
-        _journal = journal;
-        _dateProvider = dateProvider;
-        _viewModelFactory = viewModelFactory;
-        _dialogService = dialogService;
-        _viewOrchestrator = viewOrchestrator;
-        _notificationService = notificationService;
-        _clipboard = clipboard;
+        _journal = journal ?? throw new ArgumentNullException(nameof(journal));
+        _dateProvider = dateProvider ?? throw new ArgumentNullException(nameof(dateProvider));
+        _viewModelFactory = viewModelFactory ?? throw new ArgumentNullException(nameof(viewModelFactory));
+        _dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
+        _viewOrchestrator = viewOrchestrator ?? throw new ArgumentNullException(nameof(viewOrchestrator));
+        _notificationService = notificationService ?? throw new ArgumentNullException(nameof(notificationService));
+        _clipboard = clipboard ?? throw new ArgumentNullException(nameof(clipboard));
 
         _journal.TimeEntriesChanged += OnJournalTimeEntriesChanged;
         _journal.CursorChanged += OnJournalCursorChanged;
@@ -173,18 +165,18 @@ internal sealed partial class JournalViewModel : BaseViewModel
         {
             EJournalMode.Day => new JournalConfiguration()
             {
-                DateCursor = DateOnly.FromDateTime(DateTime.Today),
+                DateCursor = this.DateCursor,
                 DayOffset = 1,
             },
             EJournalMode.Week => new JournalConfiguration()
             {
-                DateCursor = _dateProvider.GetFirstDayOfWeek(from: DateTime.Today),
+                DateCursor = _dateProvider.GetFirstDayOfWeek(from: this.DateCursor.ToDateTime(TimeOnly.MinValue)),
                 DayOffset = 7,
             },
             EJournalMode.Month => new JournalConfiguration()
             {
-                DateCursor = _dateProvider.GetFirstDayOfMonth(from: DateTime.Today),
-                DayOffset = _dateProvider.GetDaysInMonth(from: DateTime.Today),
+                DateCursor = _dateProvider.GetFirstDayOfMonth(from: this.DateCursor.ToDateTime(TimeOnly.MinValue)),
+                DayOffset = _dateProvider.GetDaysInMonth(from: this.DateCursor.ToDateTime(TimeOnly.MinValue)),
             },
             _ => _journal.DefaultConfiguration,
         };
