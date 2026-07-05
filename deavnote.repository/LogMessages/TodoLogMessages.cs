@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace deavnote.repository.LogMessages;
+﻿namespace deavnote.repository.LogMessages;
 
 internal static partial class TodoLogMessages
 {

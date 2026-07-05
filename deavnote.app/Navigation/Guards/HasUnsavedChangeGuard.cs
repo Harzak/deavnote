@@ -22,8 +22,8 @@ internal sealed class HasUnsavedChangeGuard : INavigationGuard
         {
             ConfirmationViewModel vm = new(Strings.AskUnsavedChanges);
 
-            EConfirmationResult? result =  await _dialogService.ShowWindowAsync(vm).ConfigureAwait(false);
-            
+            EConfirmationResult? result = await _dialogService.ShowWindowAsync(vm).ConfigureAwait(false);
+
             switch (result)
             {
                 case EConfirmationResult.Yes:

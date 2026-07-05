@@ -4,7 +4,7 @@
 internal sealed class PositiveDurationAttribute : LocalizedValidationAttribute
 {
     public PositiveDurationAttribute()
-        :base("AddTimeEntryViewModel_EntryDuration_Positive")
+        : base("AddTimeEntryViewModel_EntryDuration_Positive")
     {
 
     }

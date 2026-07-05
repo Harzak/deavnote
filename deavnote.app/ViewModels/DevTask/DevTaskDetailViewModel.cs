@@ -1,6 +1,6 @@
 ﻿namespace deavnote.app.ViewModels.DevTask;
 
-internal sealed partial class DevTaskDetailViewModel 
+internal sealed partial class DevTaskDetailViewModel
     : BaseEditableViewModel<(string Name, string Description, EDevTaskState State)>
 {
     private readonly IDevTaskRepository _repository;

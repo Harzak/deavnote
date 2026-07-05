@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace deavnote.model.Enums;
+﻿namespace deavnote.model.Enums;
 
 /// <summary>
 /// Specifies the possible states of a development task.

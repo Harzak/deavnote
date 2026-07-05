@@ -6,7 +6,7 @@ internal sealed partial class MainViewModel : BaseViewModel, IHostViewModel, IDi
     private readonly IViewModelFactory _viewModelFactory;
     private readonly IDialogService _dialogService;
 
-    public override string Identifier { get ; }
+    public override string Identifier { get; }
 
     [ObservableProperty]
     public partial SearchViewModel Search { get; set; }

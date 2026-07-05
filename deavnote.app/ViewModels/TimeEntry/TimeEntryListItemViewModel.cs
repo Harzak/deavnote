@@ -28,7 +28,7 @@ internal sealed partial class TimeEntryListItemViewModel : BaseViewModel
     [ObservableProperty]
     public partial EDevTaskState TaskState { get; set; }
 
- 
+
 
     public TimeEntryListItemViewModel(
         model.Entities.TimeEntry timeEntry,

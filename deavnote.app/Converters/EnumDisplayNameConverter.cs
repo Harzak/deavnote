@@ -1,5 +1,4 @@
 ﻿using Avalonia.Data.Converters;
-using System.Reflection;
 
 [assembly: InternalsVisibleTo("deavnote.app.tests")]
 

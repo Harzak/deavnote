@@ -1,6 +1,4 @@
-﻿using deavnote.model.Enums;
-
-namespace deavnote.model.Entities;
+﻿namespace deavnote.model.Entities;
 
 /// <summary>
 /// Represents a to-do item with identifying information, description, and timestamps.
