@@ -17,6 +17,8 @@ public static class ServiceCollectionExtension
         services.AddSingleton<IJournal, Journal>();
         services.AddSingleton<IDateProvider, DateProvider>();
         services.AddSingleton<IClipboardService, JournalClipboardService>();
+        services.AddSingleton<ITemplateParser, TemplateParser>();
+        services.AddSingleton<ITemplateRenderer, TemplateRenderer>();
 
         return services;
     }

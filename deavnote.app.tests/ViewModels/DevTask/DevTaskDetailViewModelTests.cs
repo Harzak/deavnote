@@ -153,5 +153,3 @@ public class DevTaskDetailViewModelTests
         viewModel.CancelCommand.CanExecute(parameter: null).Should().BeFalse();
     }
 }
-
-

@@ -1,7 +1,4 @@
-﻿using deavnote.repository.Dto;
-using deavnote.utils.Results;
-
-namespace deavnote.core.Interfaces;
+﻿namespace deavnote.core.Interfaces;
 
 /// <summary>
 /// Defines functionality for managing and tracking time entries with date and time cursors.
