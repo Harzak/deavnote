@@ -112,6 +112,7 @@ internal sealed partial class JournalViewModel : BaseViewModel
     private async Task AddTimeEntryAsync(CancellationToken cancellationToken)
     {
         AddTimeEntryViewModel vm = _viewModelFactory.CreateAddTimeEntryViewModel();
+        vm.EntryStartedAt = new DateTimeOffset(_journal.DateCursor.ToDateTime(TimeOnly.MinValue));
         AddTimeEntryRequest? request = await _dialogService.ShowWindowAsync(vm).ConfigureAwait(false);
 
         if (request == null)
