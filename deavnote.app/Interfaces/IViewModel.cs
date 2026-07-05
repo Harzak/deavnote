@@ -3,7 +3,7 @@
 /// <summary>
 /// Defines a contract for view models that require asynchronous initialization and cleanup.
 /// </summary>
-    internal interface IViewModel
+internal interface IViewModel
 {
     string Identifier { get; }
 

@@ -1,9 +1,6 @@
 ﻿using deavnote.app.ViewModels.DevTask;
-using deavnote.app.ViewModels.TimeEntry;
 using deavnote.repository.Dto;
-using deavnote.repository.Interfaces;
 using deavnote.utils.Results;
-using NLog.Config;
 
 namespace deavnote.app.tests.ViewModels.DevTask;
 

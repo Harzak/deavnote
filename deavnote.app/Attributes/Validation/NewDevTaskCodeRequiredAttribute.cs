@@ -4,7 +4,7 @@
 internal sealed class NewDevTaskCodeRequiredAttribute : LocalizedValidationAttribute
 {
     public NewDevTaskCodeRequiredAttribute()
-        :base("AddTimeEntryViewModel_NewTaskCode_Required")
+        : base("AddTimeEntryViewModel_NewTaskCode_Required")
     {
 
     }

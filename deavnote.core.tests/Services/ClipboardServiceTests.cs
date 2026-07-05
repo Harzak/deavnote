@@ -1,9 +1,5 @@
 ﻿namespace deavnote.core.tests.Services;
 
-/// <summary>
-/// Tests for JournalClipboardService focusing on orchestration logic.
-/// Template parsing and rendering logic is tested separately in TemplateParserTests and TemplateRendererTests.
-/// </summary>
 [TestClass]
 public class ClipboardServiceTests
 {
@@ -113,7 +109,7 @@ public class ClipboardServiceTests
             .MustHaveHappenedOnceExactly();
 
         // Verify clipboard text includes date header
-        A.CallTo(() => _clipboard.SetTextAsync(A<string>.That.Matches(text => 
+        A.CallTo(() => _clipboard.SetTextAsync(A<string>.That.Matches(text =>
             text.StartsWith(DateOnly.FromDateTime(DateTime.UtcNow).ToString(CultureInfo.InvariantCulture)))))
             .MustHaveHappenedOnceExactly();
     }

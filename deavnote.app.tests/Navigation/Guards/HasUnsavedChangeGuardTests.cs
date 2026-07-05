@@ -2,8 +2,6 @@ using deavnote.app.Enums;
 using deavnote.app.Navigation.Context;
 using deavnote.app.Navigation.Guards;
 using deavnote.utils.Results;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace deavnote.app.tests.Navigation.Guards;
 

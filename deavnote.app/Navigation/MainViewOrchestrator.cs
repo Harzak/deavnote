@@ -1,6 +1,4 @@
-﻿using deavnote.app.EventArgs;
-
-namespace deavnote.app.Navigation;
+﻿namespace deavnote.app.Navigation;
 
 /// <summary>
 /// Orchestrates the main view and manages navigation between view models, ensuring navigation guards are
