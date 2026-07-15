@@ -42,6 +42,7 @@
         <StyleInclude Source="Styles/SearchBoxTheme.axaml" />
         <StyleInclude Source="Styles/TimeEntryListItemTheme.axaml" />
         <StyleInclude Source="avares://LiveMarkdown.Avalonia/Styles.axaml" />
+        <StyleInclude Source="Styles/LiveMarkdownTheme.axaml" />
         <FluentTheme />
     </Application.Styles>
 
