@@ -7,10 +7,12 @@
              xmlns:dtviews="using:deavnote.app.Views.DevTask"
              xmlns:ic="using:FluentIcons.Avalonia"
              xmlns:loc="using:deavnote.app.Localization"
+             xmlns:markup="using:deavnote.app.MarkupExtensions"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:modelEnums="using:deavnote.model.Enums"
              xmlns:viewmodels="using:deavnote.app.ViewModels.TimeEntry"
              d:DesignHeight="450"
-             d:DesignWidth="800"
+             d:DesignWidth="1000"
              x:DataType="viewmodels:TimeEntryDetailViewModel"
              mc:Ignorable="d">
 
@@ -46,6 +48,18 @@
                             Orientation="Horizontal" Spacing="10">
                     <TextBlock VerticalAlignment="Center" Text="Release" />
                     <TextBox MinWidth="100" Text="{Binding TaskRelease, Converter={StaticResource VersionConverter}}" />
+                    <TextBlock VerticalAlignment="Center" Text="State" />
+                    <ComboBox Grid.Row="1" Grid.Column="1"
+                              MinWidth="100"
+                              VerticalAlignment="Center"
+                              ItemsSource="{markup:EnumValues {x:Type modelEnums:EDevTaskState}}"
+                              SelectedItem="{Binding TaskState}">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Converter={StaticResource EnumDisplayNameConverter}}" />
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
                 </StackPanel>
 
                 <StackPanel Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"
