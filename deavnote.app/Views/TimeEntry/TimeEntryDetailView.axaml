@@ -36,9 +36,9 @@
                                      Classes="CardTitle Code"
                                      Text="{Binding TaskCode}" />
                 <TextBox Grid.Row="1" Grid.Column="0"
+                         VerticalAlignment="Center"
                          Classes="Title"
                          Text="{Binding TaskName}" />
-
 
                 <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
                             Margin="10,0,0,0" HorizontalAlignment="Left"

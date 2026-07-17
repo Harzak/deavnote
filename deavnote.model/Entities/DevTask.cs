@@ -11,6 +11,7 @@ public partial class DevTask
     public string? Description { get; set; }
     public string? Note { get; set; }
     public EDevTaskState State { get; set; }
+    public Version? Release { get; set; } 
     public DateTime CreatedAtUtc { get; set; }
     public DateTime UpdatedAtUtc { get; set; }
 
