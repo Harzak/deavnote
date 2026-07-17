@@ -2,7 +2,10 @@
 
 namespace deavnote.app.Converters;
 
-internal sealed class DateTimeUtcToLocal : IValueConverter
+/// <summary>
+/// Converter that converts a DateTime from UTC to local time and vice versa.
+/// </summary>
+internal sealed class DateTimeUtcToLocalConverter : IValueConverter
 {
     public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {

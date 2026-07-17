@@ -1,5 +1,3 @@
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-
 namespace deavnote.model;
 
 public sealed class DeavnoteDbContext : DbContext
@@ -27,6 +25,10 @@ public sealed class DeavnoteDbContext : DbContext
 
     private static void ConfigureTask(ModelBuilder modelBuilder)
     {
+        ValueConverter<Version?, string> versionConverter = new(
+            v => v != null ? v.ToString() : string.Empty,
+            v => string.IsNullOrWhiteSpace(v) ? null : Version.Parse(v));
+
         modelBuilder.Entity<DevTask>(entity =>
         {
             entity.ToTable("DevTasks");
@@ -51,6 +53,10 @@ public sealed class DeavnoteDbContext : DbContext
             entity.Property(e => e.State)
                   .HasConversion<string>()
                   .HasMaxLength(50);
+
+            entity.Property(e => e.Release)
+                  .HasConversion(versionConverter)
+                  .HasMaxLength(32);
 
             entity.HasMany(e => e.TimeEntries)
                   .WithOne(e => e.DevTask)

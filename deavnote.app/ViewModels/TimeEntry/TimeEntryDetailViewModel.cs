@@ -1,6 +1,4 @@
-﻿using deavnote.app.Models;
-
-namespace deavnote.app.ViewModels.TimeEntry;
+﻿namespace deavnote.app.ViewModels.TimeEntry;
 
 internal sealed partial class TimeEntryDetailViewModel
     : BaseEditableViewModel<TimeEntrySnapshot>
@@ -26,6 +24,9 @@ internal sealed partial class TimeEntryDetailViewModel
 
     [ObservableProperty]
     public partial EDevTaskState TaskState { get; set; }
+
+    [ObservableProperty]
+    public partial Version? TaskRelease { get; set; }
     #endregion
 
     #region Time entry properties
@@ -33,7 +34,6 @@ internal sealed partial class TimeEntryDetailViewModel
     [Required(ErrorMessage = "Name is required.")]
     [NotifyDataErrorInfo]
     public partial string EntryName { get; set; }
-
 
     [ObservableProperty]
     [Required(ErrorMessage = "Start date is required.")]
@@ -84,6 +84,7 @@ internal sealed partial class TimeEntryDetailViewModel
             this.TaskName = relatedTask.Name;
             this.TaskCode = relatedTask.Code;
             this.TaskState = relatedTask.State;
+            this.TaskRelease = relatedTask.Release;
             this.TaskCreatedAt = relatedTask.CreatedAtUtc;
             this.TaskUpdatedAt = relatedTask.UpdatedAtUtc;
             this.TaskDescription = relatedTask.Description ?? string.Empty;
@@ -102,6 +103,7 @@ internal sealed partial class TimeEntryDetailViewModel
             Name = this.TaskName,
             Description = this.TaskDescription,
             State = this.TaskState,
+            Release = this.TaskRelease,
         }, cancellationToken)
         .ConfigureAwait(false);
 
@@ -122,6 +124,7 @@ internal sealed partial class TimeEntryDetailViewModel
         this.TaskName = snapshot.TaskName;
         this.TaskDescription = snapshot.TaskDescription;
         this.TaskState = snapshot.TaskState;
+        this.TaskRelease = snapshot.TaskRelease;
         this.EntryName = snapshot.EntryName;
         this.EntryStartedAt = snapshot.EntryStartedAt;
         this.EntryDuration = snapshot.EntryDuration;
@@ -137,6 +140,7 @@ internal sealed partial class TimeEntryDetailViewModel
             TaskName = this.TaskName,
             TaskDescription = this.TaskDescription,
             TaskState = this.TaskState,
+            TaskRelease = this.TaskRelease,
         };
     }
 
@@ -146,6 +150,7 @@ internal sealed partial class TimeEntryDetailViewModel
             && string.Equals(snapshot.TaskName, this.TaskName, StringComparison.Ordinal)
             && string.Equals(snapshot.TaskDescription, this.TaskDescription, StringComparison.Ordinal)
             && snapshot.TaskState == this.TaskState
+            && snapshot.TaskRelease == this.TaskRelease
             && snapshot.EntryStartedAt == this.EntryStartedAt
             && snapshot.EntryDuration == this.EntryDuration;
     }

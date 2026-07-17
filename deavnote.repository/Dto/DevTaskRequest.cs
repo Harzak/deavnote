@@ -6,5 +6,6 @@ public abstract record DevTaskRequest
     public required string Name { get; init; }
     public string? Description { get; init; }
     public EDevTaskState State { get; init; }
+    public Version? Release { get; init; }
 }
 

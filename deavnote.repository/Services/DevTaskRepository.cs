@@ -67,6 +67,7 @@ internal sealed class DevTaskRepository : IDevTaskRepository
         existingTask.Name = request.Name;
         existingTask.Description = request.Description;
         existingTask.State = request.State;
+        existingTask.Release = request.Release;
         existingTask.UpdatedAtUtc = DateTime.UtcNow;
 
         try

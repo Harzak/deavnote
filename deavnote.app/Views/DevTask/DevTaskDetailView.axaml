@@ -15,7 +15,7 @@
 
     <UserControl.Resources>
         <conv:BoolToInverseConverter x:Key="BoolToInverseConverter" />
-        <conv:DateTimeUtcToLocal x:Key="DateTimeUtcToLocal" />
+        <conv:DateTimeUtcToLocalConverter x:Key="DateTimeUtcToLocal" />
     </UserControl.Resources>
     <UserControl.KeyBindings>
         <KeyBinding Command="{Binding SaveCommand}" Gesture="Ctrl+S" />

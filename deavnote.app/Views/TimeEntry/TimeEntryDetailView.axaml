@@ -7,16 +7,19 @@
              xmlns:dtviews="using:deavnote.app.Views.DevTask"
              xmlns:ic="using:FluentIcons.Avalonia"
              xmlns:loc="using:deavnote.app.Localization"
+             xmlns:markup="using:deavnote.app.MarkupExtensions"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:modelEnums="using:deavnote.model.Enums"
              xmlns:viewmodels="using:deavnote.app.ViewModels.TimeEntry"
              d:DesignHeight="450"
-             d:DesignWidth="800"
+             d:DesignWidth="1000"
              x:DataType="viewmodels:TimeEntryDetailViewModel"
              mc:Ignorable="d">
 
     <UserControl.Resources>
-        <conv:DateTimeOffsetUtcToLocal x:Key="DateTimeOffsetUtcToLocal" />
-        <conv:DateTimeUtcToLocal x:Key="DateTimeUtcToLocal" />
+        <conv:DateTimeOffsetUtcToLocalConverter x:Key="DateTimeOffsetUtcToLocal" />
+        <conv:DateTimeUtcToLocalConverter x:Key="DateTimeUtcToLocal" />
+        <conv:VersionConverter x:Key="VersionConverter" />
     </UserControl.Resources>
     <UserControl.KeyBindings>
         <KeyBinding Command="{Binding SaveCommand}" Gesture="Ctrl+S" />
@@ -28,7 +31,7 @@
               RowSpacing="15">
 
             <Grid Grid.Row="0" Grid.Column="0"
-                  ColumnDefinitions="*" ColumnSpacing="10" RowDefinitions="Auto, Auto, Auto"
+                  ColumnDefinitions="*" ColumnSpacing="10" RowDefinitions="Auto, Auto, Auto, Auto"
                   RowSpacing="15">
 
                 <SelectableTextBlock Grid.Row="0" Grid.Column="0"
@@ -36,11 +39,32 @@
                                      Classes="CardTitle Code"
                                      Text="{Binding TaskCode}" />
                 <TextBox Grid.Row="1" Grid.Column="0"
+                         VerticalAlignment="Center"
                          Classes="Title"
                          Text="{Binding TaskName}" />
 
-
                 <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
+                            Margin="10,0,0,0" HorizontalAlignment="Left"
+                            Orientation="Horizontal" Spacing="10">
+                    <TextBlock VerticalAlignment="Center"
+                               Classes="Content Muted" Text="Release" />
+                    <TextBox MinWidth="130" Text="{Binding TaskRelease, Converter={StaticResource VersionConverter}}" />
+                    <TextBlock VerticalAlignment="Center"
+                               Classes="Content Muted" Text="State" />
+                    <ComboBox Grid.Row="1" Grid.Column="1"
+                              MinWidth="150"
+                              VerticalAlignment="Center"
+                              ItemsSource="{markup:EnumValues {x:Type modelEnums:EDevTaskState}}"
+                              SelectedItem="{Binding TaskState}">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Converter={StaticResource EnumDisplayNameConverter}}" />
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                </StackPanel>
+
+                <StackPanel Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"
                             Margin="10,0,0,0" HorizontalAlignment="Left"
                             Orientation="Horizontal">
                     <TextBlock Classes="Legend" Text="{loc:Localize Key=Common_CreatedAt}" />

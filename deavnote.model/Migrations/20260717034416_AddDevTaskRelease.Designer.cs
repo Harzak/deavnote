@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using deavnote.model;
 
@@ -10,9 +11,11 @@ using deavnote.model;
 namespace deavnote.model.Migrations
 {
     [DbContext(typeof(DeavnoteDbContext))]
-    partial class DeavnoteDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260717034416_AddDevTaskRelease")]
+    partial class AddDevTaskRelease
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "10.0.9");
@@ -84,6 +87,7 @@ namespace deavnote.model.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Release")
+                        .IsRequired()
                         .HasMaxLength(32)
                         .HasColumnType("TEXT");
 

@@ -8,4 +8,5 @@ internal sealed record TimeEntrySnapshot
     internal string TaskName { get; init; } = string.Empty;
     internal string TaskDescription { get; init; } = string.Empty;
     internal EDevTaskState TaskState { get; init; }
+    internal Version? TaskRelease { get; init; }
 }
