@@ -46,11 +46,13 @@
                 <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
                             Margin="10,0,0,0" HorizontalAlignment="Left"
                             Orientation="Horizontal" Spacing="10">
-                    <TextBlock VerticalAlignment="Center" Text="Release" />
-                    <TextBox MinWidth="100" Text="{Binding TaskRelease, Converter={StaticResource VersionConverter}}" />
-                    <TextBlock VerticalAlignment="Center" Text="State" />
+                    <TextBlock VerticalAlignment="Center"
+                               Classes="Content Muted" Text="Release" />
+                    <TextBox MinWidth="130" Text="{Binding TaskRelease, Converter={StaticResource VersionConverter}}" />
+                    <TextBlock VerticalAlignment="Center"
+                               Classes="Content Muted" Text="State" />
                     <ComboBox Grid.Row="1" Grid.Column="1"
-                              MinWidth="100"
+                              MinWidth="150"
                               VerticalAlignment="Center"
                               ItemsSource="{markup:EnumValues {x:Type modelEnums:EDevTaskState}}"
                               SelectedItem="{Binding TaskState}">
