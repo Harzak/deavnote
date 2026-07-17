@@ -2,6 +2,9 @@
 
 namespace deavnote.app.MarkupExtensions;
 
+/// <summary>
+/// A markup extension that provides the values of an enum type for use in XAML.
+/// </summary>
 internal sealed class EnumValuesExtension : MarkupExtension
 {
     private readonly Type _enumType;
