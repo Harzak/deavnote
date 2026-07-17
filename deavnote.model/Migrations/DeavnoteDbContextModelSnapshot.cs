@@ -84,7 +84,6 @@ namespace deavnote.model.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Release")
-                        .IsRequired()
                         .HasMaxLength(32)
                         .HasColumnType("TEXT");
 

@@ -34,6 +34,7 @@ global using deavnote.core.Interfaces;
 global using deavnote.model.Configuration;
 global using deavnote.model.Entities;
 global using deavnote.model.Enums;
+global using deavnote.app.Models;
 global using deavnote.repository;
 global using deavnote.repository.Configuration;
 global using deavnote.repository.Dto;

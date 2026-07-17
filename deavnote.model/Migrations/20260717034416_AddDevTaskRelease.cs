@@ -15,8 +15,8 @@ namespace deavnote.model.Migrations
                 table: "DevTasks",
                 type: "TEXT",
                 maxLength: 32,
-                nullable: false,
-                defaultValue: "");
+                nullable: true,
+                defaultValue: null);
         }
 
         /// <inheritdoc />

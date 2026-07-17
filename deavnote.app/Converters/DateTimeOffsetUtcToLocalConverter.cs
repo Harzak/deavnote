@@ -2,22 +2,22 @@
 
 namespace deavnote.app.Converters;
 
-internal sealed class DateTimeUtcToLocal : IValueConverter
+internal sealed class DateTimeOffsetUtcToLocalConverter : IValueConverter
 {
     public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
-        if (value is DateTime dateTimeUtc)
+        if (value is DateTimeOffset dateTimeOffsetUtc)
         {
-            return dateTimeUtc.ToLocalTime();
+            return dateTimeOffsetUtc.ToLocalTime();
         }
         return value;
     }
 
     public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
-        if (value is DateTime dateTimeLocal)
+        if (value is DateTimeOffset dateTimeOffsetLocal)
         {
-            return dateTimeLocal.ToUniversalTime();
+            return dateTimeOffsetLocal.ToUniversalTime();
         }
         return value;
     }

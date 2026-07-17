@@ -55,7 +55,6 @@ public sealed class DeavnoteDbContext : DbContext
                   .HasMaxLength(50);
 
             entity.Property(e => e.Release)
-                  .IsRequired()
                   .HasConversion(versionConverter)
                   .HasMaxLength(32);
 
