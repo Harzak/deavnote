@@ -159,7 +159,7 @@ internal sealed partial class SearchViewModel : BaseViewModel, IDisposable
         switch (this.SelectedItem.Type)
         {
             case ESearchResultItemType.DevTask:
-                model.Entities.DevTask? devTask = await _devTaskRepository.GetTaskAsync(id: this.SelectedItem.Id).ConfigureAwait(false);
+                model.Entities.DevTask? devTask = await _devTaskRepository.GetTaskWithTimeEntriesAsync(id: this.SelectedItem.Id).ConfigureAwait(false);
                 if (devTask != null)
                 {
                     result = await _viewOrchestrator.NavigateToDevTaskDetailAsync(devTask).ConfigureAwait(false);

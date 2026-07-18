@@ -9,13 +9,14 @@ public interface IDevTaskRepository
     /// Asynchronously retrieves a read-only list of lightweight development task DTOs ordered by creation date.
     /// </summary>
     Task<IReadOnlyList<DevTaskLightDto>> GetAllLightDtoAsync(CancellationToken cancellationToken = default);
-
-
     /// <summary>
     /// Retrieves a DevTask entity by its identifier.
     /// </summary>
     Task<DevTask?> GetTaskAsync(int id, CancellationToken cancellationToken = default);
-
+    /// <summary>
+    /// Asynchronously retrieves a DevTask entity along with its associated time entries by its identifier.
+    /// </summary>
+    Task<DevTask?> GetTaskWithTimeEntriesAsync(int id, CancellationToken cancellationToken = default)
     /// <summary>
     /// Asynchronously updates an existing development task.
     /// </summary>

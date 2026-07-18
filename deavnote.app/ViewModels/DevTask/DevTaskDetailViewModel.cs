@@ -1,7 +1,7 @@
 ﻿namespace deavnote.app.ViewModels.DevTask;
 
 internal sealed partial class DevTaskDetailViewModel
-    : BaseEditableViewModel<(string Name, string Description, EDevTaskState State)>
+    : BaseEditableViewModel<DevTaskSnapshot>
 {
     private readonly IDevTaskRepository _repository;
     private readonly model.Entities.DevTask _model;
@@ -25,6 +25,14 @@ internal sealed partial class DevTaskDetailViewModel
     [ObservableProperty]
     public partial EDevTaskState State { get; set; }
 
+    [ObservableProperty]
+    public partial Version? Release { get; set; }
+
+    [ObservableProperty]
+    public IEnumerable<model.Entities.TimeEntry> TimeEntries { get; }
+
+    [ObservableProperty]
+    public TimeSpan TotalTimeSpent { get; }
 
     public DevTaskDetailViewModel(
         model.Entities.DevTask model,
@@ -40,11 +48,14 @@ internal sealed partial class DevTaskDetailViewModel
         _repository = repository;
 
         this.EditedElementIdentifier = _model.Id.ToString(CultureInfo.InvariantCulture);
+        this.Code = _model.Code;
         this.Name = _model.Name;
         this.Description = _model.Description ?? string.Empty;
         this.State = _model.State;
-        this.Code = _model.Code;
+        this.Release = _model.Release;
         this.IsReadonly = isReadonly;
+        this.TimeEntries = _model.TimeEntries ?? Enumerable.Empty<model.Entities.TimeEntry>();
+        this.TotalTimeSpent = this.TimeEntries.Sum(te => te.Duration);
     }
 
     public override async Task OnInitializedAsync()
@@ -63,27 +74,36 @@ internal sealed partial class DevTaskDetailViewModel
             Code = this.Code,
             Description = this.Description,
             State = this.State,
+            Release = this.Release,
         }, cancellationToken)
         .ConfigureAwait(false);
     }
 
-    protected override void UndoChanges((string Name, string Description, EDevTaskState State) snapshot)
+    protected override void UndoChanges(DevTaskSnapshot snapshot)
     {
         this.Name = snapshot.Name;
         this.Description = snapshot.Description;
         this.State = snapshot.State;
+        this.Release = snapshot.Release;
     }
 
-    protected override (string Name, string Description, EDevTaskState State) TakeSnapshot()
+    protected override DevTaskSnapshot TakeSnapshot()
     {
-        return (this.Name, this.Description, this.State);
+        return new DevTaskSnapshot
+        {
+            Name = this.Name,
+            Description = this.Description,
+            State = this.State,
+            Release = this.Release,
+        };
     }
 
-    protected override bool SnapshotEquals((string Name, string Description, EDevTaskState State) snapshot)
+    protected override bool SnapshotEquals(DevTaskSnapshot snapshot)
     {
         return string.Equals(snapshot.Name, this.Name, StringComparison.Ordinal)
             && string.Equals(snapshot.Description, this.Description, StringComparison.Ordinal)
-            && snapshot.State == this.State;
+            && snapshot.State == this.State
+            && snapshot.Release == this.Release;
     }
 }
 

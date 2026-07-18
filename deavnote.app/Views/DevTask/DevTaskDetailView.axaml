@@ -6,7 +6,9 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:ic="using:FluentIcons.Avalonia"
              xmlns:loc="using:deavnote.app.Localization"
+             xmlns:markup="using:deavnote.app.MarkupExtensions"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:modelEnums="using:deavnote.model.Enums"
              xmlns:viewmodels="using:deavnote.app.ViewModels"
              d:DesignHeight="500"
              d:DesignWidth="800"
@@ -16,7 +18,9 @@
     <UserControl.Resources>
         <conv:BoolToInverseConverter x:Key="BoolToInverseConverter" />
         <conv:DateTimeUtcToLocalConverter x:Key="DateTimeUtcToLocal" />
+        <conv:VersionConverter x:Key="VersionConverter" />
     </UserControl.Resources>
+
     <UserControl.KeyBindings>
         <KeyBinding Command="{Binding SaveCommand}" Gesture="Ctrl+S" />
     </UserControl.KeyBindings>
@@ -25,24 +29,59 @@
         <Grid Margin="10"
               ColumnDefinitions="*, Auto" ColumnSpacing="15"
               IsEnabled="{Binding IsReadonly, Converter={StaticResource BoolToInverseConverter}}"
-              RowDefinitions="Auto,Auto, Auto, Auto" RowSpacing="15">
+              RowDefinitions="Auto,Auto, Auto" RowSpacing="15">
 
-            <StackPanel Grid.Row="0" Grid.Column="0"
-                        VerticalAlignment="Center"
-                        Orientation="Horizontal">
-                <SelectableTextBlock Classes="CardTitle Code" Text="{Binding Code}" />
-            </StackPanel>
+            <Grid Grid.Row="0" Grid.Column="0"
+                  ColumnDefinitions="*" ColumnSpacing="10" RowDefinitions="Auto, Auto, Auto, Auto"
+                  RowSpacing="15">
 
-            <TextBox Grid.Row="1" Grid.Column="0"
-                     Classes="Title"
-                     Text="{Binding Name}" />
-            <ComboBox Grid.Row="1" Grid.Column="1"
-                      VerticalAlignment="Center"
-                      DisplayMemberBinding="{Binding}"
-                      SelectedValue="{Binding State}" />
+                <SelectableTextBlock Grid.Row="0" Grid.Column="0"
+                                     Margin="10,0,0,0" HorizontalAlignment="Left"
+                                     Classes="CardTitle Code"
+                                     Text="{Binding Code}" />
+                <TextBox Grid.Row="1" Grid.Column="0"
+                         VerticalAlignment="Center"
+                         Classes="Title"
+                         Text="{Binding Name}" />
 
-            <StackPanel Grid.Row="1" Grid.Column="1"
-                        HorizontalAlignment="Right"
+                <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
+                            Margin="10,0,0,0" HorizontalAlignment="Left"
+                            Orientation="Horizontal" Spacing="10">
+                    <TextBlock VerticalAlignment="Center"
+                               Classes="Content Muted" Text="Release" />
+                    <TextBox MinWidth="130" Text="{Binding Release, Converter={StaticResource VersionConverter}}" />
+                    <TextBlock VerticalAlignment="Center"
+                               Classes="Content Muted" Text="State" />
+                    <ComboBox Grid.Row="1" Grid.Column="1"
+                              MinWidth="150"
+                              VerticalAlignment="Center"
+                              ItemsSource="{markup:EnumValues {x:Type modelEnums:EDevTaskState}}"
+                              SelectedItem="{Binding State}">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Converter={StaticResource EnumDisplayNameConverter}}" />
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                </StackPanel>
+
+                <StackPanel Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"
+                            Margin="10,0,0,0" HorizontalAlignment="Left"
+                            Orientation="Horizontal">
+                    <TextBlock Classes="Legend" Text="{loc:Localize Key=Common_CreatedAt}" />
+                    <TextBlock Margin="3,0,10,0"
+                               Classes="Legend"
+                               Text="{Binding CreatedAt, Converter={StaticResource DateTimeUtcToLocal}}" />
+                    <TextBlock Classes="Legend" Text="-" />
+                    <TextBlock Margin="10,0,3,0"
+                               Classes="Legend"
+                               Text="{loc:Localize Key=Common_ModifiedAt}" />
+                    <TextBlock Classes="Legend" Text="{Binding UpdatedAt, Converter={StaticResource DateTimeUtcToLocal}}" />
+                </StackPanel>
+            </Grid>
+
+            <StackPanel Grid.Row="0" Grid.Column="1"
+                        HorizontalAlignment="Right" VerticalAlignment="Top"
                         Orientation="Horizontal" Spacing="10">
                 <Button Classes="Icon"
                         Command="{Binding SaveCommand}"
@@ -56,23 +95,22 @@
                 </Button>
             </StackPanel>
 
-            <ctrl:MarkdownTextBox Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
+            <ctrl:MarkdownTextBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" MinHeight="1000"
                                   Margin="20,20,20,0"
                                   Text="{Binding Description}" />
 
-            <StackPanel Grid.Row="3" Grid.Column="1"
-                        Margin="20,0"
-                        Orientation="Horizontal">
-                <TextBlock Classes="Legend" Text="{loc:Localize Key=Common_CreatedAt}" />
-                <TextBlock Margin="3,0,10,0"
-                           Classes="Legend"
-                           Text="{Binding CreatedAt, Converter={StaticResource DateTimeUtcToLocal}}" />
-                <TextBlock Classes="Legend" Text="-" />
-                <TextBlock Margin="10,0,3,0"
-                           Classes="Legend"
-                           Text="{loc:Localize Key=Common_ModifiedAt}" />
-                <TextBlock Classes="Legend" Text="{Binding UpdatedAt, Converter={StaticResource DateTimeUtcToLocal}}" />
-            </StackPanel>
+<!--            <TableView ItemsSource="{Binding Countries}"
+           CanUserResizeColumns="False">
+                            <TableView.Columns>
+  <TableViewColumn Header="#" Width="40"
+                   Binding="{Binding Index}"
+                   CanUserResize="False" />
+  <TableViewColumn Header="Name" Binding="{Binding Name}" />
+</TableView.Columns>
+
+</TableView>-->
+
+
         </Grid>
     </ScrollViewer>
 
