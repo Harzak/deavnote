@@ -1,0 +1,47 @@
+﻿<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Design.PreviewWith>
+        <Border Width="600" Height="400"
+                Padding="20"
+                Background="{StaticResource Black1Brush}">
+            <TableView>
+                <TableView.Columns>
+                    <TableViewColumn Width="200" Header="Column 1" />
+                    <TableViewColumn Width="200" Header="Column 2" />
+                </TableView.Columns>
+            </TableView>
+        </Border>
+    </Design.PreviewWith>
+
+    <Style Selector="TableView">
+        <Setter Property="Background" Value="{DynamicResource Grey2Brush}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource Grey4Brush}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="CornerRadius" Value="5" />
+    </Style>
+
+    <Style Selector="TableView /template/ Border#PART_HeaderBorder">
+        <Setter Property="Background" Value="{DynamicResource Grey3Brush}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource Grey5Brush}" />
+        <Setter Property="BorderThickness" Value="0,0,0,1" />
+    </Style>
+
+    <Style Selector="TableView ListBoxItem">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Padding" Value="0" />
+    </Style>
+
+    <Style Selector="TableView ListBoxItem:pointerover /template/ ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource Grey3Brush}" />
+    </Style>
+
+    <Style Selector="TableView ListBoxItem:selected /template/ ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource Grey4Brush}" />
+    </Style>
+
+    <Style Selector="TableView ListBoxItem:nth-child(2n)">
+        <Setter Property="Background" Value="{DynamicResource Grey1Brush}" />
+    </Style>
+
+</Styles>

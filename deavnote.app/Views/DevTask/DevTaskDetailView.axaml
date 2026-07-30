@@ -19,6 +19,7 @@
         <conv:BoolToInverseConverter x:Key="BoolToInverseConverter" />
         <conv:DateTimeUtcToLocalConverter x:Key="DateTimeUtcToLocal" />
         <conv:VersionConverter x:Key="VersionConverter" />
+        <conv:TimeSpanToReadableDurationConverter x:Key="TimeSpanToReadableDurationConverter" />
     </UserControl.Resources>
 
     <UserControl.KeyBindings>
@@ -26,10 +27,10 @@
     </UserControl.KeyBindings>
 
     <ScrollViewer HorizontalScrollBarVisibility="Disabled">
-        <Grid Margin="10"
+        <Grid Margin="20"
               ColumnDefinitions="*, Auto" ColumnSpacing="15"
               IsEnabled="{Binding IsReadonly, Converter={StaticResource BoolToInverseConverter}}"
-              RowDefinitions="Auto,Auto, Auto" RowSpacing="15">
+              RowDefinitions="Auto, Auto, Auto, Auto" RowSpacing="15">
 
             <Grid Grid.Row="0" Grid.Column="0"
                   ColumnDefinitions="*" ColumnSpacing="10" RowDefinitions="Auto, Auto, Auto, Auto"
@@ -95,23 +96,51 @@
                 </Button>
             </StackPanel>
 
-            <ctrl:MarkdownTextBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" MinHeight="1000"
-                                  Margin="20,20,20,0"
+            <ctrl:MarkdownTextBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
+                                  MinHeight="300"
                                   Text="{Binding Description}" />
 
-<!--            <TableView ItemsSource="{Binding Countries}"
-           CanUserResizeColumns="False">
-                            <TableView.Columns>
-  <TableViewColumn Header="#" Width="40"
-                   Binding="{Binding Index}"
-                   CanUserResize="False" />
-  <TableViewColumn Header="Name" Binding="{Binding Name}" />
-</TableView.Columns>
+            <Border Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
+                    HorizontalAlignment="Stretch"
+                    Background="{DynamicResource Grey2Brush}"
+                    BorderBrush="{DynamicResource Grey4Brush}"
+                    BorderThickness="1" CornerRadius="5">
+                <Grid RowDefinitions="*,Auto">
+                    <TableView Grid.Row="0"
+                               Background="Transparent" BorderThickness="0" CornerRadius="0"
+                               ItemsSource="{Binding TimeEntries}">
+                        <TableView.Columns>
+                            <TableViewColumn Width="100"
+                                             Binding="{Binding StartedAtUtc, Converter={StaticResource DateTimeUtcToLocal}, StringFormat='ddd d MMM'}"
+                                             CanUserResize="False" Header="Date" />
+                            <TableViewColumn Width="*"
+                                             Binding="{Binding Name}"
+                                             CanUserResize="True" Header="Time entry" />
+                            <TableViewColumn Width="150"
+                                             HorizontalContentAlignment="Right"
+                                             Binding="{Binding Duration, Converter={StaticResource TimeSpanToReadableDurationConverter}}"
+                                             CanUserResize="False" Header="Time spent" />
+                        </TableView.Columns>
+                    </TableView>
 
-</TableView>-->
-
+                    <!--  Total row  -->
+                    <Border Grid.Row="1"
+                            Background="{DynamicResource Grey3Brush}"
+                            BorderBrush="{DynamicResource Grey5Brush}"
+                            BorderThickness="0,1,0,0">
+                        <Grid ColumnDefinitions="100,*,150">
+                            <TextBlock Grid.Column="0" Grid.ColumnSpan="2"
+                                       Padding="10,8" VerticalAlignment="Center"
+                                       FontWeight="SemiBold" Text="Total time spent:" />
+                            <SelectableTextBlock Grid.Column="2"
+                                                 Padding="10,8" HorizontalAlignment="Right" VerticalAlignment="Center"
+                                                 FontWeight="SemiBold"
+                                                 Text="{Binding TotalTimeSpent, Converter={StaticResource TimeSpanToReadableDurationConverter}}" />
+                        </Grid>
+                    </Border>
+                </Grid>
+            </Border>
 
         </Grid>
     </ScrollViewer>
-
 </UserControl>

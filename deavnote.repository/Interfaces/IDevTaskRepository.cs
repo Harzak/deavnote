@@ -16,7 +16,7 @@ public interface IDevTaskRepository
     /// <summary>
     /// Asynchronously retrieves a DevTask entity along with its associated time entries by its identifier.
     /// </summary>
-    Task<DevTask?> GetTaskWithTimeEntriesAsync(int id, CancellationToken cancellationToken = default)
+    Task<DevTask?> GetTaskWithTimeEntriesAsync(int id, CancellationToken cancellationToken = default);
     /// <summary>
     /// Asynchronously updates an existing development task.
     /// </summary>

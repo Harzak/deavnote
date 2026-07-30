@@ -29,10 +29,10 @@ internal sealed partial class DevTaskDetailViewModel
     public partial Version? Release { get; set; }
 
     [ObservableProperty]
-    public IEnumerable<model.Entities.TimeEntry> TimeEntries { get; }
+    public partial IEnumerable<model.Entities.TimeEntry> TimeEntries { get; set; }
 
     [ObservableProperty]
-    public TimeSpan TotalTimeSpent { get; }
+    public partial TimeSpan TotalTimeSpent { get; set; }
 
     public DevTaskDetailViewModel(
         model.Entities.DevTask model,
