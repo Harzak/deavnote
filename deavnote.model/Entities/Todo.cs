@@ -13,5 +13,8 @@ public partial class Todo
     public ETodoStatus Status { get; set; }
     public DateTime CreatedAtUtc { get; set; }
     public DateTime UpdatedAtUtc { get; set; }
+    
+    public int? TaskId { get; set; }
+    public DevTask? DevTask { get; set; }
 }
 

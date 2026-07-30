@@ -115,6 +115,11 @@ public sealed class DeavnoteDbContext : DbContext
             entity.Property(e => e.Status)
                   .HasConversion<string>()
                   .HasMaxLength(50);
+
+            entity.HasOne(e => e.DevTask)
+                  .WithMany(e => e.Todos)
+                  .HasForeignKey(e => e.TaskId)
+                  .OnDelete(DeleteBehavior.Cascade);
         });
     }
 
