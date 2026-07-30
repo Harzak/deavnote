@@ -28,19 +28,19 @@ internal sealed partial class TodoListViewModel : BaseViewModel, ITodoHost
 
     public async override Task OnInitializedAsync()
     {
-        IReadOnlyList<model.Entities.Todo> inProgressTodos = await _repository.GetAllAsync(ETodoStatus.InProgress).ConfigureAwait(false);
+        IReadOnlyList<Todo> inProgressTodos = await _repository.GetAllAsync(ETodoStatus.InProgress).ConfigureAwait(false);
         if (inProgressTodos?.Count > 0)
         {
-            foreach (model.Entities.Todo todo in inProgressTodos)
+            foreach (Todo todo in inProgressTodos)
             {
                 this.AddInProgressItem(todo);
             }
         }
 
-        IReadOnlyList<model.Entities.Todo> completedTodos = await _repository.GetAllAsync(ETodoStatus.Completed).ConfigureAwait(false);
+        IReadOnlyList<Todo> completedTodos = await _repository.GetAllAsync(ETodoStatus.Completed).ConfigureAwait(false);
         if (completedTodos?.Count > 0)
         {
-            foreach (model.Entities.Todo todo in completedTodos)
+            foreach (Todo todo in completedTodos)
             {
                 this.AddCompletedItem(todo);
             }
@@ -51,7 +51,7 @@ internal sealed partial class TodoListViewModel : BaseViewModel, ITodoHost
     private async Task AddTodoItem()
     {
         DateTime now = DateTime.UtcNow;
-        model.Entities.Todo newTodo = new()
+        Todo newTodo = new()
         {
             Code = Guid.NewGuid().ToString(),
             Name = string.Format(CultureInfo.InvariantCulture, "AUTO-{0}", now.Ticks),
@@ -63,7 +63,6 @@ internal sealed partial class TodoListViewModel : BaseViewModel, ITodoHost
         if (result.IsSuccess)
         {
             this.AddInProgressItem(newTodo);
-            _notificationService.Show("Todo item created", ENotificationType.Success);
         }
         else
         {
@@ -72,12 +71,12 @@ internal sealed partial class TodoListViewModel : BaseViewModel, ITodoHost
 
     }
 
-    public async Task OnNoteChangedAsync(model.Entities.Todo item)
+    public async Task OnNoteChangedAsync(Todo item)
     {
         await this.TrySaveItemAsync(item).ConfigureAwait(false);
     }
 
-    public async Task OnStateChangedAsync(model.Entities.Todo item)
+    public async Task OnStateChangedAsync(Todo item)
     {
         if (await this.TrySaveItemAsync(item).ConfigureAwait(false))
         {
@@ -102,14 +101,14 @@ internal sealed partial class TodoListViewModel : BaseViewModel, ITodoHost
         }
     }
 
-    private void AddInProgressItem(model.Entities.Todo item)
+    private void AddInProgressItem(Todo item)
     {
         TodoListItemViewModel itemViewModel = new(item, this);
 
         Dispatcher.UIThread.Post(() => this.TodoItemsInProgress.Add(itemViewModel));
     }
 
-    private void AddCompletedItem(model.Entities.Todo item)
+    private void AddCompletedItem(Todo item)
     {
         TodoListItemViewModel itemViewModel = new(item, this);
         Dispatcher.UIThread.Post(() => this.TodoItemsCompleted.Add(itemViewModel));
@@ -125,7 +124,7 @@ internal sealed partial class TodoListViewModel : BaseViewModel, ITodoHost
         Dispatcher.UIThread.Post(() => this.TodoItemsCompleted.Remove(item));
     }
 
-    private async Task<bool> TrySaveItemAsync(model.Entities.Todo item)
+    private async Task<bool> TrySaveItemAsync(Todo item)
     {
         OperationResult result = await _repository.UpdateAsync(item).ConfigureAwait(false);
 
