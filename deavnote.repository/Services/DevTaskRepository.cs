@@ -47,6 +47,19 @@ internal sealed class DevTaskRepository : IDevTaskRepository
     }
 
     /// <inheritdoc/>
+    public async Task<DevTask?> GetTaskWithTimeEntriesAsync(int id, CancellationToken cancellationToken = default)
+    {
+        using DeavnoteDbContext context = await _contextFactory.CreateDbContextAsync(cancellationToken).ConfigureAwait(false);
+
+        return await context.DevTasks
+          .Where(x => x.Id == id)
+          .Include(x => x.TimeEntries)
+          .AsNoTracking()
+          .FirstOrDefaultAsync(cancellationToken)
+          .ConfigureAwait(false);
+    }
+
+    /// <inheritdoc/>
     public async Task<OperationResult> UpdateTaskAsync(UpdateDevTaskRequest request, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(request);
