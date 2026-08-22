@@ -4,7 +4,7 @@ Simple desktop app focused on personal productivity (time imputation, task input
 
 </br>
 
-<img width="100%" height="100%" alt="Screenshot 2026-07-05 135243" src="https://github.com/user-attachments/assets/a8d6e95b-e3fe-42f6-9b6d-49af39b84899" />
+<img width="100%" height="100%" alt="Screenshot 2026-08-22 222848" src="https://github.com/user-attachments/assets/b7f73c17-de80-4f21-b149-8e5f84f8954d" />
 
 ## Features
 
