@@ -78,5 +78,25 @@ internal sealed class TodoRepository : ITodoRepository
 
         return OperationResult.Success();
     }
+
+    public async Task<OperationResult> DeleteAllCompletedAsync(int? taskId = null, CancellationToken cancellationToken = default)
+    {
+        using DeavnoteDbContext context = await _contextFactory.CreateDbContextAsync(cancellationToken).ConfigureAwait(false);
+
+        try
+        {
+            await context.Todos
+                .Where(x => x.Status == ETodoStatus.Completed && x.TaskId == taskId)
+                .ExecuteDeleteAsync(cancellationToken)
+                .ConfigureAwait(false);
+        }
+        catch (DbUpdateException ex)
+        {
+            TodoLogMessages.LogFailedToDeleteCompletedTodos(_logger, ex);
+            return OperationResult.Failure("Failed to delete completed todo items");
+        }
+
+        return OperationResult.Success();
+    }
 }
 

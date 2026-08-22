@@ -309,4 +309,7 @@
   <data name="TodoListView_Completed" xml:space="preserve">
     <value>Completed</value>
   </data>
+  <data name="TodoListView_ClearCompleted" xml:space="preserve">
+    <value>Clear completed</value>
+  </data>
 </root>

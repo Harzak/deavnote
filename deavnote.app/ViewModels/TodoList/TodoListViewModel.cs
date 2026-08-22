@@ -27,7 +27,7 @@ internal sealed partial class TodoListViewModel : BaseViewModel, ITodoHost
         this.TodoItemsCompleted = [];
     }
 
-    public TodoListViewModel(ITodoRepository repository, INotificationService notificationService, int taskId)
+    public TodoListViewModel(ITodoRepository repository, INotificationService notificationService, int? taskId)
         : this(repository, notificationService)
     {
         _taskId = taskId;
@@ -51,6 +51,21 @@ internal sealed partial class TodoListViewModel : BaseViewModel, ITodoHost
             {
                 this.AddCompletedItem(todo);
             }
+        }
+    }
+
+    [RelayCommand]
+    private async Task ClearCompletedTodoItems()
+    {
+        OperationResult result = await _repository.DeleteAllCompletedAsync(_taskId).ConfigureAwait(false);
+
+        if (result.IsSuccess)
+        {
+            Dispatcher.UIThread.Post(() => this.TodoItemsCompleted.Clear());
+        }
+        else
+        {
+            _notificationService.Show(result.ErrorMessage ?? "Failed to clear completed todo items", ENotificationType.Error, durationMs: 0);
         }
     }
 
