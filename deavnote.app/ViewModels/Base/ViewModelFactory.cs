@@ -54,7 +54,9 @@ internal sealed class ViewModelFactory : IViewModelFactory
 
     public TodoListViewModel CreateTodoListViewModel(int? taskId = null)
     {
-        return ActivatorUtilities.CreateInstance<TodoListViewModel>(_serviceProvider, [(object)taskId!]);
+        return taskId != null
+            ? ActivatorUtilities.CreateInstance<TodoListViewModel>(_serviceProvider, taskId)
+            : ActivatorUtilities.CreateInstance<TodoListViewModel>(_serviceProvider);
     }
 
     public SettingsViewModel CreateSettingsViewModel()

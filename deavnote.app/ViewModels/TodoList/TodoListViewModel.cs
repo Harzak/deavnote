@@ -14,18 +14,23 @@ internal sealed partial class TodoListViewModel : BaseViewModel, ITodoHost
     [ObservableProperty]
     public partial ObservableCollection<TodoListItemViewModel> TodoItemsCompleted { get; set; }
 
-    public TodoListViewModel(ITodoRepository repository, INotificationService notificationService, int? taskId = null)
+    public TodoListViewModel(ITodoRepository repository, INotificationService notificationService)
     {
         ArgumentNullException.ThrowIfNull(repository);
         ArgumentNullException.ThrowIfNull(notificationService);
 
         _repository = repository;
         _notificationService = notificationService;
-        _taskId = taskId;
 
         this.Identifier = Guid.NewGuid().ToString();
         this.TodoItemsInProgress = [];
         this.TodoItemsCompleted = [];
+    }
+
+    public TodoListViewModel(ITodoRepository repository, INotificationService notificationService, int taskId)
+        : this(repository, notificationService)
+    {
+        _taskId = taskId;
     }
 
     public async override Task OnInitializedAsync()
