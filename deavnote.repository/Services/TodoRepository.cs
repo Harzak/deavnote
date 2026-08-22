@@ -13,12 +13,12 @@ internal sealed class TodoRepository : ITodoRepository
         _logger = logger;
     }
 
-    public async Task<IReadOnlyList<Todo>> GetAllAsync(ETodoStatus status, CancellationToken cancellationToken = default)
+    public async Task<IReadOnlyList<Todo>> GetAllAsync(ETodoStatus status, int? taskId = null, CancellationToken cancellationToken = default)
     {
         using DeavnoteDbContext context = await _contextFactory.CreateDbContextAsync(cancellationToken).ConfigureAwait(false);
 
         List<Todo> todos = await context.Todos
-            .Where(x => x.Status == status)
+            .Where(x => x.Status == status && x.TaskId == taskId)
             .OrderBy(x => x.CreatedAtUtc)
             .AsNoTracking()
             .ToListAsync(cancellationToken)
@@ -74,6 +74,26 @@ internal sealed class TodoRepository : ITodoRepository
         {
             TodoLogMessages.LogFailedToUpdateTodo(_logger, item.Id, ex);
             return OperationResult.Failure($"Error updating Todo item");
+        }
+
+        return OperationResult.Success();
+    }
+
+    public async Task<OperationResult> DeleteAllCompletedAsync(int? taskId = null, CancellationToken cancellationToken = default)
+    {
+        using DeavnoteDbContext context = await _contextFactory.CreateDbContextAsync(cancellationToken).ConfigureAwait(false);
+
+        try
+        {
+            await context.Todos
+                .Where(x => x.Status == ETodoStatus.Completed && x.TaskId == taskId)
+                .ExecuteDeleteAsync(cancellationToken)
+                .ConfigureAwait(false);
+        }
+        catch (DbUpdateException ex)
+        {
+            TodoLogMessages.LogFailedToDeleteCompletedTodos(_logger, ex);
+            return OperationResult.Failure("Failed to delete completed todo items");
         }
 
         return OperationResult.Success();

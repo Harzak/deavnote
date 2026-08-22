@@ -5,9 +5,12 @@ internal sealed partial class TimeEntryDetailViewModel
 {
     private readonly IJournal _journal;
     private readonly IDevTaskRepository _taskRepository;
+    private readonly IViewModelFactory _viewModelFactory;
     private readonly model.Entities.TimeEntry _model;
 
     public override string EditedElementIdentifier { get; }
+
+    public TodoList.TodoListViewModel? TodoList { get; private set; }
 
     #region Task properties
     public DateTime TaskCreatedAt { get; set; }
@@ -50,16 +53,19 @@ internal sealed partial class TimeEntryDetailViewModel
         model.Entities.TimeEntry model,
         IJournal journal,
         IDevTaskRepository taskRepository,
-        INotificationService notificationService)
+        INotificationService notificationService,
+        IViewModelFactory viewModelFactory)
         : base(notificationService)
     {
         ArgumentNullException.ThrowIfNull(model);
         ArgumentNullException.ThrowIfNull(journal);
         ArgumentNullException.ThrowIfNull(taskRepository);
+        ArgumentNullException.ThrowIfNull(viewModelFactory);
 
         _model = model;
         _journal = journal;
         _taskRepository = taskRepository;
+        _viewModelFactory = viewModelFactory;
 
         this.EditedElementIdentifier = _model.Id.ToString(CultureInfo.InvariantCulture);
 
@@ -88,6 +94,9 @@ internal sealed partial class TimeEntryDetailViewModel
             this.TaskCreatedAt = relatedTask.CreatedAtUtc;
             this.TaskUpdatedAt = relatedTask.UpdatedAtUtc;
             this.TaskDescription = relatedTask.Description ?? string.Empty;
+
+            this.TodoList = _viewModelFactory.CreateTodoListViewModel(relatedTask.Id);
+            await this.TodoList.OnInitializedAsync().ConfigureAwait(false);
         }
 
         base.ValidateAllProperties();

@@ -12,78 +12,147 @@
              mc:Ignorable="d">
     <ScrollViewer HorizontalScrollBarVisibility="Disabled">
         <Grid Margin="25,10"
-              RowDefinitions="Auto, *, *" RowSpacing="15">
+              RowDefinitions="Auto, Auto, *, Auto, *" RowSpacing="20">
 
-            <Button Grid.Row="0"
-                    HorizontalAlignment="Right"
-                    Classes="Icon"
-                    Command="{Binding AddTodoItemCommand}"
-                    ToolTip.Tip="{loc:Localize Key=Common_Add}">
-                <ic:FluentIcon Icon="Add" IconSize="Size16" />
-            </Button>
+            <!--  In Progress Items  -->
+            <Border Grid.Row="2"
+                    Padding="8"
+                    BorderBrush="{StaticResource Grey5}"
+                    BorderThickness="1" CornerRadius="4">
+                <StackPanel Orientation="Vertical">
+                    <!--  In Progress Section Header  -->
+                    <Grid Margin="0,2" ColumnDefinitions="Auto, *, Auto, Auto">
+                        <ic:FluentIcon Grid.Column="0"
+                                       Margin="0,0,8,0" VerticalAlignment="Center"
+                                       Icon="TaskListSquare" IconSize="Size20" />
+                        <TextBlock Grid.Column="1"
+                                   VerticalAlignment="Center"
+                                   FontSize="14" FontWeight="SemiBold"
+                                   Text="{loc:Localize Key=TodoListView_InProgress}" />
+                        <Button Grid.Column="2"
+                                Margin="10,0"
+                                Classes="Icon"
+                                Command="{Binding AddTodoItemCommand}"
+                                ToolTip.Tip="{loc:Localize Key=Common_Add}">
+                            <ic:FluentIcon Icon="Add" IconSize="Size16" />
+                        </Button>
+                        <Border Grid.Column="3"
+                                Padding="12"
+                                Background="{StaticResource Grey4}"
+                                CornerRadius="10">
+                            <TextBlock FontSize="13" FontWeight="Bold" Foreground="White"
+                                       Text="{Binding TodoItemsInProgress.Count}" />
+                        </Border>
+                    </Grid>
 
-            <ListBox Grid.Row="1"
-                     Classes="TodoList"
-                     ItemsSource="{Binding TodoItemsInProgress}"
-                     SelectionMode="Single">
-                <ListBox.ItemContainerTheme>
-                    <ControlTheme TargetType="ListBoxItem">
-                        <Setter Property="Template">
-                            <ControlTemplate>
-                                <ContentPresenter Padding="{TemplateBinding Padding}"
-                                                  HorizontalAlignment="Stretch"
-                                                  Content="{TemplateBinding Content}"
-                                                  ContentTemplate="{TemplateBinding ContentTemplate}" />
-                            </ControlTemplate>
-                        </Setter>
-                    </ControlTheme>
-                </ListBox.ItemContainerTheme>
-                <ListBox.ItemTemplate>
-                    <DataTemplate DataType="viewmodels:TodoListItemViewModel">
-                        <Grid ColumnDefinitions="Auto, *" ColumnSpacing="10">
-                            <CheckBox Grid.Column="0"
-                                      VerticalAlignment="Center"
-                                      Command="{Binding SetCompletedCommand}"
-                                      IsChecked="{Binding IsCompleted}" />
-                            <TextBox Grid.Column="1"
-                                     AcceptsReturn="True" Classes="NoBackground"
-                                     Text="{Binding Note}" />
-                        </Grid>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
+                    <ListBox Classes="TodoList"
+                             ItemsSource="{Binding TodoItemsInProgress}"
+                             SelectionMode="Single">
+                        <ListBox.ItemContainerTheme>
+                            <ControlTheme TargetType="ListBoxItem">
+                                <Setter Property="Padding" Value="8,6" />
+                                <Setter Property="Template">
+                                    <ControlTemplate>
+                                        <Border Margin="0,5"
+                                                Padding="{TemplateBinding Padding}"
+                                                Background="{StaticResource Grey2}"
+                                                BorderBrush="{DynamicResource SystemControlForegroundBaseLowBrush}"
+                                                BorderThickness="1" CornerRadius="4">
+                                            <ContentPresenter HorizontalAlignment="Stretch"
+                                                              Content="{TemplateBinding Content}"
+                                                              ContentTemplate="{TemplateBinding ContentTemplate}" />
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter>
+                            </ControlTheme>
+                        </ListBox.ItemContainerTheme>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate DataType="viewmodels:TodoListItemViewModel">
+                                <Grid ColumnDefinitions="Auto, *" ColumnSpacing="10">
+                                    <CheckBox Grid.Column="0"
+                                              VerticalAlignment="Center"
+                                              Command="{Binding SetCompletedCommand}"
+                                              IsChecked="{Binding IsCompleted}" />
+                                    <TextBox Grid.Column="1"
+                                             AcceptsReturn="True" Classes="NoBackground"
+                                             Text="{Binding Note}" />
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </StackPanel>
+            </Border>
 
-            <ListBox Grid.Row="2"
-                     Classes="TodoList"
-                     ItemsSource="{Binding TodoItemsCompleted}"
-                     SelectionMode="Single">
-                <ListBox.ItemContainerTheme>
-                    <ControlTheme TargetType="ListBoxItem">
-                        <Setter Property="Template">
-                            <ControlTemplate>
-                                <ContentPresenter Padding="{TemplateBinding Padding}"
-                                                  HorizontalAlignment="Stretch"
-                                                  Content="{TemplateBinding Content}"
-                                                  ContentTemplate="{TemplateBinding ContentTemplate}" />
-                            </ControlTemplate>
-                        </Setter>
-                    </ControlTheme>
-                </ListBox.ItemContainerTheme>
-                <ListBox.ItemTemplate>
-                    <DataTemplate DataType="viewmodels:TodoListItemViewModel">
-                        <Grid ColumnDefinitions="Auto, *" ColumnSpacing="10">
-                            <CheckBox Grid.Column="0"
-                                      VerticalAlignment="Center"
-                                      Classes="Disabled"
-                                      Command="{Binding SetCompletedCommand}"
-                                      IsChecked="{Binding IsCompleted}" />
-                            <TextBox Grid.Column="1"
-                                     AcceptsReturn="True" Classes="NoBackground Disabled"
-                                     Text="{Binding Note}" />
-                        </Grid>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
+            <!--  Completed Items  -->
+            <Border Grid.Row="4"
+                    Padding="8"
+                    BorderBrush="{StaticResource Grey5}"
+                    BorderThickness="1" CornerRadius="4">
+                <StackPanel Orientation="Vertical">
+                    <!--  Completed Section Header  -->
+                    <Grid Margin="0,2" ColumnDefinitions="Auto, *, Auto, Auto">
+                        <ic:FluentIcon Grid.Column="0"
+                                       Margin="0,0,8,0" VerticalAlignment="Center"
+                                       Icon="CheckmarkCircle" IconSize="Size20" />
+                        <TextBlock Grid.Column="1"
+                                   VerticalAlignment="Center"
+                                   FontSize="14" FontWeight="SemiBold"
+                                   Text="{loc:Localize Key=TodoListView_Completed}" />
+                        <Button Grid.Column="2"
+                                Margin="10,0"
+                                Classes="Icon"
+                                Command="{Binding ClearCompletedTodoItemsCommand}"
+                                ToolTip.Tip="{loc:Localize Key=TodoListView_ClearCompleted}">
+                            <ic:FluentIcon Icon="Delete" IconSize="Size16" />
+                        </Button>
+                        <Border Grid.Column="3"
+                                Margin="0,0,8,0" Padding="12"
+                                Background="{StaticResource Grey4}"
+                                CornerRadius="10">
+                            <TextBlock VerticalAlignment="Center"
+                                       FontSize="13" FontWeight="Bold" Foreground="White"
+                                       Text="{Binding TodoItemsCompleted.Count}" />
+                        </Border>
+                    </Grid>
+
+                    <ListBox Classes="TodoList"
+                             ItemsSource="{Binding TodoItemsCompleted}"
+                             SelectionMode="Single">
+                        <ListBox.ItemContainerTheme>
+                            <ControlTheme TargetType="ListBoxItem">
+                                <Setter Property="Padding" Value="8,6" />
+                                <Setter Property="Template">
+                                    <ControlTemplate>
+                                        <Border Margin="0,5"
+                                                Padding="{TemplateBinding Padding}"
+                                                Background="{StaticResource Grey2}"
+                                                BorderBrush="{DynamicResource SystemControlForegroundBaseLowBrush}"
+                                                BorderThickness="1" CornerRadius="4">
+                                            <ContentPresenter HorizontalAlignment="Stretch"
+                                                              Content="{TemplateBinding Content}"
+                                                              ContentTemplate="{TemplateBinding ContentTemplate}" />
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter>
+                            </ControlTheme>
+                        </ListBox.ItemContainerTheme>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate DataType="viewmodels:TodoListItemViewModel">
+                                <Grid ColumnDefinitions="Auto, *" ColumnSpacing="10">
+                                    <CheckBox Grid.Column="0"
+                                              VerticalAlignment="Center"
+                                              Classes="Disabled"
+                                              Command="{Binding SetCompletedCommand}"
+                                              IsChecked="{Binding IsCompleted}" />
+                                    <TextBox Grid.Column="1"
+                                             AcceptsReturn="True" Classes="NoBackground Disabled"
+                                             Text="{Binding Note}" />
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </StackPanel>
+            </Border>
 
         </Grid>
     </ScrollViewer>
