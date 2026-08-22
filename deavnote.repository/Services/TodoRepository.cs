@@ -13,12 +13,12 @@ internal sealed class TodoRepository : ITodoRepository
         _logger = logger;
     }
 
-    public async Task<IReadOnlyList<Todo>> GetAllAsync(ETodoStatus status, CancellationToken cancellationToken = default)
+    public async Task<IReadOnlyList<Todo>> GetAllAsync(ETodoStatus status, int? taskId = null, CancellationToken cancellationToken = default)
     {
         using DeavnoteDbContext context = await _contextFactory.CreateDbContextAsync(cancellationToken).ConfigureAwait(false);
 
         List<Todo> todos = await context.Todos
-            .Where(x => x.Status == status)
+            .Where(x => x.Status == status && x.TaskId == taskId)
             .OrderBy(x => x.CreatedAtUtc)
             .AsNoTracking()
             .ToListAsync(cancellationToken)

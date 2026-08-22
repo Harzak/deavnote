@@ -9,6 +9,7 @@
              xmlns:markup="using:deavnote.app.MarkupExtensions"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:modelEnums="using:deavnote.model.Enums"
+             xmlns:todoViews="using:deavnote.app.Views.TodoList"
              xmlns:viewmodels="using:deavnote.app.ViewModels.TimeEntry"
              d:DesignHeight="450"
              d:DesignWidth="1000"
@@ -27,7 +28,7 @@
 
     <ScrollViewer HorizontalScrollBarVisibility="Disabled">
         <Grid Margin="20"
-              ColumnDefinitions="*, Auto" ColumnSpacing="15" RowDefinitions="Auto, *"
+              ColumnDefinitions="*, Auto" ColumnSpacing="15" RowDefinitions="Auto, Auto, *"
               RowSpacing="15">
 
             <Grid Grid.Row="0" Grid.Column="0"
@@ -115,6 +116,9 @@
 
             <ctrl:MarkdownTextBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
                                   Text="{Binding TaskDescription}" />
+
+            <todoViews:TodoListView Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
+                                    DataContext="{Binding TodoList}" />
 
         </Grid>
     </ScrollViewer>

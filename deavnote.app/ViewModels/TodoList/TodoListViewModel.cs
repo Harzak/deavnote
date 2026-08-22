@@ -4,6 +4,7 @@ internal sealed partial class TodoListViewModel : BaseViewModel, ITodoHost
 {
     private readonly ITodoRepository _repository;
     private readonly INotificationService _notificationService;
+    private readonly int? _taskId;
 
     public override string Identifier { get; }
 
@@ -13,13 +14,14 @@ internal sealed partial class TodoListViewModel : BaseViewModel, ITodoHost
     [ObservableProperty]
     public partial ObservableCollection<TodoListItemViewModel> TodoItemsCompleted { get; set; }
 
-    public TodoListViewModel(ITodoRepository repository, INotificationService notificationService)
+    public TodoListViewModel(ITodoRepository repository, INotificationService notificationService, int? taskId = null)
     {
         ArgumentNullException.ThrowIfNull(repository);
         ArgumentNullException.ThrowIfNull(notificationService);
 
         _repository = repository;
         _notificationService = notificationService;
+        _taskId = taskId;
 
         this.Identifier = Guid.NewGuid().ToString();
         this.TodoItemsInProgress = [];
@@ -28,7 +30,7 @@ internal sealed partial class TodoListViewModel : BaseViewModel, ITodoHost
 
     public async override Task OnInitializedAsync()
     {
-        IReadOnlyList<Todo> inProgressTodos = await _repository.GetAllAsync(ETodoStatus.InProgress).ConfigureAwait(false);
+        IReadOnlyList<Todo> inProgressTodos = await _repository.GetAllAsync(ETodoStatus.InProgress, _taskId).ConfigureAwait(false);
         if (inProgressTodos?.Count > 0)
         {
             foreach (Todo todo in inProgressTodos)
@@ -37,7 +39,7 @@ internal sealed partial class TodoListViewModel : BaseViewModel, ITodoHost
             }
         }
 
-        IReadOnlyList<Todo> completedTodos = await _repository.GetAllAsync(ETodoStatus.Completed).ConfigureAwait(false);
+        IReadOnlyList<Todo> completedTodos = await _repository.GetAllAsync(ETodoStatus.Completed, _taskId).ConfigureAwait(false);
         if (completedTodos?.Count > 0)
         {
             foreach (Todo todo in completedTodos)
@@ -58,6 +60,7 @@ internal sealed partial class TodoListViewModel : BaseViewModel, ITodoHost
             Status = ETodoStatus.InProgress,
             CreatedAtUtc = now,
             UpdatedAtUtc = now,
+            TaskId = _taskId,
         };
         OperationResult result = await _repository.AddAsync(newTodo).ConfigureAwait(false);
         if (result.IsSuccess)

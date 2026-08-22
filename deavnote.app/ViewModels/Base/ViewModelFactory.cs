@@ -52,9 +52,9 @@ internal sealed class ViewModelFactory : IViewModelFactory
         return ActivatorUtilities.CreateInstance<TimeEntryDetailViewModel>(_serviceProvider, model);
     }
 
-    public TodoListViewModel CreateTodoListViewModel()
+    public TodoListViewModel CreateTodoListViewModel(int? taskId = null)
     {
-        return ActivatorUtilities.CreateInstance<TodoListViewModel>(_serviceProvider);
+        return ActivatorUtilities.CreateInstance<TodoListViewModel>(_serviceProvider, [(object)taskId!]);
     }
 
     public SettingsViewModel CreateSettingsViewModel()

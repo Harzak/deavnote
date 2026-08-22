@@ -14,6 +14,6 @@ internal interface IViewModelFactory
     SearchViewModel CreateSearchViewModel();
     DevTaskDetailViewModel CreateDevTaskDetailViewModel(DevTask model, bool isReadonly);
     TimeEntryDetailViewModel CreateTimeEntryDetailViewModel(TimeEntry model);
-    TodoListViewModel CreateTodoListViewModel();
+    TodoListViewModel CreateTodoListViewModel(int? taskId = null);
     SettingsViewModel CreateSettingsViewModel();
 };

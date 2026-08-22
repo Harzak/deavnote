@@ -1,4 +1,6 @@
-﻿using deavnote.app.ViewModels.TimeEntry;
+using deavnote.app.Interfaces;
+using deavnote.app.ViewModels.TimeEntry;
+using deavnote.app.ViewModels.TodoList;
 using deavnote.repository.Dto;
 using deavnote.utils.Results;
 
@@ -10,6 +12,8 @@ public class TimeEntryDetailViewModelTests
     private IJournal _journal;
     private IDevTaskRepository _taskRepository;
     private INotificationService _notificationService;
+    private ITodoRepository _todoRepository;
+    private IViewModelFactory _viewModelFactory;
 
     [TestInitialize]
     public void Initialize()
@@ -17,6 +21,10 @@ public class TimeEntryDetailViewModelTests
         _journal = A.Fake<IJournal>();
         _taskRepository = A.Fake<IDevTaskRepository>();
         _notificationService = A.Fake<INotificationService>();
+        _todoRepository = A.Fake<ITodoRepository>();
+        _viewModelFactory = A.Fake<IViewModelFactory>();
+        A.CallTo(() => _viewModelFactory.CreateTodoListViewModel(A<int?>._))
+            .ReturnsLazily((int? taskId) => new TodoListViewModel(_todoRepository, _notificationService, taskId));
     }
 
     [TestMethod]
@@ -43,7 +51,7 @@ public class TimeEntryDetailViewModelTests
         };
         A.CallTo(() => _taskRepository.GetTaskAsync(task.Id, A<CancellationToken>._))
             .Returns(Task.FromResult<model.Entities.DevTask?>(task));
-        using TimeEntryDetailViewModel viewModel = new(model, _journal, _taskRepository, _notificationService);
+        using TimeEntryDetailViewModel viewModel = new(model, _journal, _taskRepository, _notificationService, _viewModelFactory);
         await viewModel.OnInitializedAsync().ConfigureAwait(false);
 
         // Act
@@ -81,7 +89,7 @@ public class TimeEntryDetailViewModelTests
         };
         A.CallTo(() => _taskRepository.GetTaskAsync(task.Id, A<CancellationToken>._))
             .Returns(Task.FromResult<model.Entities.DevTask?>(task));
-        using TimeEntryDetailViewModel viewModel = new(model, _journal, _taskRepository, _notificationService);
+        using TimeEntryDetailViewModel viewModel = new(model, _journal, _taskRepository, _notificationService, _viewModelFactory);
         await viewModel.OnInitializedAsync().ConfigureAwait(false);
 
         // Act
@@ -121,7 +129,7 @@ public class TimeEntryDetailViewModelTests
             .Returns(Task.FromResult(OperationResult.Success()));
         A.CallTo(() => _journal.UpdateEntryAsync(A<UpdateTimeEntryRequest>._, A<CancellationToken>._))
             .Returns(Task.FromResult(OperationResult.Success()));
-        using TimeEntryDetailViewModel viewModel = new(model, _journal, _taskRepository, _notificationService);
+        using TimeEntryDetailViewModel viewModel = new(model, _journal, _taskRepository, _notificationService, _viewModelFactory);
         await viewModel.OnInitializedAsync().ConfigureAwait(false);
 
         // Act
@@ -172,7 +180,7 @@ public class TimeEntryDetailViewModelTests
         };
         A.CallTo(() => _taskRepository.GetTaskAsync(task.Id, A<CancellationToken>._))
             .Returns(Task.FromResult<model.Entities.DevTask?>(task));
-        using TimeEntryDetailViewModel viewModel = new(model, _journal, _taskRepository, _notificationService);
+        using TimeEntryDetailViewModel viewModel = new(model, _journal, _taskRepository, _notificationService, _viewModelFactory);
         await viewModel.OnInitializedAsync().ConfigureAwait(false);
 
         // Act
@@ -210,7 +218,7 @@ public class TimeEntryDetailViewModelTests
         };
         A.CallTo(() => _taskRepository.GetTaskAsync(task.Id, A<CancellationToken>._))
             .Returns(Task.FromResult<model.Entities.DevTask?>(task));
-        using TimeEntryDetailViewModel viewModel = new(model, _journal, _taskRepository, _notificationService);
+        using TimeEntryDetailViewModel viewModel = new(model, _journal, _taskRepository, _notificationService, _viewModelFactory);
         await viewModel.OnInitializedAsync().ConfigureAwait(false);
 
         // Act
