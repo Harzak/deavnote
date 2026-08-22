@@ -14,14 +14,6 @@
         <Grid Margin="25,10"
               RowDefinitions="Auto, Auto, *, Auto, *" RowSpacing="20">
 
-            <!--  Header Section  -->
-            <Grid ColumnDefinitions="*">
-                <TextBlock Grid.Column="0"
-                           VerticalAlignment="Center"
-                           FontSize="18" FontWeight="SemiBold"
-                           Text="{loc:Localize Key=TodoListView_Title}" />
-            </Grid>
-
             <!--  In Progress Items  -->
             <Border Grid.Row="2"
                     Padding="8"
