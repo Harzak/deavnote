@@ -49,10 +49,12 @@
                             Margin="10,0,0,0" HorizontalAlignment="Left"
                             Orientation="Horizontal" Spacing="10">
                     <TextBlock VerticalAlignment="Center"
-                               Classes="Content Muted" Text="Release" />
+                               Classes="Content Muted"
+                               Text="{loc:Localize Key=Common_Release}" />
                     <TextBox MinWidth="130" Text="{Binding Release, Converter={StaticResource VersionConverter}}" />
                     <TextBlock VerticalAlignment="Center"
-                               Classes="Content Muted" Text="State" />
+                               Classes="Content Muted"
+                               Text="{loc:Localize Key=Common_State}" />
                     <ComboBox Grid.Row="1" Grid.Column="1"
                               MinWidth="150"
                               VerticalAlignment="Center"
@@ -73,7 +75,7 @@
                     <TextBlock Margin="3,0,10,0"
                                Classes="Legend"
                                Text="{Binding CreatedAt, Converter={StaticResource DateTimeUtcToLocal}}" />
-                    <TextBlock Classes="Legend" Text="-" />
+                    <TextBlock Classes="Legend" Text="{loc:Localize Key=Common_DateSeparator}" />
                     <TextBlock Margin="10,0,3,0"
                                Classes="Legend"
                                Text="{loc:Localize Key=Common_ModifiedAt}" />
@@ -112,14 +114,17 @@
                         <TableView.Columns>
                             <TableViewColumn Width="100"
                                              Binding="{Binding StartedAtUtc, Converter={StaticResource DateTimeUtcToLocal}, StringFormat='ddd d MMM'}"
-                                             CanUserResize="False" Header="Date" />
+                                             CanUserResize="False"
+                                             Header="{loc:Localize Key=Common_Date}" />
                             <TableViewColumn Width="*"
                                              Binding="{Binding Name}"
-                                             CanUserResize="True" Header="Time entry" />
+                                             CanUserResize="True"
+                                             Header="{loc:Localize Key=Common_TimeEntry}" />
                             <TableViewColumn Width="150"
                                              HorizontalContentAlignment="Right"
                                              Binding="{Binding Duration, Converter={StaticResource TimeSpanToReadableDurationConverter}}"
-                                             CanUserResize="False" Header="Time spent" />
+                                             CanUserResize="False"
+                                             Header="{loc:Localize Key=DevTaskDetailView_TimeSpent_Header}" />
                         </TableView.Columns>
                     </TableView>
 
@@ -131,7 +136,8 @@
                         <Grid ColumnDefinitions="100,*,150">
                             <TextBlock Grid.Column="0" Grid.ColumnSpan="2"
                                        Padding="10,8" VerticalAlignment="Center"
-                                       FontWeight="SemiBold" Text="Total time spent:" />
+                                       FontWeight="SemiBold"
+                                       Text="{loc:Localize Key=DevTaskDetailView_TotalTimeSpent}" />
                             <SelectableTextBlock Grid.Column="2"
                                                  Padding="10,8" HorizontalAlignment="Right" VerticalAlignment="Center"
                                                  FontWeight="SemiBold"

@@ -98,7 +98,8 @@
                     HorizontalAlignment="Center"
                     Orientation="Horizontal">
             <TextBlock Margin="3"
-                       Classes="Legend" Text="Total time:" />
+                       Classes="Legend"
+                       Text="{loc:Localize Key=JournalView_TotalTime}" />
             <TextBlock Margin="3"
                        Classes="Legend"
                        Text="{Binding TotalTime}" />

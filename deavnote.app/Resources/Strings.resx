@@ -312,4 +312,38 @@
   <data name="TodoListView_ClearCompleted" xml:space="preserve">
     <value>Clear completed</value>
   </data>
+  <data name="Common_Yes" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="Common_No" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="Common_Release" xml:space="preserve">
+    <value>Release</value>
+  </data>
+  <data name="Common_State" xml:space="preserve">
+    <value>State</value>
+  </data>
+  <data name="Common_DateSeparator" xml:space="preserve">
+    <value>-</value>
+  </data>
+  <data name="Common_Date" xml:space="preserve">
+    <value>Date</value>
+  </data>
+  <data name="Common_TimeEntry" xml:space="preserve">
+    <value>Time entry</value>
+  </data>
+  <data name="DevTaskDetailView_TimeSpent_Header" xml:space="preserve">
+    <value>Time spent</value>
+  </data>
+  <data name="DevTaskDetailView_TotalTimeSpent" xml:space="preserve">
+    <value>Total time spent:</value>
+  </data>
+  <data name="JournalView_TotalTime" xml:space="preserve">
+    <value>Total time:</value>
+  </data>
+  <data name="SettingsView_Language_English" xml:space="preserve">
+    <value>English</value>
+  </data>
+
 </root>

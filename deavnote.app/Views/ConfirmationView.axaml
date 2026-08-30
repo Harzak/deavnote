@@ -28,13 +28,13 @@
                     Orientation="Horizontal" Spacing="20">
             <Button Width="70"
                     Command="{Binding ConfirmCommand}"
-                    Content="Yes" />
+                    Content="{loc:Localize Key=Common_Yes}" />
             <Button Width="70"
                     Command="{Binding DeclineCommand}"
-                    Content="No" />
+                    Content="{loc:Localize Key=Common_No}" />
             <Button Width="70"
                     Command="{Binding CancelCommand}"
-                    Content="Cancel" />
+                    Content="{loc:Localize Key=Common_Cancel}" />
         </StackPanel>
     </Grid>
 </UserControl>

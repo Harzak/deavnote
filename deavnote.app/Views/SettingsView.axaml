@@ -32,7 +32,7 @@
                           MinWidth="150"
                           VerticalAlignment="Center"
                           SelectedIndex="0">
-                    <ComboBoxItem Content="English" />
+                    <ComboBoxItem Content="{loc:Localize Key=SettingsView_Language_English}" />
                 </ComboBox>
 
             </Grid>
