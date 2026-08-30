@@ -7,40 +7,42 @@ namespace deavnote.app.Services;
 internal sealed class DialogService : IDialogService
 {
     /// <inheritdoc/>
+    /// <inheritdoc/>
     public async Task<TResult?> ShowWindowAsync<TResult>(DialogViewModel<TResult> viewModel, bool blockMainWindow = true)
     {
         ArgumentNullException.ThrowIfNull(viewModel);
 
-        Window? owner = (Application.Current?.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime)?.MainWindow;
-
-        if (owner is null)
-        {
-            return default;
-        }
-
-        Window dialog = new()
-        {
-            Content = viewModel,
-            Title = viewModel.Title,
-            SizeToContent = SizeToContent.WidthAndHeight,
-            WindowStartupLocation = WindowStartupLocation.CenterOwner,
-            CanResize = true,
-
-        };
-
+        await viewModel.OnInitializedAsync().ConfigureAwait(false);
 
         TaskCompletionSource<TResult?> tcs = new();
-        viewModel.CloseDialog = result =>
-        {
-            tcs.TrySetResult(result);
-            dialog.Close();
-        };
 
-        dialog.Closed += (_, _) => tcs.TrySetResult(default);
-
-        await viewModel.OnInitializedAsync().ConfigureAwait(false);
         await Dispatcher.UIThread.InvokeAsync(async () =>
         {
+            Window? owner = (Application.Current?.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime)?.MainWindow;
+
+            if (owner is null)
+            {
+                tcs.TrySetResult(default);
+                return;
+            }
+
+            Window dialog = new()
+            {
+                Content = viewModel,
+                Title = viewModel.Title,
+                SizeToContent = SizeToContent.WidthAndHeight,
+                WindowStartupLocation = WindowStartupLocation.CenterOwner,
+                CanResize = true,
+            };
+
+            viewModel.CloseDialog = result =>
+            {
+                tcs.TrySetResult(result);
+                dialog.Close();
+            };
+
+            dialog.Closed += (_, _) => tcs.TrySetResult(default);
+
             if (blockMainWindow)
             {
                 await dialog.ShowDialog<TResult>(owner).ConfigureAwait(false);
